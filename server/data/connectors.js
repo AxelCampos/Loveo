@@ -19,6 +19,11 @@ const UserModel = db.define('user', {
   username: { type: Sequelize.STRING },
   password: { type: Sequelize.STRING },
 });
+// define photos
+const PhotoModel = db.define('photo', {
+  name: { type: Sequelize.STRING },
+});
+
 // users belong to multiple groups
 UserModel.belongsToMany(GroupModel, { through: 'GroupUser' });
 // users belong to multiple users as friends
@@ -29,7 +34,13 @@ MessageModel.belongsTo(UserModel);
 MessageModel.belongsTo(GroupModel);
 // groups have multiple users
 GroupModel.belongsToMany(UserModel, { through: 'GroupUser' });
+// photos are sent from users
+PhotoModel.belongsTo(UserModel);
+
 const Group = db.models.group;
 const Message = db.models.message;
 const User = db.models.user;
-export { Group, Message, User };
+const Photo = db.models.photo;
+export {
+  db, Group, Message, User, Photo,
+};

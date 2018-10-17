@@ -6,6 +6,7 @@ import { db } from './connectors';
 const GROUPS = 4;
 const USERS_PER_GROUP = 5;
 const MESSAGES_PER_USER = 5;
+const PHOTOS_PER_USER = 2;
 
 faker.seed(123); // get consistent data every time we reload app
 
@@ -47,6 +48,13 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
               text: faker.lorem.sentences(3),
             }),
             MESSAGES_PER_USER,
+          );
+          R.times(
+            () => db.models.photo.create({
+              userId: user.id,
+              name: faker.lorem.words(2),
+            }),
+            PHOTOS_PER_USER,
           );
           return user;
         }, USERS_PER_GROUP),

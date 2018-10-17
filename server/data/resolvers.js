@@ -1,5 +1,7 @@
 import GraphQLDate from 'graphql-date';
-import { Group, Message, User } from './connectors';
+import {
+  Group, Message, User, Photo,
+} from './connectors';
 
 export const resolvers = {
   Date: GraphQLDate,
@@ -15,6 +17,12 @@ export const resolvers = {
     },
     user(_, args) {
       return User.findOne({ where: args });
+    },
+    photo(_, args) {
+      return Photo.findAll({
+        where: args,
+        order: [['createdAt', 'DESC']],
+      });
     },
   },
   Group: {
@@ -48,6 +56,28 @@ export const resolvers = {
     },
     friends(user) {
       return user.getFriends();
+    },
+    album(user) {
+      return Photo.findAll({
+        where: { userId: user.id },
+        order: [['createdAt', 'DESC']],
+      });
+    },
+  },
+  Photo: {
+    to(photo) {
+      return photo.getUser();
+    },
+    from(photo) {
+      return photo.getUser();
+    },
+  },
+  To: {
+    __resolveType(obj) {
+      if (obj.email) {
+        return user.getUser();
+      }
+      return group.getGroup();
     },
   },
 };
