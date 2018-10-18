@@ -66,13 +66,13 @@ export const resolvers = {
   },
   Photo: {
     to(photo) {
-      return photo.getUser();
+      return photo.getGroup();
     },
     from(photo) {
       return photo.getUser();
     },
   },
-  To: {
+  /* To: {
     __resolveType(obj) {
       if (obj.email) {
         return user.getUser();
@@ -80,5 +80,7 @@ export const resolvers = {
       return group.getGroup();
     },
   },
+*/
 };
+
 export default resolvers;

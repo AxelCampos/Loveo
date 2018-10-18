@@ -22,6 +22,7 @@ const UserModel = db.define('user', {
 // define photos
 const PhotoModel = db.define('photo', {
   name: { type: Sequelize.STRING },
+  comment: { type: Sequelize.STRING },
 });
 
 // users belong to multiple groups

@@ -52,7 +52,9 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
           R.times(
             () => db.models.photo.create({
               userId: user.id,
+              groupId: group.id,
               name: faker.lorem.words(2),
+              comment: faker.lorem.words(65),
             }),
             PHOTOS_PER_USER,
           );

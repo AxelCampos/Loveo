@@ -25,7 +25,7 @@ export const typeDefs = gql`
     album: [Photo!]!
   }
 
-  union To = User | Group
+  #union To = User | Group
 
   #a photo sent from a user to a group/user
   type Photo {
@@ -33,7 +33,8 @@ export const typeDefs = gql`
     name: String!
     createdAt: Date!
     from: User!
-    to: To!
+    to: Group!
+    comment: String
   }
 
   # a message sent from a user to a group
@@ -52,9 +53,9 @@ export const typeDefs = gql`
     # Return messages sent by a user via userId
     messages(userId: Int): [Message]
     # Return a group by its id
-    group(id: Int!): Group
+    group(id: Int): Group
     # Return a photo by its id or name
-    photo(id: Int!, name: String): Photo
+    photo(id: Int, name: String): [Photo]
   }
   schema {
     query: Query
