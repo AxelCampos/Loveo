@@ -1,14 +1,11 @@
 import React from 'react';
-import {
-  StackActions,
-  NavigationActions,
-  createStackNavigator,
-  createMaterialTopTabNavigator,
-} from 'react-navigation';
+import { StackActions, NavigationActions, createStackNavigator } from 'react-navigation';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import {
   reduxifyNavigator,
   createReactNavigationReduxMiddleware,
 } from 'react-navigation-redux-helpers';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -26,17 +23,47 @@ const TestScreen = title => () => (
   </View>
 );
 // tabs in main screen
-const MainScreenNavigator = createMaterialTopTabNavigator(
+const MainScreenNavigator = createMaterialBottomTabNavigator(
   {
-    Search: { screen: TestScreen('Search') },
-    Match: { screen: TestScreen('Match') },
-    Chats: { screen: TestScreen('Chats') },
-    User: { screen: TestScreen('User') },
-    Settings: { screen: TestScreen('Settings') },
+    Search: {
+      screen: TestScreen('Search'),
+      navigationOptions: {
+        tabBarIcon: () => <Icon size={20} name="ios-settings" color="red" />,
+        tabBarColor: 'blue',
+      },
+    },
+    Match: {
+      screen: TestScreen('Match'),
+      navigationOptions: {
+        tabBarIcon: () => <Icon size={20} name="ios-settings" color="red" />,
+        tabBarColor: 'pink',
+      },
+    },
+    Chats: {
+      screen: TestScreen('Chats'),
+      navigationOptions: {
+        tabBarIcon: () => <Icon size={20} name="ios-settings" color="red" />,
+        tabBarColor: 'green',
+      },
+    },
+    User: {
+      screen: TestScreen('User'),
+      navigationOptions: {
+        tabBarIcon: () => <Icon size={20} name="ios-settings" color="red" />,
+        tabBarColor: 'orange',
+      },
+    },
+    Settings: {
+      screen: TestScreen('Settings'),
+      navigationOptions: {
+        tabBarIcon: () => <Icon size={20} name="ios-settings" color="red" />,
+        tabBarColor: 'violet',
+      },
+    },
   },
   {
     initialRouteName: 'Chats',
-    shifting: true,
+    activeColor: 'black',
   },
 );
 const AppNavigator = createStackNavigator(
