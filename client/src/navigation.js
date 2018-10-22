@@ -5,7 +5,7 @@ import {
   reduxifyNavigator,
   createReactNavigationReduxMiddleware,
 } from 'react-navigation-redux-helpers';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -28,35 +28,35 @@ const MainScreenNavigator = createMaterialBottomTabNavigator(
     Search: {
       screen: TestScreen('Search'),
       navigationOptions: {
-        tabBarIcon: () => <Icon size={20} name="ios-settings" color="red" />,
+        tabBarIcon: () => <Icon size={20} name="search" color="red" />,
         tabBarColor: 'blue',
       },
     },
     Match: {
       screen: TestScreen('Match'),
       navigationOptions: {
-        tabBarIcon: () => <Icon size={20} name="ios-settings" color="red" />,
+        tabBarIcon: () => <Icon size={20} name="gripfire" color="red" />,
         tabBarColor: 'pink',
       },
     },
     Chats: {
       screen: TestScreen('Chats'),
       navigationOptions: {
-        tabBarIcon: () => <Icon size={20} name="ios-settings" color="red" />,
+        tabBarIcon: () => <Icon size={20} name="rocketchat" color="red" />,
         tabBarColor: 'green',
       },
     },
     User: {
       screen: TestScreen('User'),
       navigationOptions: {
-        tabBarIcon: () => <Icon size={20} name="ios-settings" color="red" />,
+        tabBarIcon: () => <Icon size={20} name="user" color="red" />,
         tabBarColor: 'orange',
       },
     },
     Settings: {
       screen: TestScreen('Settings'),
       navigationOptions: {
-        tabBarIcon: () => <Icon size={20} name="ios-settings" color="red" />,
+        tabBarIcon: () => <Icon size={20} name="cannabis" color="red" />,
         tabBarColor: 'violet',
       },
     },
