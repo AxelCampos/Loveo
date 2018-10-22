@@ -19,6 +19,8 @@ export const typeDefs = gql`
     id: Int! # unique id for the user
     email: String! # we will also require a unique email per user
     username: String! # this is the name we'll show other users
+    age: Int!
+    gender: String!
     messages: [Message!]! # messages sent by user
     groups: [Group!]! # groups the user belongs to
     friends: [User] # user's friends/contacts
