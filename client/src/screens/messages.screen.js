@@ -1,6 +1,5 @@
 import R from 'ramda';
 import { FlatList, StyleSheet, View } from 'react-native';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import randomColor from 'randomcolor';
 import Message from '../components/message.component';
@@ -13,20 +12,23 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
 });
-const fakeData = () => _.times(100, i => ({
-  // every message will have a different color
-  color: randomColor(),
-  // every 5th message will look like it's from the current user
-  isCurrentUser: i % 5 === 0,
-  message: {
-    id: i,
-    createdAt: new Date().toISOString(),
-    from: {
-      username: `Username ${i}`,
+const fakeData = () => R.times(
+  i => ({
+    // every message will have a different color
+    color: randomColor(),
+    // every 5th message will look like it's from the current user
+    isCurrentUser: i % 5 === 0,
+    message: {
+      id: i,
+      createdAt: new Date().toISOString(),
+      from: {
+        username: `Username ${i}`,
+      },
+      text: `Message ${i}`,
     },
-    text: `Message ${i}`,
-  },
-}));
+  }),
+  100,
+);
 class Messages extends Component {
   static navigationOptions = ({ navigation }) => {
     const { state } = navigation;

@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import Groups from './screens/groups.screen';
+import Messages from './screens/messages.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -67,14 +68,10 @@ const MainScreenNavigator = createMaterialBottomTabNavigator(
     activeColor: 'black',
   },
 );
-const AppNavigator = createStackNavigator(
-  {
-    Main: { screen: MainScreenNavigator },
-  },
-  {
-    headerMode: 'none',
-  },
-);
+const AppNavigator = createStackNavigator({
+  Main: { screen: MainScreenNavigator },
+  Messages: { screen: Messages },
+});
 // reducer initialization code
 const initialState = AppNavigator.router.getStateForAction(
   StackActions.reset({

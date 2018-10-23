@@ -30,7 +30,7 @@ import { onError } from 'apollo-link-error';
 
 import AppWithNavigationState, { navigationReducer, navigationMiddleware } from './navigation';
 
-const URL = 'localhost:8080'; // set your comp's url here
+const URL = '172.16.100.86:8080'; // set your comp's url here
 
 const store = createStore(
   combineReducers({
