@@ -8,6 +8,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import Groups from './screens/groups.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -35,12 +36,12 @@ const MainScreenNavigator = createMaterialBottomTabNavigator(
     Match: {
       screen: TestScreen('Match'),
       navigationOptions: {
-        tabBarIcon: () => <Icon size={20} name="gripfire" color="red" />,
+        tabBarIcon: () => <Icon size={20} name="burn" color="red" />,
         tabBarColor: 'pink',
       },
     },
     Chats: {
-      screen: TestScreen('Chats'),
+      screen: Groups,
       navigationOptions: {
         tabBarIcon: () => <Icon size={20} name="rocketchat" color="red" />,
         tabBarColor: 'green',
@@ -56,7 +57,7 @@ const MainScreenNavigator = createMaterialBottomTabNavigator(
     Settings: {
       screen: TestScreen('Settings'),
       navigationOptions: {
-        tabBarIcon: () => <Icon size={20} name="cannabis" color="red" />,
+        tabBarIcon: () => <Icon size={20} name="cog" color="red" />,
         tabBarColor: 'violet',
       },
     },

@@ -3,9 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "start-emulator": "$ANDROID_HOME/emulator/emulator @Nexus_6_API_27",
-    "test": "jest"
+    "start": "nodemon --watch server --watch package.json server/index.js --exec babel-node --presets es2015,stage-2"
   },
   "dependencies": {
     "apollo-cache-redux": "^0.1.1",
