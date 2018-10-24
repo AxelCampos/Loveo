@@ -10,6 +10,7 @@ import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import Groups from './screens/groups.screen';
 import Messages from './screens/messages.screen';
+import Search from './screens/search.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,7 +29,7 @@ const TestScreen = title => () => (
 const MainScreenNavigator = createMaterialBottomTabNavigator(
   {
     Search: {
-      screen: TestScreen('Search'),
+      screen: Search,
       navigationOptions: {
         tabBarIcon: () => <Icon size={20} name="search" color="red" />,
         tabBarColor: 'blue',

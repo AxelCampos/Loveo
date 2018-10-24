@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "nodemon --watch server --watch package.json server/index.js --exec babel-node --presets es2015,stage-2"
+    "start": "nodemon --watch server --watch package.json server/index.js --exec babel-node --presets es2015,stage-2",
+    "start-emulator": "$ANDROID_HOME/emulator/emulator @Nexus_6_API_27",
+    "test": "jest"
   },
   "dependencies": {
     "apollo-cache-redux": "^0.1.1",
