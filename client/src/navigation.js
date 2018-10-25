@@ -1,5 +1,10 @@
 import React from 'react';
-import { StackActions, NavigationActions, createStackNavigator } from 'react-navigation';
+import {
+  StackActions,
+  NavigationActions,
+  createStackNavigator,
+  createMaterialTopTabNavigator,
+} from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import {
   reduxifyNavigator,
@@ -10,7 +15,8 @@ import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import Groups from './screens/groups.screen';
 import Messages from './screens/messages.screen';
-import Search from './screens/search.screen';
+import User from './screens/user.screen';
+import Tendencies from './screens/tendencies.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,6 +31,24 @@ const TestScreen = title => () => (
     <Text>{title}</Text>
   </View>
 );
+const Search = createMaterialTopTabNavigator(
+  {
+    Tendencias: {
+      screen: Tendencies,
+    },
+    Cerca: {
+      screen: TestScreen('Cerca'),
+    },
+    Nuevo: {
+      screen: TestScreen('Nuevo'),
+    },
+  },
+  {
+    initialRouteName: 'Tendencias',
+    activeColor: 'black',
+  },
+);
+
 // tabs in main screen
 const MainScreenNavigator = createMaterialBottomTabNavigator(
   {
@@ -35,6 +59,7 @@ const MainScreenNavigator = createMaterialBottomTabNavigator(
         tabBarColor: 'blue',
       },
     },
+
     Match: {
       screen: TestScreen('Match'),
       navigationOptions: {
@@ -42,6 +67,7 @@ const MainScreenNavigator = createMaterialBottomTabNavigator(
         tabBarColor: 'pink',
       },
     },
+
     Chats: {
       screen: Groups,
       navigationOptions: {
@@ -49,13 +75,15 @@ const MainScreenNavigator = createMaterialBottomTabNavigator(
         tabBarColor: 'green',
       },
     },
+
     User: {
-      screen: TestScreen('User'),
+      screen: User,
       navigationOptions: {
         tabBarIcon: () => <Icon size={20} name="user" color="red" />,
         tabBarColor: 'orange',
       },
     },
+
     Settings: {
       screen: TestScreen('Settings'),
       navigationOptions: {
@@ -66,13 +94,19 @@ const MainScreenNavigator = createMaterialBottomTabNavigator(
   },
   {
     initialRouteName: 'Chats',
+
     activeColor: 'black',
   },
 );
-const AppNavigator = createStackNavigator({
-  Main: { screen: MainScreenNavigator },
-  Messages: { screen: Messages },
-});
+
+const AppNavigator = createStackNavigator(
+  {
+    Main: { screen: MainScreenNavigator },
+    Messages: { screen: Messages },
+  },
+  {},
+);
+
 // reducer initialization code
 const initialState = AppNavigator.router.getStateForAction(
   StackActions.reset({

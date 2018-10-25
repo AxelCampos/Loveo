@@ -69,7 +69,6 @@ class Groups extends Component {
 
   render() {
     const { loading, user } = this.props;
-    console.log('>>>>>>>>>', user);
 
     // render loading placeholder while we fetch messages
     if (!user) {
