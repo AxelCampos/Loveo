@@ -23,13 +23,13 @@ const Tendency = ({ user: { id, username } }) => (
 Tendency.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number,
-    name: PropTypes.string,
+    username: PropTypes.string,
   }),
 };
 class Tendencies extends Component {
-  static navigationOptions = {
+  /* static navigationOptions = {
     title: '',
-  };
+  }; */
 
   keyExtractor = item => item.id.toString();
 
@@ -39,11 +39,7 @@ class Tendencies extends Component {
     const { user } = this.props;
     return (
       <View>
-        <FlatList
-          data={user.username}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-        />
+        <FlatList data={user} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
       </View>
     );
   }
@@ -54,7 +50,7 @@ Tendencies.propTypes = {
   }),
   user: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
     album: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number.isRequired,
@@ -63,6 +59,7 @@ Tendencies.propTypes = {
   }),
 };
 const userQuery = graphql(USER_QUERY, {
+  options: () => ({ variables: { id: 1 } }), // fake the user for now
   props: ({ data: { user } }) => ({
     user,
   }),
