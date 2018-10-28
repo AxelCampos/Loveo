@@ -7,6 +7,7 @@ import {
   Text,
   TouchableHighlight,
   View,
+  Image,
 } from 'react-native';
 
 import { graphql } from 'react-apollo';
@@ -15,7 +16,7 @@ import { USER_QUERY } from '../graphql/user.query';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'blue',
+    backgroundColor: 'red',
     flex: 1,
   },
   loading: {
@@ -24,9 +25,9 @@ const styles = StyleSheet.create({
   },
   userContainer: {
     flex: 1,
-    flexDirection: 'row',
+
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: 'red',
     borderBottomColor: '#eee',
     borderBottomWidth: 1,
     paddingHorizontal: 12,
@@ -36,10 +37,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     flex: 0.7,
   },
+  userImage: {
+    width: 200,
+    height: 200,
+  },
 });
 
 const User = ({ user: { id, username, email } }) => (
   <View style={styles.userContainer}>
+    <Image
+      style={styles.userImage}
+      source={{
+        uri:
+          'https://cdn.computerhoy.com/sites/navi.axelspringer.es/public/styles/1160x650/public/media/image/2018/08/fotos-perfil-whatsapp_16.jpg?itok=0b5SU9Z9',
+      }}
+    />
+
     <Text style={styles.userName}>
       {username}
 ,
