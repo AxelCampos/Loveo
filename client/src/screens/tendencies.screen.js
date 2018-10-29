@@ -11,9 +11,9 @@ import {
 
 import { graphql } from 'react-apollo';
 
-import { USER_QUERY } from '../graphql/user.query';
+import { USERS_QUERY } from '../graphql/users.query';
 
-const styles = StyleSheet.create({
+/* const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
@@ -36,16 +36,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     flex: 0.7,
   },
-});
-const Tendency = ({ user: { id, username } }) => (
+}); */
+const Tendency = ({ users: { id, username } }) => (
   <TouchableHighlight key={id}>
-    <View style={styles.tendencyContainer}>
-      <Text style={styles.userName}>{username}</Text>
+    <View>
+      <Text>{username}</Text>
     </View>
   </TouchableHighlight>
 );
 Tendency.propTypes = {
-  user: PropTypes.shape({
+  users: PropTypes.shape({
     id: PropTypes.number,
     username: PropTypes.string,
   }),
@@ -57,13 +57,18 @@ class Tendencies extends Component {
 
   keyExtractor = item => item.id.toString();
 
-  renderItem = ({ item }) => <Tendency user={item} />;
+  renderItem = ({ item }) => <Tendency users={item} />;
 
   render() {
-    const { user } = this.props;
+    const { users } = this.props;
+    console.log('dlfkhghpdfh', users);
     return (
-      <View style={styles.container}>
-        <FlatList data={user} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
+      <View>
+        <FlatList
+          data={users.slice().reverse()}
+          keyExtractor={this.keyExtractor}
+          renderItem={this.renderItem}
+        />
       </View>
     );
   }
@@ -72,20 +77,22 @@ Tendencies.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }),
-  user: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    username: PropTypes.string.isRequired,
-    album: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number.isRequired,
-      }),
-    ),
-  }),
+  users: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      username: PropTypes.string.isRequired,
+      album: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number.isRequired,
+        }),
+      ),
+    }),
+  ),
 };
-const userQuery = graphql(USER_QUERY, {
-  options: () => ({ variables: { id: 1 } }), // fake the user for now
-  props: ({ data: { user } }) => ({
-    user,
+const usersQuery = graphql(USERS_QUERY, {
+  options: () => ({}), // fake the user for now
+  props: ({ data: { users } }) => ({
+    users: users || [],
   }),
 });
-export default userQuery(Tendencies);
+export default usersQuery(Tendencies);

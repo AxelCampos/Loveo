@@ -15,8 +15,16 @@ export const resolvers = {
         order: [['createdAt', 'DESC']],
       });
     },
+    users(_, args) {
+      return User.findAll({
+        where: args,
+        order: [['createdAt', 'DESC']],
+      });
+    },
     user(_, args) {
-      return User.findOne({ where: args });
+      return User.findOne({
+        where: args,
+      });
     },
     photo(_, args) {
       return Photo.findAll({

@@ -104,7 +104,11 @@ const AppNavigator = createStackNavigator(
     Main: { screen: MainScreenNavigator },
     Messages: { screen: Messages },
   },
-  {},
+  {
+    navigationOptions: {
+      title: 'Loveo',
+    },
+  },
 );
 
 // reducer initialization code

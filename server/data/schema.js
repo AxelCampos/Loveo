@@ -48,6 +48,7 @@ export const typeDefs = gql`
 
   # query for types
   type Query {
+    users(email: String, id: Int): [User]
     # Return a user by their email or id
     user(email: String, id: Int): User
     # Return messages sent by a user via userId

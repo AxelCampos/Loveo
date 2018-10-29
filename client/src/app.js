@@ -12,7 +12,7 @@ import { onError } from 'apollo-link-error';
 
 import AppWithNavigationState, { navigationReducer, navigationMiddleware } from './navigation';
 
-const URL = '192.168.1.42:8080';
+const URL = '172.16.100.86:8080';
 
 const store = createStore(
   combineReducers({
