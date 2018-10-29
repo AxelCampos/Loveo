@@ -1,27 +1,20 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
+  FlatList, StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
 
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 
 import { USER_QUERY } from '../graphql/user.query';
+import withLoading from '../components/withLoading';
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
   },
-  loading: {
-    justifyContent: 'center',
-    flex: 1,
-  },
+
   groupContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -68,16 +61,8 @@ class Groups extends Component {
   renderItem = ({ item }) => <Group group={item} goToMessages={this.goToMessages(item)} />;
 
   render() {
-    const { loading, user } = this.props;
+    const { user } = this.props;
 
-    // render loading placeholder while we fetch messages
-    if (!user) {
-      return (
-        <View style={[styles.loading, styles.container]}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
     return (
       <View style={styles.container}>
         <FlatList
@@ -93,7 +78,7 @@ Groups.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }),
-  loading: PropTypes.bool,
+
   user: PropTypes.shape({
     id: PropTypes.number.isRequired,
     email: PropTypes.string.isRequired,
@@ -113,4 +98,7 @@ const userQuery = graphql(USER_QUERY, {
     user,
   }),
 });
-export default userQuery(Groups);
+export default compose(
+  userQuery,
+  withLoading,
+)(Groups);

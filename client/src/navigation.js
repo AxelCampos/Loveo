@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   StackActions,
   NavigationActions,
@@ -11,7 +11,9 @@ import {
   createReactNavigationReduxMiddleware,
 } from 'react-navigation-redux-helpers';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Text, View, StyleSheet } from 'react-native';
+import {
+  Text, View, StyleSheet, BackHandler,
+} from 'react-native';
 import { connect } from 'react-redux';
 import Groups from './screens/groups.screen';
 import Messages from './screens/messages.screen';
@@ -45,7 +47,9 @@ const Search = createMaterialTopTabNavigator(
   },
   {
     initialRouteName: 'Tendencias',
-    activeColor: 'black',
+    navigationOptions: {
+      activeColor: 'black',
+    },
   },
 );
 
@@ -96,6 +100,7 @@ const MainScreenNavigator = createMaterialBottomTabNavigator(
     initialRouteName: 'Chats',
 
     activeColor: 'black',
+    inactiveColor: 'white',
   },
 );
 
@@ -136,5 +141,24 @@ const App = reduxifyNavigator(AppNavigator, 'root');
 const mapStateToProps = state => ({
   state: state.nav,
 });
-const AppWithNavigationState = connect(mapStateToProps)(App);
+class AppWithBackPress extends Component {
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  onBackPress = () => {
+    const { dispatch } = this.props;
+    dispatch(NavigationActions.back());
+    return true;
+  };
+
+  render() {
+    return <App {...this.props} />;
+  }
+}
+const AppWithNavigationState = connect(mapStateToProps)(AppWithBackPress);
 export default AppWithNavigationState;

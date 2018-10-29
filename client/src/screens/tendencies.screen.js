@@ -1,27 +1,20 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
+  FlatList, StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
 
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 
 import { USERS_QUERY } from '../graphql/users.query';
+import withLoading from '../components/withLoading';
 
-/* const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
   },
-  loading: {
-    justifyContent: 'center',
-    flex: 1,
-  },
+
   tendencyContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -36,11 +29,11 @@ import { USERS_QUERY } from '../graphql/users.query';
     fontWeight: 'bold',
     flex: 0.7,
   },
-}); */
+});
 const Tendency = ({ users: { id, username } }) => (
   <TouchableHighlight key={id}>
-    <View>
-      <Text>{username}</Text>
+    <View style={styles.tendencyContainer}>
+      <Text style={styles.userName}>{username}</Text>
     </View>
   </TouchableHighlight>
 );
@@ -61,9 +54,9 @@ class Tendencies extends Component {
 
   render() {
     const { users } = this.props;
-    console.log('dlfkhghpdfh', users);
+
     return (
-      <View>
+      <View style={styles.container}>
         <FlatList
           data={users.slice().reverse()}
           keyExtractor={this.keyExtractor}
@@ -95,4 +88,7 @@ const usersQuery = graphql(USERS_QUERY, {
     users: users || [],
   }),
 });
-export default usersQuery(Tendencies);
+export default compose(
+  usersQuery,
+  withLoading,
+)(Tendencies);
