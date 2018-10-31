@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-export const WithLoading = Component => ({ loading, ...props }) => {
+export const WithLoading = Component => ({ loading = false, ...props }) => {
   // render loading placeholder while we fetch
   if (loading) {
     return (
