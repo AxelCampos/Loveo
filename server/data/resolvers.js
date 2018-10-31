@@ -34,7 +34,12 @@ export const resolvers = {
     },
   },
   Mutation: {
-    createMessage(_, { text, userId, groupId }) {
+    createMessage(
+      _,
+      {
+        message: { text, userId, groupId },
+      },
+    ) {
       return Message.create({
         userId,
         text,

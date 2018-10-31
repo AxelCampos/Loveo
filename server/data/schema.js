@@ -4,6 +4,16 @@ export const typeDefs = gql`
   # declare custom scalars
   scalar Date
 
+  # input for creating messages
+  # text is the message text
+  # userId is the id of the user sending the message
+  # groupId is the id of the group receiving the message
+  input CreateMessageInput {
+    userId: Int!
+    groupId: Int!
+    text: String!
+  }
+
   # a group chat entity
   type Group {
     id: Int! # unique id for the group
@@ -59,11 +69,8 @@ export const typeDefs = gql`
     photo(id: Int, name: String): [Photo]
   }
   type Mutation {
-    # create a new message
-    # text is the message text
-    # userId is the id of the user sending the message
-    # groupId is the id of the group receiving the message
-    createMessage(text: String!, userId: Int!, groupId: Int!): Message
+    # send a message to a group
+    createMessage(message: CreateMessageInput): Message
   }
   schema {
     query: Query
