@@ -73,7 +73,7 @@ class MessageInput extends Component {
               this.textInput = ref;
             }}
             onChangeText={text => this.setState({ text })}
-            stylw={styles.input}
+            style={styles.input}
             placeholder="Type your message here!"
           />
         </View>
