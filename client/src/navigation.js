@@ -18,6 +18,7 @@ import { connect } from 'react-redux';
 import Groups from './screens/groups.screen';
 import Messages from './screens/messages.screen';
 import User from './screens/user.screen';
+import Nearer from './screens/near.screen';
 import Tendencies from './screens/tendencies.screen';
 
 const styles = StyleSheet.create({
@@ -39,17 +40,15 @@ const Search = createMaterialTopTabNavigator(
       screen: Tendencies,
     },
     Cerca: {
-      screen: TestScreen('Cerca'),
+      screen: Nearer,
     },
     Nuevo: {
-      screen: TestScreen('Nuevo'),
+      screen: Tendencies,
     },
   },
   {
     initialRouteName: 'Tendencias',
-    navigationOptions: {
-      activeColor: 'black',
-    },
+    activeColor: 'black',
   },
 );
 
@@ -100,6 +99,7 @@ const MainScreenNavigator = createMaterialBottomTabNavigator(
     initialRouteName: 'Chats',
 
     activeColor: 'black',
+
     inactiveColor: 'white',
   },
 );
@@ -141,6 +141,7 @@ const App = reduxifyNavigator(AppNavigator, 'root');
 const mapStateToProps = state => ({
   state: state.nav,
 });
+
 class AppWithBackPress extends Component {
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
@@ -161,4 +162,5 @@ class AppWithBackPress extends Component {
   }
 }
 const AppWithNavigationState = connect(mapStateToProps)(AppWithBackPress);
+
 export default AppWithNavigationState;

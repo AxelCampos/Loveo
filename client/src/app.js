@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import { ReduxCache, apolloReducer } from 'apollo-cache-redux';
 import ReduxLink from 'apollo-link-redux';
 import { onError } from 'apollo-link-error';
-
+import Config from 'react-native-config';
 import AppWithNavigationState, { navigationReducer, navigationMiddleware } from './navigation';
 
 const URL = '172.16.100.86:8080';

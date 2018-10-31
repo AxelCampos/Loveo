@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
 export const WithLoading = Component => ({ loading, ...props }) => {
   // render loading placeholder while we fetch
   if (loading) {
@@ -22,12 +21,9 @@ export const WithLoading = Component => ({ loading, ...props }) => {
       </View>
     );
   }
-
   return <Component {...props} />;
 };
-
 WithLoading.propTypes = {
   loading: PropTypes.bool,
 };
-
 export default WithLoading;

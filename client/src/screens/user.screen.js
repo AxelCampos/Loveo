@@ -10,17 +10,14 @@ import {
   Image,
 } from 'react-native';
 
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 
 import { USER_QUERY } from '../graphql/user.query';
+import withLoading from '../components/withLoading';
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'red',
-    flex: 1,
-  },
-  loading: {
-    justifyContent: 'center',
     flex: 1,
   },
   userContainer: {
@@ -78,4 +75,7 @@ const userQuery = graphql(USER_QUERY, {
   }),
 });
 
-export default userQuery(User);
+export default compose(
+  userQuery,
+  withLoading,
+)(User);

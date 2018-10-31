@@ -19,11 +19,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
   },
-  tendencyContainer: {
+  NearContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'red',
+    backgroundColor: 'yellow',
     borderBottomColor: '#eee',
     borderBottomWidth: 1,
     paddingHorizontal: 12,
@@ -34,27 +34,27 @@ const styles = StyleSheet.create({
     flex: 0.7,
   },
 });
-const Tendency = ({ users: { id, username } }) => (
+const Near = ({ users: { id, username } }) => (
   <TouchableHighlight key={id}>
-    <View style={styles.tendencyContainer}>
+    <View style={styles.NearContainer}>
       <Text style={styles.userName}>{username}</Text>
     </View>
   </TouchableHighlight>
 );
-Tendency.propTypes = {
+Near.propTypes = {
   users: PropTypes.shape({
     id: PropTypes.number,
     username: PropTypes.string,
   }),
 };
-class Tendencies extends Component {
+class Nearer extends Component {
   /* static navigationOptions = {
     title: '',
   }; */
 
   keyExtractor = item => item.id.toString();
 
-  renderItem = ({ item }) => <Tendency users={item} />;
+  renderItem = ({ item }) => <Near users={item} />;
 
   render() {
     const { users } = this.props;
@@ -70,7 +70,7 @@ class Tendencies extends Component {
     );
   }
 }
-Tendencies.propTypes = {
+Nearer.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }),
@@ -96,4 +96,4 @@ const usersQuery = graphql(USERS_QUERY, {
 export default compose(
   usersQuery,
   withLoading,
-)(Tendencies);
+)(Nearer);
