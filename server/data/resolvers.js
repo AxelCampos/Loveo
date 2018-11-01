@@ -1,6 +1,6 @@
 import GraphQLDate from 'graphql-date';
 import {
-  Group, Message, User, Photo,
+  Group, Message, User, Photo, Characteristic
 } from './connectors';
 
 export const resolvers = {
@@ -30,6 +30,11 @@ export const resolvers = {
       return Photo.findAll({
         where: args,
         order: [['createdAt', 'DESC']],
+      });
+    },
+    characteristics(_, args) {
+      return Characteristic.findAll({
+        where: args,
       });
     },
   },
@@ -85,6 +90,11 @@ export const resolvers = {
         order: [['createdAt', 'DESC']],
       });
     },
+    characteristics(user) {
+      return Characteristic.findAll({
+        where: { userId: user.id },
+      });
+    },
   },
   Photo: {
     to(photo) {
@@ -92,6 +102,11 @@ export const resolvers = {
     },
     from(photo) {
       return photo.getUser();
+    },
+  },
+  Characteristic: {
+    subscription(characteristic) {
+      return characteristic.getUser();
     },
   },
   /* To: {
