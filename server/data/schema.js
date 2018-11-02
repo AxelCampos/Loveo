@@ -34,6 +34,7 @@ export const typeDefs = gql`
     friends: [User] # user's friends/contacts
     album: [Photo!]!
     characteristics: [Characteristic!]!
+    photoprofile: String
   }
 
   #union To = User | Group
@@ -41,6 +42,7 @@ export const typeDefs = gql`
   #a photo sent from a user to a group/user
   type Photo {
     id: Int!
+    url: String!
     name: String!
     createdAt: Date!
     from: User!

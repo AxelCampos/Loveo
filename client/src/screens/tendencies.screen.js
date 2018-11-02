@@ -7,6 +7,7 @@ import {
   Text,
   TouchableHighlight,
   View,
+  Image,
 } from 'react-native';
 
 import { graphql, compose } from 'react-apollo';
@@ -16,27 +17,38 @@ import withLoading from '../components/withLoading';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
-    flex: 1,
+    backgroundColor: 'red',
+    alignItems: 'center',
+    flexDirection: 'column',
   },
   tendencyContainer: {
-    flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
+    width: 120,
+    height: 120,
     alignItems: 'center',
-    backgroundColor: 'red',
+    backgroundColor: 'white',
     borderBottomColor: '#eee',
     borderBottomWidth: 1,
     paddingHorizontal: 12,
     paddingVertical: 8,
+    margin: 5,
   },
   userName: {
+    fontSize: 15,
     fontWeight: 'bold',
-    flex: 0.7,
+    position: 'absolute',
+    bottom: 10,
+    color: 'blue',
+  },
+  userImage: {
+    width: 100,
+    height: 100,
   },
 });
-const Tendency = ({ users: { id, username } }) => (
+const Tendency = ({ users: { id, username, photoprofile } }) => (
   <TouchableHighlight key={id}>
     <View style={styles.tendencyContainer}>
+      <Image style={styles.userImage} source={{ uri: photoprofile }} />
       <Text style={styles.userName}>{username}</Text>
     </View>
   </TouchableHighlight>
@@ -45,6 +57,7 @@ Tendency.propTypes = {
   users: PropTypes.shape({
     id: PropTypes.number,
     username: PropTypes.string,
+    photoprofile: PropTypes.string,
   }),
 };
 class Tendencies extends Component {
@@ -60,7 +73,7 @@ class Tendencies extends Component {
     const { users } = this.props;
 
     return (
-      <View>
+      <View style={styles.container}>
         <FlatList
           data={users.slice().reverse()}
           keyExtractor={this.keyExtractor}
@@ -78,11 +91,7 @@ Tendencies.propTypes = {
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       username: PropTypes.string.isRequired,
-      album: PropTypes.arrayOf(
-        PropTypes.shape({
-          id: PropTypes.number.isRequired,
-        }),
-      ),
+      photoprofile: PropTypes.string.isRequired,
     }),
   ),
 };

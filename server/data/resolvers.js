@@ -1,6 +1,6 @@
 import GraphQLDate from 'graphql-date';
 import {
-  Group, Message, User, Photo, Characteristic
+  Group, Message, User, Photo, Characteristic,
 } from './connectors';
 
 export const resolvers = {

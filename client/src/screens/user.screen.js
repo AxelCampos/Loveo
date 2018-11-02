@@ -1,13 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-  Image,
+  StyleSheet, Text, View, Image,
 } from 'react-native';
 
 import { graphql, compose } from 'react-apollo';
@@ -40,15 +34,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const User = ({ user: { id, username, email } }) => (
+const User = ({
+  user: {
+    id, username, email, photoprofile,
+  },
+}) => (
   <View style={styles.userContainer}>
-    <Image
-      style={styles.userImage}
-      source={{
-        uri:
-          'https://cdn.computerhoy.com/sites/navi.axelspringer.es/public/styles/1160x650/public/media/image/2018/08/fotos-perfil-whatsapp_16.jpg?itok=0b5SU9Z9',
-      }}
-    />
+    <Image style={styles.userImage} source={{ uri: photoprofile }} />
 
     <Text style={styles.userName}>
       {username}
@@ -65,6 +57,7 @@ User.propTypes = {
     id: PropTypes.number,
     name: PropTypes.string,
     email: PropTypes.string,
+    photoprofile: PropTypes.string,
   }),
 };
 

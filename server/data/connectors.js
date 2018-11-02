@@ -18,9 +18,11 @@ const UserModel = db.define('user', {
   email: { type: Sequelize.STRING },
   username: { type: Sequelize.STRING },
   password: { type: Sequelize.STRING },
+  photoprofile: { type: Sequelize.STRING },
 });
 // define photos
 const PhotoModel = db.define('photo', {
+  url: { type: Sequelize.STRING },
   name: { type: Sequelize.STRING },
   comment: { type: Sequelize.STRING },
 });
@@ -51,5 +53,5 @@ const User = db.models.user;
 const Photo = db.models.photo;
 const Characteristic = db.models.characteristic;
 export {
-  db, Group, Message, User, Photo, Characteristic
+  db, Group, Message, User, Photo, Characteristic,
 };

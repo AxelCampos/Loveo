@@ -41,6 +41,7 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
             email: faker.internet.email(),
             username: faker.internet.userName(),
             password: faker.internet.password(),
+            photoprofile: faker.image.avatar(),
           });
           R.times(
             () => db.models.message.create({
@@ -54,6 +55,7 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
             () => db.models.photo.create({
               userId: user.id,
               groupId: group.id,
+              url: faker.image.avatar(),
               name: faker.lorem.words(2),
               comment: faker.lorem.words(65),
             }),
