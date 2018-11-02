@@ -20,7 +20,7 @@ import Messages from './screens/messages.screen';
 import User from './screens/user.screen';
 import Nearer from './screens/near.screen';
 import Tendencies from './screens/tendencies.screen';
-import ShowPhoto from './screens/photo.screen';
+import ShowPhoto from './screens/photos.screen';
 
 const styles = StyleSheet.create({
   container: {
