@@ -18,7 +18,6 @@ const UserModel = db.define('user', {
   email: { type: Sequelize.STRING },
   username: { type: Sequelize.STRING },
   password: { type: Sequelize.STRING },
-  photoprofile: { type: Sequelize.STRING },
 });
 // define photos
 const PhotoModel = db.define('photo', {

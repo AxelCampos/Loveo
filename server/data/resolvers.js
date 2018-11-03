@@ -95,6 +95,11 @@ export const resolvers = {
         where: { userId: user.id },
       });
     },
+    photoprofile(user) {
+      return Photo.findOne({
+        where: { userId: user.id },
+      });
+    },
   },
   Photo: {
     to(photo) {

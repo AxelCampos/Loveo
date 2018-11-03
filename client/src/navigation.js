@@ -21,6 +21,7 @@ import User from './screens/user.screen';
 import Nearer from './screens/near.screen';
 import Tendencies from './screens/tendencies.screen';
 import ShowPhoto from './screens/photos.screen';
+import Profile from './screens/profile.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -109,6 +110,7 @@ const AppNavigator = createStackNavigator(
   {
     Main: { screen: MainScreenNavigator },
     Messages: { screen: Messages },
+    Profile: { screen: Profile },
   },
   {
     navigationOptions: {

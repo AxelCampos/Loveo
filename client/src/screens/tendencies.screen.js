@@ -45,19 +45,23 @@ const styles = StyleSheet.create({
     height: 100,
   },
 });
-const Tendency = ({ users: { id, username, photoprofile } }) => (
-  <TouchableHighlight key={id}>
+const Tendency = ({ users: { id, username, photoprofile }, goToProfiles }) => (
+  <TouchableHighlight key={id} onPress={goToProfiles}>
     <View style={styles.tendencyContainer}>
-      <Image style={styles.userImage} source={{ uri: photoprofile }} />
+      <Image style={styles.userImage} source={{ uri: photoprofile.url }} />
       <Text style={styles.userName}>{username}</Text>
     </View>
   </TouchableHighlight>
 );
 Tendency.propTypes = {
+  goToProfiles: PropTypes.func.isRequired,
   users: PropTypes.shape({
     id: PropTypes.number,
     username: PropTypes.string,
-    photoprofile: PropTypes.string,
+    photoprofile: PropTypes.shape({
+      id: PropTypes.number,
+      url: PropTypes.string,
+    }),
   }),
 };
 class Tendencies extends Component {
@@ -67,7 +71,14 @@ class Tendencies extends Component {
 
   keyExtractor = item => item.id.toString();
 
-  renderItem = ({ item }) => <Tendency users={item} />;
+  goToProfiles = user => () => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate('Profile', { userId: user.id });
+  };
+
+  renderItem = ({ item }) => <Tendency users={item} goToProfiles={this.goToProfiles(item)} />;
 
   render() {
     const { users } = this.props;
@@ -91,7 +102,10 @@ Tendencies.propTypes = {
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       username: PropTypes.string.isRequired,
-      photoprofile: PropTypes.string.isRequired,
+      photoprofile: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        url: PropTypes.string.isRequired,
+      }),
     }),
   ),
 };

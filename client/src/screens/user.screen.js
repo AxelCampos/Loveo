@@ -40,7 +40,7 @@ const User = ({
   },
 }) => (
   <View style={styles.userContainer}>
-    <Image style={styles.userImage} source={{ uri: photoprofile }} />
+    <Image style={styles.userImage} source={{ uri: photoprofile.url }} />
 
     <Text style={styles.userName}>
       {username}
@@ -57,7 +57,10 @@ User.propTypes = {
     id: PropTypes.number,
     name: PropTypes.string,
     email: PropTypes.string,
-    photoprofile: PropTypes.string,
+    photoprofile: PropTypes.shape({
+      id: PropTypes.number,
+      url: PropTypes.string,
+    }),
   }),
 };
 

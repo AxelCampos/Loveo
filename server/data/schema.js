@@ -34,7 +34,7 @@ export const typeDefs = gql`
     friends: [User] # user's friends/contacts
     album: [Photo!]!
     characteristics: [Characteristic!]!
-    photoprofile: String
+    photoprofile: Photo
   }
 
   #union To = User | Group
@@ -77,9 +77,8 @@ export const typeDefs = gql`
     group(id: Int): Group
     # Return a photo by its id or name
     photo(id: Int, name: String): [Photo]
-    # Return a photo by its id or name
-    characteristics(id: Int, name: String, userId: Int): [Characteristic]
     # Return a characteristic by tis id or name
+    characteristics(id: Int, name: String, userId: Int): [Characteristic]
   }
   type Mutation {
     # send a message to a group

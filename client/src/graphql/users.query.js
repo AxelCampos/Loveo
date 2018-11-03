@@ -6,7 +6,10 @@ export const USERS_QUERY = gql`
       id
       email
       username
-      photoprofile
+      photoprofile {
+        id
+        url
+      }
     }
   }
 `;
