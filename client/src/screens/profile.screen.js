@@ -79,7 +79,7 @@ Profile.propTypes = {
 const userQuery = graphql(USER_QUERY, {
   options: ownProps => ({
     variables: {
-      userId: ownProps.navigation.state.params.userId,
+      id: ownProps.navigation.state.params.userId,
     },
   }),
   props: ({ data: { loading, user } }) => ({
