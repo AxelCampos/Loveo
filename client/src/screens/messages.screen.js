@@ -5,6 +5,7 @@ import randomColor from 'randomcolor';
 import { graphql, compose } from 'react-apollo';
 import Message from '../components/message.component';
 import GROUP_QUERY from '../graphql/group.query';
+import CREATE_MESSAGE_MUTATION from '../graphql/create-message.mutation';
 import withLoading from '../components/withLoading';
 import MessageInput from '../components/message-input.component';
 
@@ -70,7 +71,12 @@ class Messages extends Component {
   };
 
   send = (text) => {
-    console.log('sending message: ${text}');
+    const { createMessage, navigation } = this.props;
+    createMessage({
+      groupId: navigation.state.params.groupId,
+      userId: 1,
+      text,
+    });
   };
 
   render() {
@@ -90,6 +96,14 @@ class Messages extends Component {
   }
 }
 Messages.propTypes = {
+  createMessage: PropTypes.func,
+  navigation: PropTypes.shape({
+    state: PropTypes.shape({
+      params: PropTypes.shape({
+        groupId: PropTypes.number,
+      }),
+    }),
+  }),
   group: PropTypes.shape({
     messages: PropTypes.array,
     users: PropTypes.array,
@@ -106,7 +120,35 @@ const groupQuery = graphql(GROUP_QUERY, {
     group,
   }),
 });
+
+const createMessageMutation = graphql(CREATE_MESSAGE_MUTATION, {
+  props: ({ mutate }) => ({
+    createMessage: message => mutate({
+      variables: { message },
+      update: (store, { data: { createMessage } }) => {
+        // Read the data from our cache for this query
+        const groupData = store.readQuery({
+          query: GROUP_QUERY,
+          variables: {
+            groupId: message.groupId,
+          },
+        });
+          // Add our message from the mutation to the end
+        groupData.group.messages.unshift(createMessage);
+        // Write our data back to the cache.
+        store.writeQuery({
+          query: GROUP_QUERY,
+          variables: {
+            groupId: message.groupId,
+          },
+          data: groupData,
+        });
+      },
+    }),
+  }),
+});
 export default compose(
   groupQuery,
   withLoading,
+  createMessageMutation,
 )(Messages);

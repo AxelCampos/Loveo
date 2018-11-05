@@ -42,13 +42,15 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
             username: faker.internet.userName(),
             password: faker.internet.password(),
           });
-          R.times(
-            () => db.models.message.create({
-              userId: user.id,
-              groupId: group.id,
-              text: faker.lorem.sentences(3),
-            }),
-            MESSAGES_PER_USER,
+          await Promise.all(
+            R.times(
+              () => db.models.message.create({
+                userId: user.id,
+                groupId: group.id,
+                text: faker.lorem.sentences(3),
+              }),
+              MESSAGES_PER_USER,
+            ),
           );
           R.times(
             () => db.models.photo.create({
@@ -75,9 +77,14 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
   );
 
   console.log('populating friends....');
-  await R.map(
-    users => users.map((current, i) => users.map((user, j) => (i !== j ? current.addFriend(user) : false))),
-    usersGroups,
+
+  await Promise.all(
+    R.flatten(
+      R.map(
+        users => users.map((current, i) => users.map((user, j) => (i !== j ? current.addFriend(user) : false))),
+        usersGroups,
+      ),
+    ),
   );
 
   console.log('¡DATABASE CREATED!');
