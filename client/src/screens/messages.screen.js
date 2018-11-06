@@ -76,6 +76,8 @@ class Messages extends Component {
       groupId: navigation.state.params.groupId,
       userId: 1,
       text,
+    }).then(() => {
+      this.flatList.scrollToEnd({ animated: true });
     });
   };
 
@@ -85,6 +87,9 @@ class Messages extends Component {
     return (
       <View style={styles.container}>
         <FlatList
+          ref={(ref) => {
+            this.flatList = ref;
+          }}
           data={group.messages.slice().reverse()}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
@@ -125,6 +130,24 @@ const createMessageMutation = graphql(CREATE_MESSAGE_MUTATION, {
   props: ({ mutate }) => ({
     createMessage: message => mutate({
       variables: { message },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        createMessage: {
+          __typename: 'Message',
+          id: -1,
+          text: message.text,
+          createdAt: new Date().toISOString(),
+          from: {
+            __typename: 'User',
+            id: 1,
+            username: 'Brook.Hudson',
+          },
+          to: {
+            __typename: 'Group',
+            id: message.groupId,
+          },
+        },
+      },
       update: (store, { data: { createMessage } }) => {
         // Read the data from our cache for this query
         const groupData = store.readQuery({
