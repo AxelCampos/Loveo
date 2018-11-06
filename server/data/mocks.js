@@ -39,6 +39,7 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
         R.times(async () => {
           const user = await group.createUser({
             email: faker.internet.email(),
+            location: faker.address.country(),
             username: faker.internet.userName(),
             password: faker.internet.password(),
           });

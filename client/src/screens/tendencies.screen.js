@@ -18,14 +18,11 @@ import withLoading from '../components/withLoading';
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'red',
-    alignItems: 'center',
-    flexDirection: 'column',
   },
   tendencyContainer: {
     flexDirection: 'column',
-    width: 120,
-    height: 120,
-    alignItems: 'center',
+    flex: 1,
+    alignItems: 'flex-start',
     backgroundColor: 'white',
     borderBottomColor: '#eee',
     borderBottomWidth: 1,
@@ -33,11 +30,21 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     margin: 5,
   },
+  characteristicContent: {
+    margin: 5,
+    width: 100,
+    height: 90,
+    backgroundColor: 'yellow',
+    position: 'absolute',
+    right: 100,
+  },
   userName: {
+    alignContent: 'center',
     fontSize: 15,
     fontWeight: 'bold',
     position: 'absolute',
-    bottom: 10,
+    top: 10,
+
     color: 'blue',
   },
   userImage: {
@@ -45,11 +52,18 @@ const styles = StyleSheet.create({
     height: 100,
   },
 });
-const Tendency = ({ users: { id, username, photoprofile }, goToProfiles }) => (
+const Tendency = ({
+  users: {
+    id, location, username, photoprofile,
+  }, goToProfiles,
+}) => (
   <TouchableHighlight key={id} onPress={goToProfiles}>
     <View style={styles.tendencyContainer}>
       <Image style={styles.userImage} source={{ uri: photoprofile.url }} />
-      <Text style={styles.userName}>{username}</Text>
+      <View style={styles.characteristicContent}>
+        <Text style={styles.userName}>{username}</Text>
+        <Text>{location}</Text>
+      </View>
     </View>
   </TouchableHighlight>
 );
@@ -57,6 +71,7 @@ Tendency.propTypes = {
   goToProfiles: PropTypes.func.isRequired,
   users: PropTypes.shape({
     id: PropTypes.number,
+    location: PropTypes.string,
     username: PropTypes.string,
     photoprofile: PropTypes.shape({
       id: PropTypes.number,
@@ -101,6 +116,7 @@ Tendencies.propTypes = {
   users: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
+      location: PropTypes.string.isRequired,
       username: PropTypes.string.isRequired,
       photoprofile: PropTypes.shape({
         id: PropTypes.number.isRequired,
