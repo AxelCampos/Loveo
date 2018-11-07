@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import {
   ActivityIndicator,
   FlatList,
@@ -35,18 +36,37 @@ const styles = StyleSheet.create({
   },
 
   userName: {
-    alignContent: 'center',
-    fontSize: 15,
-    fontWeight: 'bold',
+    fontSize: 12,
     position: 'absolute',
-    top: 10,
-
-    color: 'blue',
+    bottom: 22,
+    left: 10,
+    color: 'black',
   },
   userImage: {
     width: 150,
     height: 135,
     borderRadius: 10,
+  },
+  userLikes: {
+    flexDirection: 'row',
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 10,
+    width: 40,
+    alignItems: 'center',
+    paddingHorizontal: 4,
+  },
+  textLikes: {
+    color: 'white',
+    marginLeft: 3,
+  },
+  textLocation: {
+    fontSize: 10,
+    position: 'absolute',
+    bottom: 5,
+    left: 10,
   },
 });
 const Tendency = ({
@@ -61,8 +81,11 @@ const Tendency = ({
       <Image style={styles.userImage} source={{ uri: photoprofile.url }} onPress={expandImage} />
 
       <Text style={styles.userName}>{username}</Text>
-      <Text>{location}</Text>
-      <Text>{likes}</Text>
+      <Text style={styles.textLocation}>{location}</Text>
+      <View style={styles.userLikes}>
+        <Icon size={12} name="heart" color="#F0625A" />
+        <Text style={styles.textLikes}>{likes}</Text>
+      </View>
     </View>
   </TouchableHighlight>
 );
