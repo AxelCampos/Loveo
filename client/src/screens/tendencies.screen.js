@@ -17,27 +17,21 @@ import withLoading from '../components/withLoading';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'red',
+    backgroundColor: 'white',
+    alignItems: 'center',
   },
   tendencyContainer: {
-    flexDirection: 'column',
     flex: 1,
-    alignItems: 'flex-start',
+    width: 130,
+    alignItems: 'center',
     backgroundColor: 'white',
     borderBottomColor: '#eee',
     borderBottomWidth: 1,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    margin: 5,
+    margin: 10,
   },
-  characteristicContent: {
-    margin: 5,
-    width: 100,
-    height: 90,
-    backgroundColor: 'yellow',
-    position: 'absolute',
-    right: 100,
-  },
+
   userName: {
     alignContent: 'center',
     fontSize: 15,
@@ -48,22 +42,28 @@ const styles = StyleSheet.create({
     color: 'blue',
   },
   userImage: {
-    width: 100,
-    height: 100,
+    width: 120,
+    height: 110,
   },
 });
 const Tendency = ({
   users: {
     id, location, username, photoprofile,
-  }, goToProfiles,
+  },
+  goToProfiles,
+  expandImage,
 }) => (
-  <TouchableHighlight key={id} onPress={goToProfiles}>
+  <TouchableHighlight
+    key={id}
+    onPress={goToProfiles}
+    activeOpacity={50}
+    underlayColor="transparent"
+  >
     <View style={styles.tendencyContainer}>
-      <Image style={styles.userImage} source={{ uri: photoprofile.url }} />
-      <View style={styles.characteristicContent}>
-        <Text style={styles.userName}>{username}</Text>
-        <Text>{location}</Text>
-      </View>
+      <Image style={styles.userImage} source={{ uri: photoprofile.url }} onPress={expandImage} />
+
+      <Text style={styles.userName}>{username}</Text>
+      <Text>{location}</Text>
     </View>
   </TouchableHighlight>
 );
@@ -79,6 +79,7 @@ Tendency.propTypes = {
     }),
   }),
 };
+
 class Tendencies extends Component {
   /* static navigationOptions = {
     title: '',
@@ -93,6 +94,12 @@ class Tendencies extends Component {
     navigate('Profile', { userId: user.id });
   };
 
+  expandImage = user => () => {
+    <View>
+      <Image source={{ uri: user.photoprofile }} />
+    </View>;
+  };
+
   renderItem = ({ item }) => <Tendency users={item} goToProfiles={this.goToProfiles(item)} />;
 
   render() {
@@ -102,6 +109,7 @@ class Tendencies extends Component {
       <View style={styles.container}>
         <FlatList
           data={users.slice().reverse()}
+          numColumns={2}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
         />
