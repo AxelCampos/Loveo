@@ -19,16 +19,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     borderBottomColor: '#eee',
     borderBottomWidth: 1,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
   },
   userName: {
     fontWeight: 'bold',
     flex: 0.7,
   },
   userImage: {
-    width: 200,
-    height: 200,
+    width: 412,
+    height: 300,
   },
 });
 
