@@ -41,6 +41,7 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
             email: faker.internet.email(),
             location: faker.address.country(),
             username: faker.internet.userName(),
+            likes: faker.random.number(20),
             password: faker.internet.password(),
           });
           await Promise.all(

@@ -7,6 +7,7 @@ export const USERS_QUERY = gql`
       email
       location
       username
+      likes
       photoprofile {
         id
         url
