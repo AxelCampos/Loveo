@@ -27,10 +27,16 @@ const PhotoModel = db.define('photo', {
   name: { type: Sequelize.STRING },
   comment: { type: Sequelize.STRING },
 });
-// define aficciones
-const CharacteristicModel = db.define('characteristic', {
-  name: { type: Sequelize.STRING },
-  options: { type: Sequelize.STRING },
+// define lifestyle
+const LifestyleModel = db.define('lifestyle', {
+  gender: { type: Sequelize.INTEGER },
+  civilStatus: { type: Sequelize.INTEGER },
+  nation: { type: Sequelize.STRING },
+  children: { type: Sequelize.INTEGER },
+});
+// define activities
+const ActivityModel = db.define('activity', {
+  type: { type: Sequelize.STRING },
 });
 
 // users belong to multiple groups
@@ -45,14 +51,17 @@ MessageModel.belongsTo(GroupModel);
 GroupModel.belongsToMany(UserModel, { through: 'GroupUser' });
 // photos are sent from users
 PhotoModel.belongsTo(UserModel);
-CharacteristicModel.belongsToMany(UserModel, { through: 'CharacteristicUser' });
-UserModel.belongsToMany(CharacteristicModel, { through: 'CharacteristicUser' });
+// LifestyleModel are chosen by users
+LifestyleModel.belongsTo(UserModel);
+ActivityModel.belongsToMany(UserModel, { through: 'ActivityUser' });
+UserModel.belongsToMany(ActivityModel, { through: 'ActivityUser' });
 
 const Group = db.models.group;
 const Message = db.models.message;
 const User = db.models.user;
 const Photo = db.models.photo;
-const Characteristic = db.models.characteristic;
+const Lifestyle = db.models.lifestyle;
+const Activity = db.models.activity;
 export {
-  db, Group, Message, User, Photo, Characteristic,
+  db, Group, Message, User, Photo, Lifestyle, Activity
 };

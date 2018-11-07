@@ -7,7 +7,8 @@ const GROUPS = 4;
 const USERS_PER_GROUP = 5;
 const MESSAGES_PER_USER = 5;
 const PHOTOS_PER_USER = 2;
-const CHARACTERISTICS_PER_USER = 2;
+const LIFESTYLE_PER_USER = 1;
+const ACTIVITY_PER_USER = 1;
 
 faker.seed(123); // get consistent data every time we reload app
 
@@ -65,11 +66,21 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
             PHOTOS_PER_USER,
           );
           R.times(
-            () => db.models.characteristic.create({
-              name: faker.lorem.words(1),
-              options: faker.lorem.words(1),
+            () => db.models.lifestyle.create({
+              userId: user.id,
+              gender: faker.random.number(2),
+              civilStatus: faker.random.number({ min: 0, max: 4 }),
+              nation: faker.random.arrayElement(["español", "italiano", "inglés"]),
+              children: faker.random.number(2),
             }),
-            CHARACTERISTICS_PER_USER,
+            LIFESTYLE_PER_USER,
+          );
+          R.times(
+            () => db.models.activity.create({
+              userId: user.id,
+              type: faker.random.arrayElement(["deporte", "artes", "viajes"]),
+            }),
+            ACTIVITY_PER_USER,
           );
           return user;
         }, USERS_PER_GROUP),
