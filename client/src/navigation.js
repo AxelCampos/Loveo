@@ -22,6 +22,7 @@ import User from './screens/user.screen';
 import Nearer from './screens/near.screen';
 import Tendencies from './screens/tendencies.screen';
 import ShowPhoto from './screens/photos.screen';
+import Lifestyle from './screens/lifestyle.screen';
 import Profile from './screens/profile.screen';
 
 const styles = StyleSheet.create({
@@ -48,6 +49,9 @@ const Search = createMaterialTopTabNavigator(
     Nuevo: {
       screen: ShowPhoto,
     },
+    Lifestyle: {
+      screen: Lifestyle,
+    }
   },
   {
     initialRouteName: 'Tendencias',

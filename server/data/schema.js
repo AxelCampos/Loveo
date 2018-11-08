@@ -65,6 +65,7 @@ export const typeDefs = gql`
   }
 
   type Lifestyle {
+    id: Int!
     gender: Int
     civilStatus: Int
     nation: String
@@ -73,6 +74,7 @@ export const typeDefs = gql`
   }
 
   type Activity {
+    id: Int!
     type: String
     subscription: [User]
   }
