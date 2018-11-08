@@ -19,6 +19,7 @@ const UserModel = db.define('user', {
   location: { type: Sequelize.STRING },
   username: { type: Sequelize.STRING },
   password: { type: Sequelize.STRING },
+  likes: { type: Sequelize.STRING },
 });
 // define photos
 const PhotoModel = db.define('photo', {

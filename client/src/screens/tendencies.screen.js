@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import {
   ActivityIndicator,
   FlatList,
@@ -22,48 +23,69 @@ const styles = StyleSheet.create({
   },
   tendencyContainer: {
     flex: 1,
-    width: 130,
+    width: 160,
+    height: 180,
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '#F3E7E4',
     borderBottomColor: '#eee',
     borderBottomWidth: 1,
+    borderRadius: 10,
     paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingVertical: 5,
     margin: 10,
   },
 
   userName: {
-    alignContent: 'center',
-    fontSize: 15,
-    fontWeight: 'bold',
+    fontSize: 12,
     position: 'absolute',
-    top: 10,
-
-    color: 'blue',
+    bottom: 22,
+    left: 10,
+    color: 'black',
   },
   userImage: {
-    width: 120,
-    height: 110,
+    width: 150,
+    height: 135,
+    borderRadius: 10,
+  },
+  userLikes: {
+    flexDirection: 'row',
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 10,
+    width: 40,
+    alignItems: 'center',
+    paddingHorizontal: 4,
+  },
+  textLikes: {
+    color: 'white',
+    marginLeft: 3,
+  },
+  textLocation: {
+    fontSize: 10,
+    position: 'absolute',
+    bottom: 5,
+    left: 10,
   },
 });
 const Tendency = ({
   users: {
-    id, location, username, photoprofile,
+    id, location, username, photoprofile, likes,
   },
   goToProfiles,
   expandImage,
 }) => (
-  <TouchableHighlight
-    key={id}
-    onPress={goToProfiles}
-    activeOpacity={50}
-    underlayColor="transparent"
-  >
+  <TouchableHighlight key={id} onPress={goToProfiles} underlayColor="transparent">
     <View style={styles.tendencyContainer}>
       <Image style={styles.userImage} source={{ uri: photoprofile.url }} onPress={expandImage} />
 
       <Text style={styles.userName}>{username}</Text>
-      <Text>{location}</Text>
+      <Text style={styles.textLocation}>{location}</Text>
+      <View style={styles.userLikes}>
+        <Icon size={12} name="heart" color="#F0625A" />
+        <Text style={styles.textLikes}>{likes}</Text>
+      </View>
     </View>
   </TouchableHighlight>
 );
@@ -73,6 +95,7 @@ Tendency.propTypes = {
     id: PropTypes.number,
     location: PropTypes.string,
     username: PropTypes.string,
+    likes: PropTypes.number,
     photoprofile: PropTypes.shape({
       id: PropTypes.number,
       url: PropTypes.string,
@@ -102,13 +125,15 @@ class Tendencies extends Component {
 
   renderItem = ({ item }) => <Tendency users={item} goToProfiles={this.goToProfiles(item)} />;
 
+  compare = (a, b) => b.likes - a.likes;
+
   render() {
     const { users } = this.props;
 
     return (
       <View style={styles.container}>
         <FlatList
-          data={users.slice().reverse()}
+          data={users.sort(this.compare).slice()}
           numColumns={2}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
@@ -126,6 +151,7 @@ Tendencies.propTypes = {
       id: PropTypes.number.isRequired,
       location: PropTypes.string.isRequired,
       username: PropTypes.string.isRequired,
+      likes: PropTypes.number.isRequired,
       photoprofile: PropTypes.shape({
         id: PropTypes.number.isRequired,
         url: PropTypes.string.isRequired,

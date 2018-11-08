@@ -33,6 +33,7 @@ export const typeDefs = gql`
     messages: [Message!]! # messages sent by user
     groups: [Group!]! # groups the user belongs to
     friends: [User] # user's friends/contacts
+    likes: Int
     album: [Photo!]!
     photoprofile: Photo
     lifestyle: Lifestyle
