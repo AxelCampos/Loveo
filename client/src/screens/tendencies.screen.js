@@ -69,32 +69,46 @@ const styles = StyleSheet.create({
     left: 10,
   },
 });
+
 const Tendency = ({
   users: {
-    id, location, username, photoprofile, likes,
+    id, country, city, username, photoprofile, likes, age,
   },
-  goToProfiles,
-  expandImage,
-}) => (
-  <TouchableHighlight key={id} onPress={goToProfiles} underlayColor="transparent">
-    <View style={styles.tendencyContainer}>
-      <Image style={styles.userImage} source={{ uri: photoprofile.url }} onPress={expandImage} />
+  goToProfiles, reduceString,
+}) => {
+  
+  return (
+    <TouchableHighlight key={id} onPress={goToProfiles} underlayColor="transparent">
+      <View style={styles.tendencyContainer}>
+        <Image style={styles.userImage} source={{ uri: photoprofile.url }} />
 
-      <Text style={styles.userName}>{username}</Text>
-      <Text style={styles.textLocation}>{location}</Text>
-      <View style={styles.userLikes}>
-        <Icon size={12} name="heart" color="#F0625A" />
-        <Text style={styles.textLikes}>{likes}</Text>
+        <Text style={styles.userName}>
+          {username}
+
+          {', '}
+          {age}
+        </Text>
+        <Text style={styles.textLocation}>
+          { city }
+          {', '}
+          { country }
+        </Text>
+        <View style={styles.userLikes}>
+          <Icon size={12} name="heart" color="#F0625A" />
+          <Text style={styles.textLikes}>{likes}</Text>
+        </View>
       </View>
-    </View>
-  </TouchableHighlight>
-);
+    </TouchableHighlight>
+  );
+};
 Tendency.propTypes = {
   goToProfiles: PropTypes.func.isRequired,
   users: PropTypes.shape({
     id: PropTypes.number,
-    location: PropTypes.string,
+    country: PropTypes.string,
+    city: PropTypes.string,
     username: PropTypes.string,
+    age: PropTypes.number,
     likes: PropTypes.number,
     photoprofile: PropTypes.shape({
       id: PropTypes.number,
@@ -104,10 +118,6 @@ Tendency.propTypes = {
 };
 
 class Tendencies extends Component {
-  /* static navigationOptions = {
-    title: '',
-  }; */
-
   keyExtractor = item => item.id.toString();
 
   goToProfiles = user => () => {
@@ -117,16 +127,27 @@ class Tendencies extends Component {
     navigate('Profile', { userId: user.id });
   };
 
-  expandImage = user => () => {
-    <View>
-      <Image source={{ uri: user.photoprofile }} />
-    </View>;
-  };
-
-  renderItem = ({ item }) => <Tendency users={item} goToProfiles={this.goToProfiles(item)} />;
+  renderItem = ({ item }) => (
+    <Tendency
+      users={item}
+      goToProfiles={this.goToProfiles(item)}
+      reduceString={this.reduceString(item)}
+    />
+  );
 
   compare = (a, b) => b.likes - a.likes;
+  reduceString = a => () => {
+    let shortword = ' ';
 
+    if (a.length >= 10) {
+      for (let i = 0; i < 10; i++) {
+        shortword += a.charAt[i];
+        console.log('SDAFSFD', shortword);
+      }
+      shortword += '...';
+    }
+    return shortword;
+  };
   render() {
     const { users } = this.props;
 
@@ -149,8 +170,10 @@ Tendencies.propTypes = {
   users: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      location: PropTypes.string.isRequired,
+      country: PropTypes.string.isRequired,
+      city: PropTypes.string.isRequired,
       username: PropTypes.string.isRequired,
+      age: PropTypes.number.isRequired,
       likes: PropTypes.number.isRequired,
       photoprofile: PropTypes.shape({
         id: PropTypes.number.isRequired,

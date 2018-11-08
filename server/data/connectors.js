@@ -16,8 +16,10 @@ const MessageModel = db.define('message', {
 // define users
 const UserModel = db.define('user', {
   email: { type: Sequelize.STRING },
-  location: { type: Sequelize.STRING },
+  country: { type: Sequelize.STRING },
+  city: { type: Sequelize.STRING },
   username: { type: Sequelize.STRING },
+  age: { type: Sequelize.INTEGER },
   password: { type: Sequelize.STRING },
   likes: { type: Sequelize.STRING },
 });
@@ -63,5 +65,5 @@ const Photo = db.models.photo;
 const Lifestyle = db.models.lifestyle;
 const Activity = db.models.activity;
 export {
-  db, Group, Message, User, Photo, Lifestyle, Activity
+  db, Group, Message, User, Photo, Lifestyle, Activity,
 };

@@ -5,8 +5,10 @@ export const USERS_QUERY = gql`
     users {
       id
       email
-      location
+      country
+      city
       username
+      age
       likes
       photoprofile {
         id

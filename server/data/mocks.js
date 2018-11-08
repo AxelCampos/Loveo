@@ -40,8 +40,10 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
         R.times(async () => {
           const user = await group.createUser({
             email: faker.internet.email(),
-            location: faker.address.country(),
+            country: faker.address.country(),
+            city: faker.address.city(),
             username: faker.internet.userName(),
+            age: faker.random.number({ min: 17, max: 90 }),
             likes: faker.random.number(20),
             password: faker.internet.password(),
           });
@@ -70,7 +72,7 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
               userId: user.id,
               gender: faker.random.number(2),
               civilStatus: faker.random.number({ min: 0, max: 4 }),
-              nation: faker.random.arrayElement(["español", "italiano", "inglés"]),
+              nation: faker.random.arrayElement(['español', 'italiano', 'inglés']),
               children: faker.random.number(2),
             }),
             LIFESTYLE_PER_USER,
@@ -78,7 +80,7 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
           R.times(
             () => db.models.activity.create({
               userId: user.id,
-              type: faker.random.arrayElement(["deporte", "artes", "viajes"]),
+              type: faker.random.arrayElement(['deporte', 'artes', 'viajes']),
             }),
             ACTIVITY_PER_USER,
           );

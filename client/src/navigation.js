@@ -4,8 +4,9 @@ import {
   NavigationActions,
   createStackNavigator,
   createMaterialTopTabNavigator,
+  createBottomTabNavigator,
 } from 'react-navigation';
-import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+
 import {
   reduxifyNavigator,
   createReactNavigationReduxMiddleware,
@@ -55,12 +56,13 @@ const Search = createMaterialTopTabNavigator(
 );
 
 // tabs in main screen
-const MainScreenNavigator = createMaterialBottomTabNavigator(
+const MainScreenNavigator = createBottomTabNavigator(
   {
     Search: {
       screen: Search,
       navigationOptions: {
-        tabBarIcon: () => <Icon size={20} name="search" color="red" />,
+        tabBarLabel: 'Search',
+        tabBarIcon: ({ tintColor }) => <Icon size={20} name="search" color={tintColor} />,
         tabBarColor: 'blue',
       },
     },
@@ -68,7 +70,8 @@ const MainScreenNavigator = createMaterialBottomTabNavigator(
     Match: {
       screen: TestScreen('Match'),
       navigationOptions: {
-        tabBarIcon: () => <Icon size={20} name="burn" color="red" />,
+        tabBarLabel: 'Match',
+        tabBarIcon: ({ tintColor }) => <Icon size={20} name="burn" color={tintColor} />,
         tabBarColor: 'pink',
       },
     },
@@ -76,7 +79,8 @@ const MainScreenNavigator = createMaterialBottomTabNavigator(
     Chats: {
       screen: Groups,
       navigationOptions: {
-        tabBarIcon: () => <Icon size={20} name="rocketchat" color="red" />,
+        tabBarLabel: 'Chats',
+        tabBarIcon: ({ tintColor }) => <Icon size={20} name="rocketchat" color={tintColor} />,
         tabBarColor: 'green',
       },
     },
@@ -84,7 +88,8 @@ const MainScreenNavigator = createMaterialBottomTabNavigator(
     User: {
       screen: User,
       navigationOptions: {
-        tabBarIcon: () => <Icon size={20} name="user" color="red" />,
+        tabBarLabel: 'Profile',
+        tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />,
         tabBarColor: 'orange',
       },
     },
@@ -92,17 +97,27 @@ const MainScreenNavigator = createMaterialBottomTabNavigator(
     Settings: {
       screen: TestScreen('Settings'),
       navigationOptions: {
-        tabBarIcon: () => <Icon size={20} name="cog" color="red" />,
+        tabBarLabel: 'Settings',
+        tabBarIcon: ({ tintColor }) => <Icon size={20} name="cog" color={tintColor} />,
         tabBarColor: 'violet',
       },
     },
   },
   {
     initialRouteName: 'Chats',
-
-    activeColor: 'black',
-
-    inactiveColor: 'white',
+    navigationOptions: {
+      tabBarVisible: true,
+    },
+    tabBarOptions: {
+      activeTintColor: 'black',
+      activeBackgroundColor: '#A5DFF1',
+      inactiveBackgroundColor: '#52ABD8',
+      inactiveTintColor: '#D3BCDD',
+      tabStyle: {
+        borderTopColor: 'grey',
+        borderTopWidth: 0.4,
+      },
+    },
   },
 );
 
