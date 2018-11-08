@@ -14,6 +14,13 @@ export const USER_QUERY = gql`
         id
         name
       }
+      lifestyle {
+        id
+        gender
+        civilStatus
+        nation
+        children
+      }
     }
   }
 `;
