@@ -24,6 +24,7 @@ import Tendencies from './screens/tendencies.screen';
 import ShowPhoto from './screens/photos.screen';
 import Lifestyle from './screens/lifestyle.screen';
 import Profile from './screens/profile.screen';
+import Match from './screens/match.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -51,7 +52,7 @@ const Search = createMaterialTopTabNavigator(
     },
     Lifestyle: {
       screen: Lifestyle,
-    }
+    },
   },
   {
     initialRouteName: 'Tendencias',
@@ -72,7 +73,7 @@ const MainScreenNavigator = createBottomTabNavigator(
     },
 
     Match: {
-      screen: TestScreen('Match'),
+      screen: Match,
       navigationOptions: {
         tabBarLabel: 'Match',
         tabBarIcon: ({ tintColor }) => <Icon size={20} name="burn" color={tintColor} />,

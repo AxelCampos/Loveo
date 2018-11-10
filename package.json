@@ -36,6 +36,7 @@
     "graphql": "^14.0.2",
     "graphql-date": "^1.0.3",
     "ramda": "^0.25.0",
+    "react-native-deck-swiper": "^1.5.22",
     "sequelize": "^4.39.0",
     "sqlite3": "^4.0.2"
   }

@@ -8,6 +8,7 @@ export const USER_QUERY = gql`
       username
       age
       city
+      likes
       photoprofile {
         id
         url

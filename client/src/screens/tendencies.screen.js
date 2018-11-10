@@ -74,33 +74,31 @@ const Tendency = ({
   users: {
     id, country, city, username, photoprofile, likes, age,
   },
-  goToProfiles, reduceString,
-}) => {
-  
-  return (
-    <TouchableHighlight key={id} onPress={goToProfiles} underlayColor="transparent">
-      <View style={styles.tendencyContainer}>
-        <Image style={styles.userImage} source={{ uri: photoprofile.url }} />
+  goToProfiles,
+  reduceString,
+}) => (
+  <TouchableHighlight key={id} onPress={goToProfiles} underlayColor="transparent">
+    <View style={styles.tendencyContainer}>
+      <Image style={styles.userImage} source={{ uri: photoprofile.url }} />
 
-        <Text style={styles.userName}>
-          {username}
+      <Text style={styles.userName}>
+        {username}
 
-          {', '}
-          {age}
-        </Text>
-        <Text style={styles.textLocation}>
-          { city }
-          {', '}
-          { country }
-        </Text>
-        <View style={styles.userLikes}>
-          <Icon size={12} name="heart" color="#F0625A" />
-          <Text style={styles.textLikes}>{likes}</Text>
-        </View>
+        {', '}
+        {age}
+      </Text>
+      <Text style={styles.textLocation}>
+        {city}
+        {', '}
+        {country}
+      </Text>
+      <View style={styles.userLikes}>
+        <Icon size={12} name="heart" color="#F0625A" />
+        <Text style={styles.textLikes}>{likes}</Text>
       </View>
-    </TouchableHighlight>
-  );
-};
+    </View>
+  </TouchableHighlight>
+);
 Tendency.propTypes = {
   goToProfiles: PropTypes.func.isRequired,
   users: PropTypes.shape({
@@ -136,18 +134,20 @@ class Tendencies extends Component {
   );
 
   compare = (a, b) => b.likes - a.likes;
+
   reduceString = a => () => {
     let shortword = ' ';
 
     if (a.length >= 10) {
       for (let i = 0; i < 10; i++) {
         shortword += a.charAt[i];
-        console.log('SDAFSFD', shortword);
+      
       }
       shortword += '...';
     }
     return shortword;
   };
+
   render() {
     const { users } = this.props;
 

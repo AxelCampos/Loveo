@@ -40,11 +40,11 @@ const styles = StyleSheet.create({
   },
   icons: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     width: 100,
     position: 'absolute',
-    top: 30,
-    right: 40,
+    bottom: 20,
+    right: 30,
   },
   iconStyle: {
     alignItems: 'center',
@@ -68,6 +68,12 @@ class Profile extends Component {
     super(props);
   }
 
+  addLike = (likes) => {
+    console.log(likes);
+    likes++;
+    console.log(likes);
+  };
+
   render() {
     const { user } = this.props;
 
@@ -80,6 +86,7 @@ class Profile extends Component {
             {' ('}
             {user.age}
             {')'}
+            {user.likes}
           </Text>
           <View style={styles.conexionStyle}>
             <Icon size={11.5} name="home-circle" />
@@ -97,6 +104,7 @@ class Profile extends Component {
               size={30}
               borderRadius={30}
               name="cards-heart"
+              onPress={this.addLike(user.likes)}
             />
             <Icon.Button
               style={styles.iconStyle}
@@ -120,6 +128,7 @@ Profile.propTypes = {
     email: PropTypes.string,
     city: PropTypes.string,
     age: PropTypes.number,
+    likes: PropTypes.number,
     photoprofile: PropTypes.shape({
       id: PropTypes.number,
       url: PropTypes.string,
