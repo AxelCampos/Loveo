@@ -25,6 +25,7 @@ import ShowPhoto from './screens/photos.screen';
 import Lifestyle from './screens/lifestyle.screen';
 import Profile from './screens/profile.screen';
 import Match from './screens/match.screen';
+import Login from './screens/login.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -107,9 +108,17 @@ const MainScreenNavigator = createBottomTabNavigator(
         tabBarColor: 'violet',
       },
     },
+    Login: {
+      screen: Login,
+      navigationOptions: {
+        tabBarLabel: 'Login',
+        tabBarIcon: ({ tintColor }) => <Icon size={20} name="burn" color={tintColor} />,
+        tabBarColor: 'yellow',
+      },
+    },
   },
   {
-    initialRouteName: 'Chats',
+    initialRouteName: 'Login',
     navigationOptions: {
       tabBarVisible: true,
     },
