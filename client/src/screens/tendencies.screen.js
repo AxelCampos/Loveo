@@ -77,28 +77,28 @@ const Tendency = ({
   goToProfiles,
   reduceString,
 }) => (
-  <TouchableHighlight key={id} onPress={goToProfiles} underlayColor="transparent">
-    <View style={styles.tendencyContainer}>
-      <Image style={styles.userImage} source={{ uri: photoprofile.url }} />
+    <TouchableHighlight key={id} onPress={goToProfiles} underlayColor="transparent">
+      <View style={styles.tendencyContainer}>
+        <Image style={styles.userImage} source={{ uri: photoprofile.url }} />
 
-      <Text style={styles.userName}>
-        {username}
+        <Text style={styles.userName}>
+          {username}
 
-        {', '}
-        {age}
-      </Text>
-      <Text style={styles.textLocation}>
-        {city}
-        {', '}
-        {country}
-      </Text>
-      <View style={styles.userLikes}>
-        <Icon size={12} name="heart" color="#F0625A" />
-        <Text style={styles.textLikes}>{likes}</Text>
+          {', '}
+          {age}
+        </Text>
+        <Text style={styles.textLocation}>
+          {reduceString(city)}
+          {', '}
+          {reduceString(country)}
+        </Text>
+        <View style={styles.userLikes}>
+          <Icon size={12} name="heart" color="#F0625A" />
+          <Text style={styles.textLikes}>{likes}</Text>
+        </View>
       </View>
-    </View>
-  </TouchableHighlight>
-);
+    </TouchableHighlight>
+  );
 Tendency.propTypes = {
   goToProfiles: PropTypes.func.isRequired,
   users: PropTypes.shape({
@@ -129,21 +129,24 @@ class Tendencies extends Component {
     <Tendency
       users={item}
       goToProfiles={this.goToProfiles(item)}
-      reduceString={this.reduceString(item)}
+      reduceString={this.reduceString}
+
     />
   );
 
   compare = (a, b) => b.likes - a.likes;
 
-  reduceString = a => () => {
+  reduceString = a => {
     let shortword = ' ';
 
     if (a.length >= 10) {
       for (let i = 0; i < 10; i++) {
-        shortword += a.charAt[i];
-      
+        shortword += a.charAt(i);
+
       }
       shortword += '...';
+    } else {
+      shortword = a;
     }
     return shortword;
   };

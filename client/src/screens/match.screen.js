@@ -11,7 +11,7 @@ import {
   Image,
   Button,
 } from 'react-native';
-
+import { USERS_QUERY } from '../graphql/users.query';
 import { graphql, compose } from 'react-apollo';
 import Swiper from 'react-native-deck-swiper';
 import withLoading from '../components/withLoading';
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   iconsView: {
     flexDirection: 'row',
     position: 'absolute',
-    bottom: 40,
+    bottom: 50,
     alignItems: 'center',
   },
   icons: {
@@ -66,6 +66,14 @@ const styles = StyleSheet.create({
     width: 75,
     marginHorizontal: 20,
   },
+  information: {
+    position: 'absolute',
+    bottom: 100,
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+
+  }
 });
 
 class Match extends Component {
@@ -80,15 +88,16 @@ class Match extends Component {
     };
   }
 
-  renderCard = card => (
+  renderCard = user => (
     <View style={styles.card}>
       <Image
         style={styles.image}
         source={{
           uri:
-            'https://assets.trome.pe/files/ec_article_multimedia_gallery/uploads/2018/04/17/5ad609d27c1a7.jpeg',
+            user.photoprofile.url,
         }}
       />
+      <Text style={styles.information}>{user.username}</Text>
     </View>
   );
 
@@ -126,6 +135,7 @@ class Match extends Component {
   };
 
   render() {
+    const { users } = this.props;
     return (
       <View style={styles.container}>
         <Swiper
@@ -135,7 +145,8 @@ class Match extends Component {
           backgroundColor="white"
           onSwiped={this.onSwiped}
           onTapCard={this.swipeLeft}
-          cards={this.state.cards}
+          cards={users}
+          stackSize={3}
           renderCard={this.renderCard}
           onSwipedAll={this.onSwipedAllCards}
           stackSeparation={15}
@@ -201,5 +212,14 @@ class Match extends Component {
     );
   }
 }
+const usersQuery = graphql(USERS_QUERY, {
+  options: () => ({}),
+  props: ({ data: { users } }) => ({
+    users: users || [],
+  }),
+});
 
-export default Match;
+export default compose(
+  usersQuery,
+  withLoading,
+)(Match);
