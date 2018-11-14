@@ -66,10 +66,10 @@ export const typeDefs = gql`
 
   type Lifestyle {
     id: Int!
-    gender: Int
-    civilStatus: Int
+    gender: String
+    civilStatus: String
     nation: String
-    children: Int
+    children: String
     from: User!
   }
 
