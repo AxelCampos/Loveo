@@ -63,7 +63,7 @@ export const resolvers = {
       },
     ) {
       const user = await User.findOne({ where: { id: userId } });
-      const friends = await user.friends({ where: { id: { $in: userIds } } });
+      const friends = await user.getFriends({ where: { id: { $in: userIds } } });
       const group = await Group.create({
         name,
         users: [user, ...friends],

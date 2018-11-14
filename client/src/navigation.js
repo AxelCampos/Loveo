@@ -24,6 +24,9 @@ import Tendencies from './screens/tendencies.screen';
 import Lifestyle from './screens/lifestyle.screen';
 import Profile from './screens/profile.screen';
 import Match from './screens/match.screen';
+import NewGroup from './screens/new-group.screen';
+import FinalizeGroup from './screens/finalize-group.screen';
+import GroupDetails from './screens/group-details.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,6 +34,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
+  },
+  tabText: {
+    color: '#777',
+    fontSize: 10,
+    justifyContent: 'center',
+  },
+  selected: {
+    color: 'blue',
   },
 });
 const TestScreen = title => () => (
@@ -127,11 +138,15 @@ const AppNavigator = createStackNavigator(
     Main: { screen: MainScreenNavigator },
     Messages: { screen: Messages },
     Profile: { screen: Profile },
+    GroupDetails: { screen: GroupDetails },
+    NewGroup: { screen: NewGroup },
+    FinalizeGroup: { screen: FinalizeGroup },
   },
   {
     navigationOptions: {
       title: 'Loveo',
     },
+    headerMode: 'screen',
   },
 );
 
