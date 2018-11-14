@@ -14,6 +14,17 @@ export const typeDefs = gql`
     text: String!
   }
 
+  input CreateGroupInput {
+    name: String!
+    userIds: [Int!]
+    userId: Int!
+  }
+
+  input UpdateGroupInput {
+    id: Int!
+    name: String
+  }
+
   # a group chat entity
   type Group {
     id: Int! # unique id for the group
@@ -99,6 +110,10 @@ export const typeDefs = gql`
   type Mutation {
     # send a message to a group
     createMessage(message: CreateMessageInput): Message
+    createGroup(group: CreateGroupInput!): Group
+    deleteGroup(id: Int!): Group
+    leaveGroup(id: Int!, userId: Int!): Group
+    updateGroup(group: UpdateGroupInput!): Group
   }
   schema {
     query: Query
