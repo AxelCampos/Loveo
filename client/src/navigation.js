@@ -21,7 +21,6 @@ import Messages from './screens/messages.screen';
 import User from './screens/user.screen';
 import Nearer from './screens/near.screen';
 import Tendencies from './screens/tendencies.screen';
-import ShowPhoto from './screens/photos.screen';
 import Lifestyle from './screens/lifestyle.screen';
 import Profile from './screens/profile.screen';
 import Match from './screens/match.screen';
@@ -46,9 +45,6 @@ const Search = createMaterialTopTabNavigator(
     },
     Cerca: {
       screen: Nearer,
-    },
-    Nuevo: {
-      screen: ShowPhoto,
     },
     Lifestyle: {
       screen: Lifestyle,
