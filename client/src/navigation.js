@@ -21,11 +21,12 @@ import Messages from './screens/messages.screen';
 import User from './screens/user.screen';
 import Nearer from './screens/near.screen';
 import Tendencies from './screens/tendencies.screen';
-import ShowPhoto from './screens/photos.screen';
 import Lifestyle from './screens/lifestyle.screen';
 import Profile from './screens/profile.screen';
 import Match from './screens/match.screen';
-import Settings from './screens/setting.screen';
+import NewGroup from './screens/new-group.screen';
+import FinalizeGroup from './screens/finalize-group.screen';
+import GroupDetails from './screens/group-details.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -33,6 +34,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
+  },
+  tabText: {
+    color: '#777',
+    fontSize: 10,
+    justifyContent: 'center',
+  },
+  selected: {
+    color: 'blue',
   },
 });
 const TestScreen = title => () => (
@@ -47,9 +56,6 @@ const Search = createMaterialTopTabNavigator(
     },
     Cerca: {
       screen: Nearer,
-    },
-    Nuevo: {
-      screen: ShowPhoto,
     },
     Lifestyle: {
       screen: Lifestyle,
@@ -132,11 +138,15 @@ const AppNavigator = createStackNavigator(
     Main: { screen: MainScreenNavigator },
     Messages: { screen: Messages },
     Profile: { screen: Profile },
+    GroupDetails: { screen: GroupDetails },
+    NewGroup: { screen: NewGroup },
+    FinalizeGroup: { screen: FinalizeGroup },
   },
   {
     navigationOptions: {
       title: 'Loveo',
     },
+    headerMode: 'screen',
   },
 );
 

@@ -7,14 +7,22 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { graphql, compose } from 'react-apollo';
 import USER_QUERY from '../graphql/user.query';
 import withLoading from '../components/withLoading';
+import Menu from '../components/navigator-menu-component';
 
 const styles = StyleSheet.create({
-  userContainer: {
+  container: {
     backgroundColor: 'white',
+    flex: 1,
+  },
+  containerImage: {
+    flex: 0.5,
+  },
+  userImage: {
+    flex: 1,
   },
   userInformacion: {
     alignItems: 'flex-start',
-    height: 120,
+    flex: 0.2,
     paddingVertical: 8,
     paddingHorizontal: 12,
   },
@@ -22,9 +30,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'black',
   },
-  userImage: {
-    width: 412,
-    height: 300,
+  icons: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    position: 'absolute',
+    bottom: 20,
+    right: 30,
+  },
+  iconStyle: {
+    alignItems: 'center',
+    paddingStart: 9,
+    paddingEnd: 0,
+    width: 50,
+    borderWidth: 0.7,
+    marginHorizontal: 5,
   },
   locationUser: {
     marginTop: 10,
@@ -38,21 +57,9 @@ const styles = StyleSheet.create({
   textStyle: {
     marginHorizontal: 5,
   },
-  icons: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    width: 100,
-    position: 'absolute',
-    bottom: 20,
-    right: 30,
-  },
-  iconStyle: {
-    alignItems: 'center',
-    paddingStart: 9,
-    paddingEnd: 0,
-    width: 50,
-    borderWidth: 0.7,
-    marginHorizontal: 5,
+  menu: {
+    flex: 0.3,
+    backgroundColor: 'red',
   },
 });
 
@@ -78,8 +85,10 @@ class Profile extends Component {
     const { user } = this.props;
 
     return (
-      <View style={styles.userContainer}>
-        <Image style={styles.userImage} source={{ uri: user.photoprofile.url }} />
+      <View style={styles.container}>
+        <View style={styles.containerImage}>
+          <Image style={styles.userImage} source={{ uri: user.photoprofile.url }} />
+        </View>
         <View style={styles.userInformacion}>
           <Text style={styles.userName}>
             {user.username}
@@ -115,6 +124,9 @@ class Profile extends Component {
               name="email-outline"
             />
           </View>
+        </View>
+        <View style={styles.menu}>
+          <Menu />
         </View>
       </View>
     );
