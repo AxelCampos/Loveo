@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
-  StyleSheet, Text, View, Image,
+  StyleSheet, Text, View, Image, Button
 } from 'react-native';
 
 import { graphql, compose } from 'react-apollo';
@@ -45,16 +45,29 @@ const styles = StyleSheet.create({
   },
 });
 
+const EditUser = ({ onPress }) => (
+  <View>
+    <Button title="Edit User" onPress={onPress} />
+  </View>
+);
+EditUser.propTypes = {
+  onPress: PropTypes.func.isRequired,
+};
+
 const User = ({
   user: {
     likes, username, age, photoprofile, city,
+  },
+  navigation: { navigate },
+  goToSettings = () => {
+    navigate('Settings');
   },
 }) => (
     <View style={styles.container}>
       <View style={styles.photo}>
         <Image style={styles.userImage} source={{ uri: photoprofile.url }} />
       </View>
-
+      <EditUser onPress={goToSettings} />
       <View style={styles.icons}>
         <Text style={styles.userText}>
           {username} ({age})
