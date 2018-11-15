@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   image: {
-    width: 320,
+    width: 370,
     height: 448,
     borderRadius: 10,
   },
@@ -142,6 +142,7 @@ class Match extends Component {
           ref={(swiper) => {
             this.swiper = swiper;
           }}
+          verticalSwipe={false}
           backgroundColor="white"
           onSwiped={this.onSwiped}
           onTapCard={this.swipeLeft}
