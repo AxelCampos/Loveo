@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 20,
-    fontWeight: 'bold',
+    color: 'black',
   },
   userImage: {
     width: 412,

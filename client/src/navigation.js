@@ -25,6 +25,7 @@ import ShowPhoto from './screens/photos.screen';
 import Lifestyle from './screens/lifestyle.screen';
 import Profile from './screens/profile.screen';
 import Match from './screens/match.screen';
+import Settings from './screens/setting.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -100,7 +101,7 @@ const MainScreenNavigator = createBottomTabNavigator(
     },
 
     Settings: {
-      screen: TestScreen('Settings'),
+      screen: Settings,
       navigationOptions: {
         tabBarLabel: 'Settings',
         tabBarIcon: ({ tintColor }) => <Icon size={20} name="cog" color={tintColor} />,

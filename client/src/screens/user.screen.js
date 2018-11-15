@@ -25,9 +25,10 @@ const styles = StyleSheet.create({
     flex: 0.7,
   },
   userText: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 'bold',
     flex: 0.7,
+    color: 'black',
   },
   userImage: {
     flex: 1,
@@ -36,11 +37,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 10,
     marginTop: 20,
-    //borderWidth: 1,
   },
   text: {
     marginLeft: 10,
-    marginTop: 3,
+    marginTop: 5,
+
   },
 });
 
@@ -53,16 +54,15 @@ const User = ({
       <View style={styles.photo}>
         <Image style={styles.userImage} source={{ uri: photoprofile.url }} />
       </View>
+
       <View style={styles.icons}>
-        <Icon size={40} name="check-circle" color="lightblue"></Icon>
-        <View style={styles.text}>
-          <Text style={styles.userText}>
-            {username}, {age}
-          </Text>
-        </View>
+        <Text style={styles.userText}>
+          {username} ({age})
+        </Text>
       </View>
+
       <View style={styles.icons}>
-        <Icon size={26} name="city" color="black"></Icon>
+        <Icon size={28} name="city" color="black"></Icon>
         <View style={styles.text}>
           <Text style={styles.userName}>
             {city}
@@ -70,7 +70,7 @@ const User = ({
         </View>
       </View>
       <View style={styles.icons}>
-        <Icon size={26} name="heart" color="red"></Icon>
+        <Icon size={28} name="heart" color="red"></Icon>
         <View style={styles.text}>
           <Text style={styles.userName}>
             {likes}
