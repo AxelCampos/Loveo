@@ -27,6 +27,7 @@ import Match from './screens/match.screen';
 import NewGroup from './screens/new-group.screen';
 import FinalizeGroup from './screens/finalize-group.screen';
 import GroupDetails from './screens/group-details.screen';
+import Settings from './screens/setting.screen';
 
 const styles = StyleSheet.create({
   container: {
