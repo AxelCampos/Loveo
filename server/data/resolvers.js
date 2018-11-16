@@ -71,6 +71,11 @@ export const resolvers = {
       await group.addUsers([user, ...friends]);
       return group;
     },
+    /*async like(_, { userId, id }) {
+      const user = await User.findOne({ where: { id } });
+      const friends = await user.addFriends({ where: { id: userId } });
+      return friends;
+    },*/
     async deleteGroup(_, { id }) {
       const group = await Group.findOne({ where: id });
       const users = await group.getUsers();

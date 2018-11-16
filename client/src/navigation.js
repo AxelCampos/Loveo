@@ -136,7 +136,12 @@ const MainScreenNavigator = createBottomTabNavigator(
 
 const AppNavigator = createStackNavigator(
   {
-    Main: { screen: MainScreenNavigator },
+    Main: {
+      screen: MainScreenNavigator,
+      navigationOptions: {
+        header: null,
+      },
+    },
     Messages: { screen: Messages },
     Profile: { screen: Profile },
     GroupDetails: { screen: GroupDetails },
