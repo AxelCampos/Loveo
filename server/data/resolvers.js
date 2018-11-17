@@ -56,6 +56,24 @@ export const resolvers = {
         groupId,
       });
     },
+    async createConversation(
+      _,{
+        group: {name,userIds, userId},
+      },
+    ){
+      const user=await User.findOne({where:{
+        id:userId
+      }});
+      const friend=await User.findOne({where:{
+        id:userIds
+      }});
+      const  group=await Group.create({
+        name,
+        users:[user, friend],
+      });
+      await group.addUsers([user, friend]);
+      return group;
+    },
     async createGroup(
       _,
       {

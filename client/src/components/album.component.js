@@ -11,7 +11,7 @@ import withLoading from './withLoading';
 const styles = StyleSheet.create({
   albumContainer: {
     flex: 1,
-    backgroundColor: 'yellow',
+    backgroundColor: 'white',
     alignItems: 'center',
   },
   photoContainer: {
