@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types';
 import {
-  StyleSheet, View, Image, Text,
+  StyleSheet, View, Image, Text, Alert,
 } from 'react-native';
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { graphql, compose } from 'react-apollo';
+import { StackActions, NavigationActions } from 'react-navigation';
 import USER_QUERY from '../graphql/user.query';
 import withLoading from '../components/withLoading';
 import Menu from '../components/navigator-menu-component';
+import CREATE_CONVERSATION_MUTATION from '../graphql/create-conversation.mutation';
 
 const styles = StyleSheet.create({
   container: {
@@ -62,6 +64,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
 });
+const goToNewGroup = group => StackActions.reset({
+  index: 1,
+  actions: [
+    NavigationActions.navigate({ routeName: 'Main' }),
+    NavigationActions.navigate({
+      routeName: 'Messages',
+      params: { groupId: group.id, title: group.name },
+    }),
+  ],
+});
 
 class Profile extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -73,6 +85,7 @@ class Profile extends Component {
 
   constructor(props) {
     super(props);
+    this.create = this.create.bind(this);
   }
 
   addLike = (likes) => {
@@ -81,9 +94,28 @@ class Profile extends Component {
     console.log(likes);
   };
 
+  create() {
+    const {
+      createConversation,
+      navigation,
+      user: { username, id },
+    } = this.props;
+
+    createConversation({
+      name: username,
+      userIds: id,
+      userId: 1,
+    })
+      .then((res) => {
+        navigation.dispatch(goToNewGroup(res.data.createConversation));
+      })
+      .catch((error) => {
+        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => {} }]);
+      });
+  }
+
   render() {
     const { user } = this.props;
-
     return (
       <View style={styles.container}>
         <View style={styles.containerImage}>
@@ -122,6 +154,7 @@ class Profile extends Component {
               size={30}
               borderRadius={30}
               name="email-outline"
+              onPress={this.create}
             />
           </View>
         </View>
@@ -134,6 +167,10 @@ class Profile extends Component {
 }
 
 Profile.propTypes = {
+  createConversation: PropTypes.func.isRequired,
+  navigation: PropTypes.shape({
+    dispatch: PropTypes.func,
+  }),
   user: PropTypes.shape({
     username: PropTypes.string,
     id: PropTypes.number,
@@ -147,7 +184,25 @@ Profile.propTypes = {
     }),
   }),
 };
-
+const createConversationMutation = graphql(CREATE_CONVERSATION_MUTATION, {
+  props: ({ mutate }) => ({
+    createConversation: group => mutate({
+      variables: { group },
+      update: (store, { data: { createConversation } }) => {
+        // Read the data from our cache for this query.
+        const data = store.readQuery({ query: USER_QUERY, variables: { id: group.userId } });
+        // Add our message from the mutation to the end.
+        data.user.groups.push(createConversation);
+        // Write our data back to the cache.
+        store.writeQuery({
+          query: USER_QUERY,
+          variables: { id: group.userId },
+          data,
+        });
+      },
+    }),
+  }),
+});
 const userQuery = graphql(USER_QUERY, {
   options: ownProps => ({
     variables: {
@@ -162,4 +217,5 @@ const userQuery = graphql(USER_QUERY, {
 export default compose(
   userQuery,
   withLoading,
+  createConversationMutation,
 )(Profile);

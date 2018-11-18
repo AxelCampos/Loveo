@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
-  StyleSheet, Text, View, Image, Button,
+  StyleSheet, Text, View, Image, Button, FlatList,
 } from 'react-native';
 
 import { graphql, compose } from 'react-apollo';
