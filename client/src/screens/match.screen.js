@@ -11,9 +11,10 @@ import {
   Image,
   Button,
 } from 'react-native';
-import { USERS_QUERY } from '../graphql/users.query';
 import { graphql, compose } from 'react-apollo';
+
 import Swiper from 'react-native-deck-swiper';
+import { USERS_QUERY } from '../graphql/users.query';
 import withLoading from '../components/withLoading';
 
 const styles = StyleSheet.create({
@@ -72,15 +73,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
-
-  }
+  },
 });
 
 class Match extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cards: ['1', '2', '3'],
       swipedAllCards: false,
       swipeDirection: '',
       isSwipingBack: false,
@@ -93,8 +92,7 @@ class Match extends Component {
       <Image
         style={styles.image}
         source={{
-          uri:
-            user.photoprofile.url,
+          uri: user.photoprofile.url,
         }}
       />
       <Text style={styles.information}>{user.username}</Text>

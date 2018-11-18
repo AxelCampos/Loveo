@@ -66,6 +66,7 @@ class Album extends Component {
 
   render() {
     const { user } = this.props;
+    console.log('>>>>>>>', user);
     if (!user) {
       return;
     }
@@ -106,8 +107,6 @@ const userQuery = graphql(USER_QUERY, {
     user,
   }),
 });
-
-
 
 export default compose(
   userQuery,
