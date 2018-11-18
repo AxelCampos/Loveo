@@ -35,6 +35,11 @@ export const typeDefs = gql`
     likes: Int
   }
 
+  input EditUserInput {
+    id: Int!
+    name: String
+  }
+
   # a group chat entity
   type Group {
     id: Int! # unique id for the group
@@ -126,6 +131,7 @@ export const typeDefs = gql`
     leaveGroup(id: Int!, userId: Int!): Group
     updateGroup(group: UpdateGroupInput!): Group
     updateUser(user: UpdateUserInput!): User
+    editUser(user: EditUserInput!): User
   }
   schema {
     query: Query

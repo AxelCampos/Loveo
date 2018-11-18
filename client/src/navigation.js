@@ -28,6 +28,7 @@ import NewGroup from './screens/new-group.screen';
 import FinalizeGroup from './screens/finalize-group.screen';
 import GroupDetails from './screens/group-details.screen';
 import Settings from './screens/setting.screen';
+import EditProfile from './screens/edit-profile.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -147,6 +148,7 @@ const AppNavigator = createStackNavigator(
     GroupDetails: { screen: GroupDetails },
     NewGroup: { screen: NewGroup },
     FinalizeGroup: { screen: FinalizeGroup },
+    EditProfile: { screen: EditProfile },
   },
   {
     navigationOptions: {

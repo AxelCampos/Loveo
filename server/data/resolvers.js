@@ -57,19 +57,23 @@ export const resolvers = {
       });
     },
     async createConversation(
-      _,{
-        group: {name,userIds, userId},
+      _, {
+        group: { name, userIds, userId },
       },
-    ){
-      const user=await User.findOne({where:{
-        id:userId
-      }});
-      const friend=await User.findOne({where:{
-        id:userIds
-      }});
-      const  group=await Group.create({
+    ) {
+      const user = await User.findOne({
+        where: {
+          id: userId
+        }
+      });
+      const friend = await User.findOne({
+        where: {
+          id: userIds
+        }
+      });
+      const group = await Group.create({
         name,
-        users:[user, friend],
+        users: [user, friend],
       });
       await group.addUsers([user, friend]);
       return group;
@@ -122,6 +126,14 @@ export const resolvers = {
       },
     ) {
       return Group.findOne({ where: { id } }).then(group => group.update({ name }));
+    },
+    editUser(
+      _,
+      {
+        user: { id, name },
+      },
+    ) {
+      return User.findOne({ where: { id } }).then(user => user.update({ name }));
     },
   },
 

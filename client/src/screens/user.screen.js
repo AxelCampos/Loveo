@@ -95,8 +95,11 @@ class User extends Component {
   goTosettings = () => {
     const {
       navigation: { navigate },
+      user
     } = this.props;
-    navigate('Settings');
+    navigate('EditProfile', {
+      userId: user.id
+    });
   };
 
   addLike = (likes) => {
