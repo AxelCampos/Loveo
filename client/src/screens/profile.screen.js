@@ -10,6 +10,7 @@ import USER_QUERY from '../graphql/user.query';
 import withLoading from '../components/withLoading';
 import Menu from '../components/navigator-menu-component';
 import CREATE_CONVERSATION_MUTATION from '../graphql/create-conversation.mutation';
+import UPDATE_USER_MUTATION from '../graphql/update-user.mutation';
 
 const styles = StyleSheet.create({
   container: {
@@ -86,13 +87,18 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.create = this.create.bind(this);
+    this.addLike = this.addLike.bind(this);
   }
 
-  addLike = (likes) => {
-    console.log(likes);
-    likes++;
-    console.log(likes);
-  };
+  addLike() {
+    const { updateUser, user } = this.props;
+  
+    updateUser({
+      id: user.id,
+      likes: user.likes +1,
+    });
+    
+  }
 
   create() {
     const {
@@ -145,7 +151,7 @@ class Profile extends Component {
               size={30}
               borderRadius={30}
               name="cards-heart"
-              onPress={this.addLike(user.likes)}
+              onPress={this.addLike}
             />
             <Icon.Button
               style={styles.iconStyle}
@@ -167,6 +173,7 @@ class Profile extends Component {
 }
 
 Profile.propTypes = {
+  updateUser:PropTypes.func.isRequired,
   createConversation: PropTypes.func.isRequired,
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
@@ -203,6 +210,32 @@ const createConversationMutation = graphql(CREATE_CONVERSATION_MUTATION, {
     }),
   }),
 });
+const updateUserMutation = graphql(UPDATE_USER_MUTATION, {
+  props: ({ mutate }) => ({
+    updateUser: user => mutate({
+      variables: {user},
+      
+      update: (store, { data: { updateUser } }) => {
+        const data = store.readQuery({
+          query: USER_QUERY,
+          variables: {
+            id: user.id,
+          },
+        });
+        data.user.likes=updateUser.likes;
+        
+        
+        store.writeQuery({
+          query: USER_QUERY,
+          variables: {
+            id: user.id,
+          },
+         data,
+        });
+      },
+    }),
+  }),
+});
 const userQuery = graphql(USER_QUERY, {
   options: ownProps => ({
     variables: {
@@ -218,4 +251,5 @@ export default compose(
   userQuery,
   withLoading,
   createConversationMutation,
+  updateUserMutation,
 )(Profile);

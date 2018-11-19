@@ -13,10 +13,10 @@ export const typeDefs = gql`
     groupId: Int!
     text: String!
   }
-  input CreateConversationInput{
+  input CreateConversationInput {
     name: String!
-    userIds:Int!
-    userId:Int!
+    userIds: Int!
+    userId: Int!
   }
 
   input CreateGroupInput {
@@ -32,7 +32,7 @@ export const typeDefs = gql`
 
   input UpdateUserInput {
     id: Int!
-    likes: Int
+    likes: Int!
   }
 
   input EditUserInput {
@@ -125,7 +125,7 @@ export const typeDefs = gql`
   type Mutation {
     # send a message to a group
     createMessage(message: CreateMessageInput): Message
-    createConversation(group:CreateConversationInput!):Group
+    createConversation(group: CreateConversationInput!): Group
     createGroup(group: CreateGroupInput!): Group
     deleteGroup(id: Int!): Group
     leaveGroup(id: Int!, userId: Int!): Group

@@ -111,13 +111,14 @@ export const resolvers = {
       }
       return group;
     },
-    updateUser(
+    async updateUser(
       _,
       {
         user: { id, likes },
       },
     ) {
-      return User.findOne({ where: { id } }).then(user => user.update({ likes }));
+      const user=await User.findOne({ where: { id } }).then(user => user.update({ likes }));
+      return user;
     },
     updateGroup(
       _,
