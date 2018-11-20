@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   menu: {
-    flex: 0.3,
+    height:200,
     backgroundColor: 'red',
   },
   header: {

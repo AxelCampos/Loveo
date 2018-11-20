@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   ActivityIndicator,
@@ -14,13 +14,15 @@ import {
 import { graphql, compose } from 'react-apollo';
 
 import Swiper from 'react-native-deck-swiper';
-import { USERS_QUERY } from '../graphql/users.query';
+import USERS_QUERY from '../graphql/users.query';
+import USER_QUERY from '../graphql/user.query';
+import UPDATE_USER_MUTATION from '../graphql/update-user.mutation';
 import withLoading from '../components/withLoading';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'red',
+    backgroundColor: 'white',
     alignItems: 'center',
   },
   card: {
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class Match extends Component {
+class Match extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -124,92 +126,120 @@ class Match extends Component {
     );
   };
 
-  swipeRight = () => {
-    this.swiper.swipeRight();
+  swipeRight = (index) => {
+    console.log('loveo');
+    const { updateUser, users } = this.props;
+    const user = this.props.users.sort(this.compareUsers)[index];
+    console.log(user.id, 'jbfaghfragh', user.likes);
+    updateUser({
+      id: user.id,
+      likes: user.likes + 1,
+    });
   };
 
-  swipeLeft = () => {
-    this.swiper.swipeLeft();
+  swipeLeft = (index) => {
+    console.log('no lo veo', this.props.users.sort(this.compareUsers)[index]);
   };
 
-  render() {
+  onSwiped = (index) => {
+    console.log(this.props.users.sort(this.compareUsers)[index]);
+    console.log('swiped!!!', index);
+  };
+
+  compareUsers = (a, b) => a.id - b.id;
+
+  render = () => {
     const { users } = this.props;
+    const { swipedAllCards } = this.state;
+    console.log(users, 'AAAAAAAAA');
     return (
       <View style={styles.container}>
-        <Swiper
-          ref={(swiper) => {
-            this.swiper = swiper;
-          }}
-          verticalSwipe={false}
-          backgroundColor="white"
-          onSwiped={this.onSwiped}
-          onTapCard={this.swipeLeft}
-          cards={users}
-          stackSize={3}
-          renderCard={this.renderCard}
-          onSwipedAll={this.onSwipedAllCards}
-          stackSeparation={15}
-          overlayLabels={{
-            left: {
-              element: <Text style={styles.text}>NO</Text>,
-              title: 'NOPE',
-              style: {
-                wrapper: {
-                  backgroundColor: 'red',
-                  height: 448,
-                  borderRadius: 10,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+        {!swipedAllCards && (
+          <Swiper
+            ref={(swiper) => {
+              this.swiper = swiper;
+            }}
+            verticalSwipe={false}
+            backgroundColor="white"
+            onSwiped={this.onSwiped}
+            onSwipedRight={this.swipeRight}
+            onSwipedLeft={this.swipeLeft}
+            onTapCard={this.swipeLeft}
+            cards={users.sort(this.compareUsers)}
+            stackSize={3}
+            renderCard={this.renderCard}
+            onSwipedAll={this.onSwipedAllCards}
+            stackSeparation={15}
+            overlayLabels={{
+              left: {
+                element: <Text style={styles.text}>NO</Text>,
+                title: 'NOPE',
+                style: {
+                  wrapper: {
+                    backgroundColor: 'red',
+                    height: 448,
+                    borderRadius: 10,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  },
                 },
               },
-            },
-            right: {
-              element: <Text style={styles.text}>Me gusta</Text>,
-              title: 'Me gusta',
-              style: {
-                wrapper: {
-                  height: 448,
-                  borderRadius: 10,
-                  backgroundColor: 'green',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+              right: {
+                element: <Text style={styles.text}>Me gusta</Text>,
+                title: 'Me gusta',
+                style: {
+                  wrapper: {
+                    height: 448,
+                    borderRadius: 10,
+                    backgroundColor: 'green',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  },
                 },
               },
-            },
-          }}
-          animateOverlayLabelsOpacity
-          animateCardOpacity
-        />
-        <View style={styles.iconsView}>
-          <Icon.Button
-            size={50}
-            backgroundColor="transparent"
-            style={styles.icons}
-            name="close"
-            onPress={this.swipeLeft}
-            title="Swipe Left"
+            }}
+            animateOverlayLabelsOpacity
+            animateCardOpacity
           />
-          <Icon.Button
-            style={styles.icons}
-            backgroundColor="transparent"
-            size={60}
-            width={85}
-            name="email-outline"
-            title="Swipe Left"
-          />
-          <Icon.Button
-            style={styles.icons}
-            backgroundColor="transparent"
-            size={50}
-            name="cards-heart"
-            onPress={this.swipeRight}
-          />
-        </View>
+        )}
+        {!swipedAllCards && (
+          <View style={styles.iconsView}>
+            <Icon.Button
+              underlayColor="transparent"
+              size={50}
+              color="black"
+              backgroundColor="transparent"
+              style={styles.icons}
+              name="close"
+              onPress={() => this.swiper.swipeLeft()}
+              title="Swipe Left"
+            />
+            <Icon.Button
+              underlayColor="transparent"
+              style={styles.icons}
+              color="black"
+              backgroundColor="transparent"
+              size={60}
+              width={85}
+              name="email-outline"
+              title="Swipe Left"
+            />
+            <Icon.Button
+              underlayColor="transparent"
+              style={styles.icons}
+              color="black"
+              backgroundColor="transparent"
+              size={50}
+              name="cards-heart"
+              onPress={() => this.swiper.swipeRight()}
+            />
+          </View>
+        )}
       </View>
     );
-  }
+  };
 }
 const usersQuery = graphql(USERS_QUERY, {
   options: () => ({}),
@@ -218,7 +248,36 @@ const usersQuery = graphql(USERS_QUERY, {
   }),
 });
 
+const updateUserMutation = graphql(UPDATE_USER_MUTATION, {
+  props: ({ mutate }) => ({
+    updateUser: (user) => {
+      console.log('lirios', user);
+      return mutate({
+        variables: { user },
+
+        /* update: (store, { data: { updateUser } }) => {
+        const data = store.readQuery({
+          query: USERS_QUERY,
+          variables: {
+            id: user.id,
+          },
+        });
+        data.user.likes = updateUser.likes;
+        store.writeQuery({
+          query: USERS_QUERY,
+          variables: {
+            id: user.id,
+          },
+          data,
+        });
+      }, */
+      });
+    },
+  }),
+});
+
 export default compose(
+  updateUserMutation,
   usersQuery,
   withLoading,
 )(Match);

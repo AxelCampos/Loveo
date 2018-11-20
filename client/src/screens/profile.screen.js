@@ -145,6 +145,7 @@ class Profile extends Component {
           </View>
           <View style={styles.icons}>
             <Icon.Button
+            underlayColor='transparent'
               style={styles.iconStyle}
               color="#F0625A"
               backgroundColor="white"
@@ -154,6 +155,7 @@ class Profile extends Component {
               onPress={this.addLike}
             />
             <Icon.Button
+            underlayColor='transparent'
               style={styles.iconStyle}
               color="black"
               backgroundColor="white"

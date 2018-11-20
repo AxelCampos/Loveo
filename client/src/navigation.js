@@ -144,7 +144,12 @@ const AppNavigator = createStackNavigator(
       },
     },
     Messages: { screen: Messages },
-    Profile: { screen: Profile },
+    Profile: {
+      screen: Profile,
+      navigationOptions: {
+        title: 'Profile',
+      },
+    },
     GroupDetails: { screen: GroupDetails },
     NewGroup: { screen: NewGroup },
     FinalizeGroup: { screen: FinalizeGroup },
