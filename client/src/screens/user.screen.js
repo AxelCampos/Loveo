@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
-  StyleSheet, Text, View, Image, Button, FlatList,
+  StyleSheet, Text, View, Image, Button, ScrollView,
 } from 'react-native';
 
 import { graphql, compose } from 'react-apollo';
@@ -14,17 +14,18 @@ import Menu from '../components/navigator-menu-component';
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    flex: 1,
   },
   containerImage: {
-    flex: 0.5,
+    alignItems: 'center',
+    height: 300,
   },
   userImage: {
-    flex: 1,
+    height: 300,
+    width: 400,
   },
   userInformacion: {
     alignItems: 'flex-start',
-    flex: 0.2,
+    height: 150,
     paddingVertical: 8,
     paddingHorizontal: 12,
   },
@@ -60,8 +61,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   menu: {
-    height:200,
-    backgroundColor: 'red',
+    height: 550,
+    backgroundColor: 'white',
   },
   header: {
     alignItems: 'flex-end',
@@ -90,15 +91,16 @@ class User extends Component {
 
   constructor(props) {
     super(props);
+    this.state = { enableScrollViewScroll: true };
   }
 
   goTosettings = () => {
     const {
       navigation: { navigate },
-      user
+      user,
     } = this.props;
     navigate('EditProfile', {
-      userId: user.id
+      userId: user.id,
     });
   };
 
@@ -108,35 +110,59 @@ class User extends Component {
     console.log(likes);
   };
 
+  renderMenu() {
+    return (
+      <View
+        onStartShouldSetResponderCapture={() => {
+          this.setState({ enableScrollViewScroll: false });
+          if (this._myScroll.contentOffset === 0 && this.state.enableScrollViewScroll === false) {
+            this.setState({ enableScrollViewScroll: true });
+          }
+        }}
+        style={styles.menu}
+      >
+        <Menu />
+      </View>
+    );
+  }
+
   render() {
     const { user } = this.props;
 
     return (
-      <View style={styles.container}>
-        <Header onPress={this.goTosettings} />
-        <View style={styles.containerImage}>
-          <Image style={styles.userImage} source={{ uri: user.photoprofile.url }} />
-        </View>
-        <View style={styles.userInformacion}>
-          <Text style={styles.userName}>
-            {user.username}
-            {' ('}
-            {user.age}
-            {')'}
-            {user.likes}
-          </Text>
-          <View style={styles.conexionStyle}>
-            <Icon size={11.5} name="home-circle" />
-            <Text style={[styles.locationUser, styles.textStyle]}>{user.city}</Text>
+      <View
+        style={styles.container}
+        onStartShouldSetResponderCapture={() => {
+          this.setState({ enableScrollViewScroll: true });
+        }}
+      >
+        <ScrollView
+          scrollEnabled={this.state.enableScrollViewScroll}
+          ref={myScroll => (this._myScroll = myScroll)}
+        >
+          <Header onPress={this.goTosettings} />
+          <View style={styles.containerImage}>
+            <Image style={styles.userImage} source={{ uri: user.photoprofile.url }} />
           </View>
-          <View style={styles.conexionStyle}>
-            <Icon size={10} name="circle" color="green" />
-            <Text style={styles.textStyle}>Ultima conexión: 13h</Text>
+          <View style={styles.userInformacion}>
+            <Text style={styles.userName}>
+              {user.username}
+              {' ('}
+              {user.age}
+              {')'}
+              {user.likes}
+            </Text>
+            <View style={styles.conexionStyle}>
+              <Icon size={11.5} name="home-circle" />
+              <Text style={[styles.locationUser, styles.textStyle]}>{user.city}</Text>
+            </View>
+            <View style={styles.conexionStyle}>
+              <Icon size={10} name="circle" color="green" />
+              <Text style={styles.textStyle}>Ultima conexión: 13h</Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.menu}>
-          <Menu />
-        </View>
+          {this.renderMenu()}
+        </ScrollView>
       </View>
     );
   }

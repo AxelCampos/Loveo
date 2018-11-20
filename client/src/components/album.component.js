@@ -10,12 +10,10 @@ import withLoading from './withLoading';
 
 const styles = StyleSheet.create({
   albumContainer: {
-    flex:1,
     backgroundColor: 'white',
     alignItems: 'center',
   },
   photoContainer: {
-    flex: 1,
     width: 160,
     height: 180,
     alignItems: 'center',
@@ -66,7 +64,7 @@ class Album extends Component {
 
   render() {
     const { user } = this.props;
-    
+
     if (!user) {
       return;
     }
