@@ -88,9 +88,9 @@ const Tendency = ({
         {age}
       </Text>
       <Text style={styles.textLocation}>
-        {city}
+        {reduceString(city)}
         {', '}
-        {country}
+        {reduceString(country)}
       </Text>
       <View style={styles.userLikes}>
         <Icon size={12} name="heart" color="#F0625A" />
@@ -129,21 +129,22 @@ class Tendencies extends Component {
     <Tendency
       users={item}
       goToProfiles={this.goToProfiles(item)}
-      reduceString={this.reduceString(item)}
+      reduceString={this.reduceString}
     />
   );
 
   compare = (a, b) => b.likes - a.likes;
 
-  reduceString = a => () => {
+  reduceString = (a) => {
     let shortword = ' ';
 
     if (a.length >= 10) {
       for (let i = 0; i < 10; i++) {
-        shortword += a.charAt[i];
-      
+        shortword += a.charAt(i);
       }
       shortword += '...';
+    } else {
+      shortword = a;
     }
     return shortword;
   };

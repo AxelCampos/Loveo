@@ -17,6 +17,14 @@ export const USER_QUERY = gql`
         id
         name
       }
+      album {
+        id
+        url
+      }
+      friends {
+        id
+        username
+      }
       lifestyle {
         id
         gender

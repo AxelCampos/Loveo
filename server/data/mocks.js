@@ -6,7 +6,7 @@ import { db } from './connectors';
 const GROUPS = 4;
 const USERS_PER_GROUP = 5;
 const MESSAGES_PER_USER = 5;
-const PHOTOS_PER_USER = 2;
+const PHOTOS_PER_USER = 8;
 const LIFESTYLE_PER_USER = 1;
 const ACTIVITY_PER_USER = 1;
 
@@ -70,10 +70,27 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
           R.times(
             () => db.models.lifestyle.create({
               userId: user.id,
-              gender: faker.random.number(2),
-              civilStatus: faker.random.number({ min: 0, max: 4 }),
-              nation: faker.random.arrayElement(['español', 'italiano', 'inglés']),
-              children: faker.random.number(2),
+              gender: faker.random.arrayElement(['no especificado', 'hombre', 'mujer', 'otro']),
+              civilStatus: faker.random.arrayElement([
+                'no especificado',
+                'soltero',
+                'separado',
+                'divorciado',
+                'viudo',
+                'otro',
+              ]),
+              nation: faker.random.arrayElement([
+                'no especificado',
+                'español',
+                'italiano',
+                'inglés',
+                'otro',
+              ]),
+              children: faker.random.arrayElement([
+                'no especificado',
+                'no tiene hijos',
+                'tiene hijos',
+              ]),
             }),
             LIFESTYLE_PER_USER,
           );

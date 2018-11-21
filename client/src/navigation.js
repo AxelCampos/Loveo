@@ -21,12 +21,14 @@ import Messages from './screens/messages.screen';
 import User from './screens/user.screen';
 import Nearer from './screens/near.screen';
 import Tendencies from './screens/tendencies.screen';
-import ShowPhoto from './screens/photos.screen';
 import Lifestyle from './screens/lifestyle.screen';
 import Profile from './screens/profile.screen';
 import Match from './screens/match.screen';
-import Login from './screens/login.screen';
-import Register from './screens/register.screen';
+import NewGroup from './screens/new-group.screen';
+import FinalizeGroup from './screens/finalize-group.screen';
+import GroupDetails from './screens/group-details.screen';
+import Settings from './screens/setting.screen';
+import EditProfile from './screens/edit-profile.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,6 +36,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
+  },
+  tabText: {
+    color: '#777',
+    fontSize: 10,
+    justifyContent: 'center',
+  },
+  selected: {
+    color: 'blue',
   },
 });
 const TestScreen = title => () => (
@@ -49,9 +59,6 @@ const Search = createMaterialTopTabNavigator(
     Cerca: {
       screen: Nearer,
     },
-    Nuevo: {
-      screen: ShowPhoto,
-    },
     Lifestyle: {
       screen: Lifestyle,
     },
@@ -65,7 +72,7 @@ const Search = createMaterialTopTabNavigator(
 // tabs in main screen
 const MainScreenNavigator = createBottomTabNavigator(
   {
-    /* Search: {
+    Search: {
       screen: Search,
       navigationOptions: {
         tabBarLabel: 'Search',
@@ -102,42 +109,26 @@ const MainScreenNavigator = createBottomTabNavigator(
     },
 
     Settings: {
-      screen: TestScreen('Settings'),
+      screen: Settings,
       navigationOptions: {
         tabBarLabel: 'Settings',
         tabBarIcon: ({ tintColor }) => <Icon size={20} name="cog" color={tintColor} />,
         tabBarColor: 'violet',
       },
-    }, */
-    Register: {
-      screen: Register,
-      navigationOptions: {
-        tabBarLabel: 'Register',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="user-circle" color={tintColor} />,
-        tabBarColor: 'yellow',
-      },
-    },
-    Login: {
-      screen: Login,
-      navigationOptions: {
-        tabBarLabel: 'Login',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="lock" color={tintColor} />,
-        tabBarColor: 'yellow',
-      },
     },
   },
   {
-    initialRouteName: 'Register',
+    initialRouteName: 'Chats',
     navigationOptions: {
       tabBarVisible: true,
     },
     tabBarOptions: {
       activeTintColor: 'black',
-      activeBackgroundColor: '#ce46c5',
-      inactiveBackgroundColor: '#af00a4',
+      activeBackgroundColor: '#A5DFF1',
+      inactiveBackgroundColor: '#52ABD8',
       inactiveTintColor: '#D3BCDD',
       tabStyle: {
-        borderColor: 'purple',
+        borderTopColor: 'grey',
         borderTopWidth: 0.4,
       },
     },
@@ -146,22 +137,29 @@ const MainScreenNavigator = createBottomTabNavigator(
 
 const AppNavigator = createStackNavigator(
   {
-    Main: { screen: MainScreenNavigator },
-    Match: {
-      screen: Match,
+    Main: {
+      screen: MainScreenNavigator,
       navigationOptions: {
-        tabBarLabel: 'Match',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="burn" color={tintColor} />,
-        tabBarColor: 'pink',
+        header: null,
       },
     },
     Messages: { screen: Messages },
-    Profile: { screen: Profile },
+    Profile: {
+      screen: Profile,
+      navigationOptions: {
+        title: 'Profile',
+      },
+    },
+    GroupDetails: { screen: GroupDetails },
+    NewGroup: { screen: NewGroup },
+    FinalizeGroup: { screen: FinalizeGroup },
+    EditProfile: { screen: EditProfile },
   },
   {
     navigationOptions: {
       title: 'Loveo',
     },
+    headerMode: 'screen',
   },
 );
 

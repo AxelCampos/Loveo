@@ -31,10 +31,10 @@ const PhotoModel = db.define('photo', {
 });
 // define lifestyle
 const LifestyleModel = db.define('lifestyle', {
-  gender: { type: Sequelize.INTEGER },
-  civilStatus: { type: Sequelize.INTEGER },
+  gender: { type: Sequelize.STRING },
+  civilStatus: { type: Sequelize.STRING },
   nation: { type: Sequelize.STRING },
-  children: { type: Sequelize.INTEGER },
+  children: { type: Sequelize.STRING },
 });
 // define activities
 const ActivityModel = db.define('activity', {

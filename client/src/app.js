@@ -41,5 +41,4 @@ const App = () => (
     </Provider>
   </ApolloProvider>
 );
-
 export default App;

@@ -1,6 +1,6 @@
 import GraphQLDate from 'graphql-date';
 import {
-  Group, Message, User, Photo, Lifestyle, Activity
+  Group, Message, User, Photo, Lifestyle, Activity,
 } from './connectors';
 
 export const resolvers = {
@@ -56,7 +56,88 @@ export const resolvers = {
         groupId,
       });
     },
+    async createConversation(
+      _, {
+        group: { name, userIds, userId },
+      },
+    ) {
+      const user = await User.findOne({
+        where: {
+          id: userId
+        }
+      });
+      const friend = await User.findOne({
+        where: {
+          id: userIds
+        }
+      });
+      const group = await Group.create({
+        name,
+        users: [user, friend],
+      });
+      await group.addUsers([user, friend]);
+      return group;
+    },
+    async createGroup(
+      _,
+      {
+        group: { name, userIds, userId },
+      },
+    ) {
+      const user = await User.findOne({ where: { id: userId } });
+      const friends = await user.getFriends({ where: { id: { $in: userIds } } });
+      const group = await Group.create({
+        name,
+        users: [user, ...friends],
+      });
+      await group.addUsers([user, ...friends]);
+      return group;
+    },
+    async deleteGroup(_, { id }) {
+      const group = await Group.findOne({ where: id });
+      const users = await group.getUsers();
+      await group.removeUsers(users);
+      await Message.destroy({ where: { groupId: group.id } });
+      await group.destroy();
+      return group;
+    },
+    async leaveGroup(_, { id, userId }) {
+      const group = await Group.findOne({ where: { id } });
+      await group.removeUser(userId);
+      const users = await group.getUsers();
+      if (!users.length) {
+        await Message.destroy({ where: { groupId: group.id } });
+        await group.destroy();
+      }
+      return group;
+    },
+    async updateUser(
+      _,
+      {
+        user: { id, likes },
+      },
+    ) {
+      const user=await User.findOne({ where: { id } }).then(user => user.update({ likes }));
+      return user;
+    },
+    updateGroup(
+      _,
+      {
+        group: { id, name },
+      },
+    ) {
+      return Group.findOne({ where: { id } }).then(group => group.update({ name }));
+    },
+    editUser(
+      _,
+      {
+        user: { id, name },
+      },
+    ) {
+      return User.findOne({ where: { id } }).then(user => user.update({ name }));
+    },
   },
+
   Group: {
     users(group) {
       return group.getUsers();

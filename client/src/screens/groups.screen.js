@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
-  FlatList, StyleSheet, Text, TouchableHighlight, View,
+  FlatList, StyleSheet, Text, TouchableHighlight, View, Button,
 } from 'react-native';
 
 import { Query } from 'react-apollo';
@@ -28,7 +28,27 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     flex: 0.7,
   },
+  header: {
+    alignItems: 'flex-end',
+    padding: 6,
+    borderColor: '#eee',
+    borderBottomWidth: 1,
+  },
+  warning: {
+    textAlign: 'center',
+    padding: 12,
+  },
 });
+
+const Header = ({ onPress }) => (
+  <View style={styles.header}>
+    <Button title="New Group" onPress={onPress} />
+  </View>
+);
+Header.propTypes = {
+  onPress: PropTypes.func.isRequired,
+};
+
 const Group = ({ goToMessages, group: { id, name } }) => (
   <TouchableHighlight key={id} onPress={goToMessages}>
     <View style={styles.groupContainer}>
@@ -48,6 +68,13 @@ class Groups extends Component {
     title: 'Chats',
   };
 
+  goToNewGroup = () => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate('NewGroup');
+  };
+
   keyExtractor = item => item.id.toString();
 
   goToMessages = group => () => {
@@ -65,12 +92,23 @@ class Groups extends Component {
     if (!user) {
       return null;
     }
+
+    if (user && !user.groups.length) {
+      return (
+        <View style={styles.container}>
+          <Header onPress={this.goToNewGroup} />
+          <Text style={styles.warning}>You do not have any groups.</Text>
+        </View>
+      );
+    }
+
     return (
       <View style={styles.container}>
         <FlatList
           data={user.groups}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
+          ListHeaderComponent={() => <Header onPress={this.goToNewGroup} />}
         />
       </View>
     );
@@ -91,10 +129,11 @@ Groups.propTypes = {
     ),
   }),
 };
+const GroupsWithLoading = withLoading(Groups);
 
 const UserQuery = props => (
   <Query query={USER_QUERY} variables={{ id: 1 }}>
-    {({ data: { loading, user } }) => withLoading(Groups)({ ...props, loading, user })}
+    {({ data }) => <GroupsWithLoading {...props} {...data} />}
   </Query>
 );
 
