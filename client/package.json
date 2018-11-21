@@ -5,8 +5,7 @@
   "scripts": {
     "start": "nodemon --watch server --watch package.json server/index.js --exec babel-node --presets es2015,stage-2",
     "start-emulator": "$ANDROID_HOME/emulator/emulator @Nexus_6_API_28",
-    "test": "jest",
-    "postinstall": "rm ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json"
+    "test": "jest"
   },
   "dependencies": {
     "apollo-cache-redux": "^0.1.2",

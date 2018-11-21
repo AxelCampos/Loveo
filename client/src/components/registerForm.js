@@ -18,7 +18,21 @@ class RegisterForm extends Component {
     return (
       <View style={StyleSheet.container}>
         <View style={styles.textIcon}>
-          <Icon size={18} style={styles.icons} name="user" color="white" />
+          <Icon size={18} style={styles.icons} name="user-circle" color="white" />
+          <TextInput
+            style={styles.input}
+            autoCapitalize="none"
+            onSubmitEditing={() => this.passwordInput.focus()}
+            autoCorrect={false}
+            keyBoardType="default"
+            returnKeyType="next"
+            placeholder="Enter your username "
+            placeholderTextColor="white"
+          />
+        </View>
+
+        <View style={styles.textIcon}>
+          <Icon size={18} style={styles.icons} name="at" color="white" />
           <TextInput
             style={styles.input}
             autoCapitalize="none"
@@ -26,10 +40,11 @@ class RegisterForm extends Component {
             autoCorrect={false}
             keyBoardType="email-address"
             returnKeyType="next"
-            placeholder="Enter your email or username"
+            placeholder="Enter your email"
             placeholderTextColor="white"
           />
         </View>
+
         <View style={styles.textIcon}>
           <Icon size={18} style={styles.icons} name="lock" color="white" />
           <TextInput
@@ -66,6 +81,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginLeft: 10,
+    color: 'white',
   },
   icons: {
     marginTop: 15,

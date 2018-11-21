@@ -29,6 +29,8 @@ import FinalizeGroup from './screens/finalize-group.screen';
 import GroupDetails from './screens/group-details.screen';
 import Settings from './screens/setting.screen';
 import EditProfile from './screens/edit-profile.screen';
+import Login from './screens/login.screen';
+import Register from './screens/register.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -72,7 +74,7 @@ const Search = createMaterialTopTabNavigator(
 // tabs in main screen
 const MainScreenNavigator = createBottomTabNavigator(
   {
-    Search: {
+    /* Search: {
       screen: Search,
       navigationOptions: {
         tabBarLabel: 'Search',
@@ -115,20 +117,38 @@ const MainScreenNavigator = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => <Icon size={20} name="cog" color={tintColor} />,
         tabBarColor: 'violet',
       },
+    }, */
+
+    Register: {
+      screen: Register,
+      navigationOptions: {
+        tabBarLabel: 'Register',
+        tabBarIcon: ({ tintColor }) => <Icon size={20} name="cog" color={tintColor} />,
+        tabBarColor: 'violet',
+      },
+    },
+
+    Login: {
+      screen: Login,
+      navigationOptions: {
+        tabBarLabel: 'Login',
+        tabBarIcon: ({ tintColor }) => <Icon size={20} name="lock" color={tintColor} />,
+        tabBarColor: 'orange',
+      },
     },
   },
   {
-    initialRouteName: 'Chats',
+    initialRouteName: 'Register',
     navigationOptions: {
       tabBarVisible: true,
     },
     tabBarOptions: {
-      activeTintColor: 'black',
-      activeBackgroundColor: '#A5DFF1',
-      inactiveBackgroundColor: '#52ABD8',
+      activeTintColor: '#251d26',
+      activeBackgroundColor: '#ba1ba7',
+      inactiveBackgroundColor: '#760d82',
       inactiveTintColor: '#D3BCDD',
       tabStyle: {
-        borderTopColor: 'grey',
+        borderTopColor: 'purple',
         borderTopWidth: 0.4,
       },
     },
@@ -141,6 +161,14 @@ const AppNavigator = createStackNavigator(
       screen: MainScreenNavigator,
       navigationOptions: {
         header: null,
+      },
+    },
+    Match: {
+      screen: Match,
+      navigationOptions: {
+        tabBarLabel: 'Match',
+        tabBarIcon: ({ tintColor }) => <Icon size={20} name="burn" color={tintColor} />,
+        tabBarColor: 'pink',
       },
     },
     Messages: { screen: Messages },

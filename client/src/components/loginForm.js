@@ -43,7 +43,7 @@ class LoginForm extends Component {
             secureTextEntry
           />
         </View>
-        <TouchableHighlight style={styles.buttonContainer} onPress={() => navigate('Main')}>
+        <TouchableHighlight style={styles.buttonContainer} onPress={() => navigate('Match')}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableHighlight>
       </View>

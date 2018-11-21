@@ -30,6 +30,12 @@ export const typeDefs = gql`
     name: String
   }
 
+  input CreateUserInput {
+    username: String!
+    email: String!
+    password: String!
+  }
+
   input UpdateUserInput {
     id: Int!
     likes: Int!
@@ -132,6 +138,7 @@ export const typeDefs = gql`
     updateGroup(group: UpdateGroupInput!): Group
     updateUser(user: UpdateUserInput!): User
     editUser(user: EditUserInput!): User
+    createUser(user: CreateUserInput!): User
   }
   schema {
     query: Query
