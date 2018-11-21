@@ -2,20 +2,19 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
-  ActivityIndicator,
-  FlatList,
+
   StyleSheet,
   Text,
-  TouchableHighlight,
+  Alert,
   View,
   Image,
-  Button,
+
 } from 'react-native';
 import { graphql, compose } from 'react-apollo';
-
+import { StackActions, NavigationActions } from 'react-navigation';
 import Swiper from 'react-native-deck-swiper';
 import USERS_QUERY from '../graphql/users.query';
-import USER_QUERY from '../graphql/user.query';
+import CREATE_CONVERSATION_MUTATION from '../graphql/create-conversation.mutation';
 import UPDATE_USER_MUTATION from '../graphql/update-user.mutation';
 import withLoading from '../components/withLoading';
 
@@ -77,7 +76,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
+const goToNewGroup = group => StackActions.reset({
+  index: 1,
+  actions: [
+    NavigationActions.navigate({ routeName: 'Main' }),
+    NavigationActions.navigate({
+      routeName: 'Messages',
+      params: { groupId: group.id, title: group.name },
+    }),
+  ],
+});
 class Match extends PureComponent {
   constructor(props) {
     super(props);
@@ -128,7 +136,7 @@ class Match extends PureComponent {
 
   swipeRight = (index) => {
     console.log('loveo');
-    const { updateUser, users } = this.props;
+    const { updateUser } = this.props;
 
     const user = this.props.users.sort(this.compareUsers)[index];
     console.log(user.id, 'jbfaghfragh', user.likes);
@@ -153,6 +161,29 @@ class Match extends PureComponent {
 
   compareUsers = (a, b) => a.id - b.id;
 
+  create=(index)=>{
+    const{
+      createConversation,
+      navigation,
+    }=this.props;
+    const {cardIndex}=this.state;
+    const user = this.props.users.sort(this.compareUsers)[index];
+    
+    console.log("WWERETRWEr", this.props.users.sort(this.compareUsers)[index]);
+    console.log("ñklsdfsdgfkoñjdg", user);
+    createConversation({
+      name:user.username,
+      userIds:user.id,
+      userId:1,
+    })
+    .then((res)=>{
+      navigation.dispatch(goToNewGroup(res.data.createConversation));
+    })
+    .catch((error)=>{
+      Alert.alert('Error Creating New Group' , error.message, [{ text: 'OK',onPress:()=>{}}]);
+    })
+    
+  };
   render = () => {
     const { users } = this.props;
     const { swipedAllCards } = this.state;
@@ -231,6 +262,7 @@ class Match extends PureComponent {
               width={85}
               name="email-outline"
               title="Swipe Left"
+              onPress={()=>this.create(this.state.cardIndex)}
             />
             <Icon.Button
               underlayColor="transparent"
@@ -253,7 +285,29 @@ const usersQuery = graphql(USERS_QUERY, {
     users: users || [],
   }),
 });
-
+const createConversationMutation = graphql(CREATE_CONVERSATION_MUTATION, {
+  props: ({ mutate }) => ({
+    createConversation: group => {
+      console.log('ayaguasca',group);
+      return(
+      mutate({
+      variables: { group },
+      update: (store, { data: { createConversation } }) => {
+        // Read the data from our cache for this query.
+        const data = store.readQuery({ query: USERS_QUERY, variables: { id: group.userId } });
+       console.log("ññññññññññ",data);
+        // Add our message from the mutation to the end.
+        data.users[group.userId].groups.push(createConversation);
+        // Write our data back to the cache.
+        store.writeQuery({
+          query: USERS_QUERY,
+          variables: { id: group.userId },
+          data,
+        });
+      },
+    }))},
+  }),
+});
 const updateUserMutation = graphql(UPDATE_USER_MUTATION, {
   props: ({ mutate }) => ({
     updateUser: (user) => {
@@ -284,6 +338,7 @@ const updateUserMutation = graphql(UPDATE_USER_MUTATION, {
 
 export default compose(
   updateUserMutation,
+  createConversationMutation,
   usersQuery,
   withLoading,
 )(Match);
