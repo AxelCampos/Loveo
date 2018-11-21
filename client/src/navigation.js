@@ -133,11 +133,11 @@ const MainScreenNavigator = createBottomTabNavigator(
     },
     tabBarOptions: {
       activeTintColor: 'black',
-      activeBackgroundColor: '#A5DFF1',
-      inactiveBackgroundColor: '#52ABD8',
+      activeBackgroundColor: '#ce46c5',
+      inactiveBackgroundColor: '#af00a4',
       inactiveTintColor: '#D3BCDD',
       tabStyle: {
-        borderTopColor: 'grey',
+        borderColor: 'purple',
         borderTopWidth: 0.4,
       },
     },

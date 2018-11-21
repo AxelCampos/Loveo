@@ -29,7 +29,7 @@ class LoginForm extends Component {
             keyBoardType="email-address"
             returnKeyType="next"
             placeholder="Enter your email or username"
-            placeholderTextColor="black"
+            placeholderTextColor="white"
           />
         </View>
         <View style={styles.textIcon}>
@@ -39,11 +39,11 @@ class LoginForm extends Component {
             returnKeyType="go"
             ref={input => (this.passwordInput = input)}
             placeholder="Password"
-            placeholderTextColor="black"
+            placeholderTextColor="white"
             secureTextEntry
           />
         </View>
-        <TouchableHighlight style={styles.buttonContainer} onPress={() => navigate('Match')}>
+        <TouchableHighlight style={styles.buttonContainer} onPress={() => navigate('Main')}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableHighlight>
       </View>
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   buttonContainer: {
-    backgroundColor: 'blue',
+    backgroundColor: '#c10bb7',
     paddingVertical: 15,
     borderRadius: 40,
   },

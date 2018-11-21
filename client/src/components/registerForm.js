@@ -27,7 +27,7 @@ class RegisterForm extends Component {
             keyBoardType="email-address"
             returnKeyType="next"
             placeholder="Enter your email or username"
-            placeholderTextColor="black"
+            placeholderTextColor="white"
           />
         </View>
         <View style={styles.textIcon}>
@@ -37,7 +37,7 @@ class RegisterForm extends Component {
             returnKeyType="go"
             ref={input => (this.passwordInput = input)}
             placeholder="Password"
-            placeholderTextColor="black"
+            placeholderTextColor="white"
             secureTextEntry
           />
         </View>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   buttonContainer: {
-    backgroundColor: 'blue',
+    backgroundColor: '#c10bb7',
     paddingVertical: 15,
     borderRadius: 40,
   },
