@@ -129,6 +129,7 @@ class Match extends PureComponent {
   swipeRight = (index) => {
     console.log('loveo');
     const { updateUser, users } = this.props;
+
     const user = this.props.users.sort(this.compareUsers)[index];
     console.log(user.id, 'jbfaghfragh', user.likes);
     updateUser({
@@ -142,6 +143,10 @@ class Match extends PureComponent {
   };
 
   onSwiped = (index) => {
+    const { cardIndex } = this.state;
+    this.setState({
+      cardIndex: cardIndex + 1,
+    });
     console.log(this.props.users.sort(this.compareUsers)[index]);
     console.log('swiped!!!', index);
   };
@@ -159,6 +164,7 @@ class Match extends PureComponent {
             ref={(swiper) => {
               this.swiper = swiper;
             }}
+            cardIndex={this.state.cardIndex}
             verticalSwipe={false}
             backgroundColor="white"
             onSwiped={this.onSwiped}
@@ -255,22 +261,22 @@ const updateUserMutation = graphql(UPDATE_USER_MUTATION, {
       return mutate({
         variables: { user },
 
-        /* update: (store, { data: { updateUser } }) => {
-        const data = store.readQuery({
-          query: USERS_QUERY,
-          variables: {
-            id: user.id,
-          },
-        });
-        data.user.likes = updateUser.likes;
-        store.writeQuery({
-          query: USERS_QUERY,
-          variables: {
-            id: user.id,
-          },
-          data,
-        });
-      }, */
+        /*update: (store, { data: { updateUser } }) => {
+          const data = store.readQuery({
+            query: USERS_QUERY,
+            variables: {
+              id: user.id,
+            },
+          });
+          data.user.likes = updateUser.likes;
+          store.writeQuery({
+            query: USERS_QUERY,
+            variables: {
+              id: user.id,
+            },
+            data,
+          });
+        },*/
       });
     },
   }),
