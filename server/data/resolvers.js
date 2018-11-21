@@ -117,7 +117,7 @@ export const resolvers = {
         user: { id, likes },
       },
     ) {
-      const user=await User.findOne({ where: { id } }).then(user => user.update({ likes }));
+      const user = await User.findOne({ where: { id } }).then(user => user.update({ likes }));
       return user;
     },
     updateGroup(
@@ -131,10 +131,10 @@ export const resolvers = {
     editUser(
       _,
       {
-        user: { id, name },
+        user: { id, username },
       },
     ) {
-      return User.findOne({ where: { id } }).then(user => user.update({ name }));
+      return User.findOne({ where: { id } }).then(user => user.update({ username }));
     },
   },
 

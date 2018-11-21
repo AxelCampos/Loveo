@@ -37,7 +37,7 @@ export const typeDefs = gql`
 
   input EditUserInput {
     id: Int!
-    name: String
+    username: String
   }
 
   # a group chat entity
