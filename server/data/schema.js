@@ -38,6 +38,14 @@ export const typeDefs = gql`
   input EditUserInput {
     id: Int!
     username: String
+    country: String!
+    city: String!
+    email: String!
+    age: Int!
+    gender: String
+    civilStatus: String
+    children: String
+    likes: Int
   }
 
   # a group chat entity

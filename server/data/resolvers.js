@@ -131,10 +131,10 @@ export const resolvers = {
     editUser(
       _,
       {
-        user: { id, username },
+        user: { id, username, country, city, email, age, gender, civilState, children, likes },
       },
     ) {
-      return User.findOne({ where: { id } }).then(user => user.update({ username }));
+      return User.findOne({ where: { id } }).then(user => user.update({ username, country, city, email, age, gender, civilState, children, likes }));
     },
   },
 

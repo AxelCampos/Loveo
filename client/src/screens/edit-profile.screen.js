@@ -71,6 +71,14 @@ class EditProfile extends Component {
         editUser({
             id: user.id,
             username: newName,
+            email: user.email,
+            age: user.age,
+            gender: user.gender,
+            civilStatus: user.civilStatus,
+            children: user.children,
+            city: user.city,
+            country: user.country,
+            likes: user.likes,
         });
         alert('Usuário actualizado.');
     }

@@ -5,6 +5,14 @@ const EDIT_USER_MUTATION = gql`
         editUser(user:$user){
             id
             username
+            country
+            city
+            email
+            age
+            gender
+            civilStatus
+            children
+            likes
         }
     }
 `;
