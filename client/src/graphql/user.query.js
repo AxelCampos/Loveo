@@ -7,7 +7,11 @@ export const USER_QUERY = gql`
       email
       username
       age
+      gender
+      civilStatus
+      children
       city
+      country
       likes
       photoprofile {
         id
@@ -24,13 +28,6 @@ export const USER_QUERY = gql`
       friends {
         id
         username
-      }
-      lifestyle {
-        id
-        gender
-        civilStatus
-        nation
-        children
       }
     }
   }

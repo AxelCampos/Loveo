@@ -44,6 +44,20 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
             city: faker.address.city(),
             username: faker.internet.userName(),
             age: faker.random.number({ min: 17, max: 90 }),
+            gender: faker.random.arrayElement(['no especificado', 'hombre', 'mujer', 'otro']),
+            civilStatus: faker.random.arrayElement([
+              'no especificado',
+              'soltero',
+              'separado',
+              'divorciado',
+              'viudo',
+              'otro',
+            ]),
+            children: faker.random.arrayElement([
+              'no especificado',
+              'no tiene hijos',
+              'tiene hijos',
+            ]),
             likes: faker.random.number(20),
             password: faker.internet.password(),
           });
