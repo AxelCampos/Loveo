@@ -5,6 +5,7 @@ import {
   createStackNavigator,
   createMaterialTopTabNavigator,
   createBottomTabNavigator,
+  StackNavigator,
 } from 'react-navigation';
 
 import {
@@ -72,7 +73,7 @@ const Search = createMaterialTopTabNavigator(
 );
 
 // tabs in main screen
-const MainScreenNavigator = createBottomTabNavigator(
+const MainScreenNavigator = StackNavigator(
   {
     /* Search: {
       screen: Search,
@@ -117,7 +118,7 @@ const MainScreenNavigator = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => <Icon size={20} name="cog" color={tintColor} />,
         tabBarColor: 'violet',
       },
-    }, */
+    },
 
     Register: {
       screen: Register,
@@ -137,8 +138,88 @@ const MainScreenNavigator = createBottomTabNavigator(
       },
     },
   },
+    */
+    loginComp: {
+      screen: createBottomTabNavigator({
+        register: {
+          screen: Register,
+          navigationOptions: {
+            tabBarLabel: 'Register',
+            tabBarIcon: ({ tintColor }) => <Icon size={20} name="user-circle" color={tintColor} />,
+            tabBarColor: 'violet',
+          },
+        },
+        login: {
+          screen: Login,
+          navigationOptions: {
+            tabBarLabel: 'Login',
+            tabBarIcon: ({ tintColor }) => <Icon size={20} name="lock" color={tintColor} />,
+            tabBarColor: 'orange',
+          },
+        },
+      }),
+    },
+    mainComp: {
+      screen: StackNavigator({
+        main: {
+          screen: createBottomTabNavigator({
+            Search: {
+              screen: Search,
+              navigationOptions: {
+                tabBarLabel: 'Search',
+                tabBarIcon: ({ tintColor }) => <Icon size={20} name="search" color={tintColor} />,
+                tabBarColor: 'blue',
+              },
+            },
+
+            Match: {
+              screen: Match,
+              navigationOptions: {
+                tabBarLabel: 'Match',
+                tabBarIcon: ({ tintColor }) => <Icon size={20} name="burn" color={tintColor} />,
+                tabBarColor: 'pink',
+              },
+            },
+
+            Chats: {
+              screen: Groups,
+              navigationOptions: {
+                tabBarLabel: 'Chats',
+                tabBarIcon: ({ tintColor }) => (
+                  <Icon size={20} name="rocketchat" color={tintColor} />
+                ),
+                tabBarColor: 'green',
+              },
+            },
+
+            User: {
+              screen: User,
+              navigationOptions: {
+                tabBarLabel: 'Profile',
+                tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />,
+                tabBarColor: 'orange',
+              },
+            },
+
+            Settings: {
+              screen: Settings,
+              navigationOptions: {
+                tabBarLabel: 'Settings',
+                tabBarIcon: ({ tintColor }) => <Icon size={20} name="cog" color={tintColor} />,
+                tabBarColor: 'violet',
+              },
+            },
+          }),
+          navigationOptions: {
+            header: null,
+          },
+        },
+      }),
+    },
+  },
+
   {
-    initialRouteName: 'Register',
+    initialRouteName: 'loginComp',
     navigationOptions: {
       tabBarVisible: true,
     },
@@ -161,6 +242,14 @@ const AppNavigator = createStackNavigator(
       screen: MainScreenNavigator,
       navigationOptions: {
         header: null,
+      },
+    },
+    User: {
+      screen: User,
+      navigationOptions: {
+        tabBarLabel: 'Profile',
+        tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />,
+        tabBarColor: 'orange',
       },
     },
     Match: {
