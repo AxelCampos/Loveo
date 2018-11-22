@@ -1,4 +1,4 @@
-import R from 'ramda';
+/*import R from 'ramda';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -57,10 +57,48 @@ const styles = StyleSheet.create({
     }
 });
 
+const EditInput = (text, baseData, state, stateData) => {
+
+    const dataName = (newName) => this.setState({ newName: newName });
+    //console.log(stateData);
+    return (
+        <View>
+            <Text style={styles.label}>`{text}: {baseData}`</Text>
+            <TextInput style={styles.input}
+                underlineColorAndroid="transparent"
+                placeholderTextColor="#9a73ef"
+                autoCapitalize="none"
+                placeholder='nuevo nombre'
+                onChangeText={dataName}
+            //value={username}
+            />
+        </View>
+    );
+}
 class EditProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            newName: 'desconocido',
+            newCountry: 'no informado',
+            newCity: 'no informado',
+            newEmail: 'no informado',
+            newAge: 10,
+            newGender: 'no informado',
+            newCivilStatus: 'no informado',
+            newChildren: 'no informado',
+        };
+        this.state.text = {
+            newName: 'Nombre',
+            newCountry: 'País',
+            newCity: 'Ciudad',
+            newEmail: 'Correo Electrónico',
+            newAge: 'Edad',
+            newGender: 'Genero',
+            newCivilStatus: 'Estado Civil',
+            newChildren: 'hijos',
+        };
+        this.state.value = {
             newName: 'desconocido',
             newCountry: 'no informado',
             newCity: 'no informado',
@@ -92,6 +130,81 @@ class EditProfile extends Component {
 
     render() {
         const { user: { username, country, city, email, age, gender, civilStatus, children } } = this.props;
+        return (
+            <View style={styles.container}>
+                <ScrollView>
+                    <EditInput text={this.state.newName} baseData={username} stateData={newName} />
+                    <Text style={styles.label}>Nombre de Usuário: {username}</Text>
+                    <TextInput style={styles.input}
+                        underlineColorAndroid="transparent"
+                        placeholderTextColor="#9a73ef"
+                        autoCapitalize="none"
+                        placeholder='nuevo nombre'
+                        onChangeText={(newName) => this.setState({ newName })}
+                    //value={username}
+                    />
+                    <Text style={styles.label}>País: {country}</Text>
+                    <TextInput style={styles.input}
+                        underlineColorAndroid="transparent"
+                        placeholderTextColor="#9a73ef"
+                        autoCapitalize="none"
+                        placeholder='nuevo nombre'
+                        onChangeText={(newCountry) => this.setState({ newCountry })}
+                    //value={country}
+                    />
+                    <Text style={styles.label}>Ciudad: {city}</Text>
+                    <TextInput style={styles.input}
+                        underlineColorAndroid="transparent"
+                        placeholderTextColor="#9a73ef"
+                        autoCapitalize="none"
+                        placeholder='nuevo nombre'
+                        onChangeText={(newCity) => this.setState({ newCity })}
+                    //value={country}
+                    />
+                    <Text style={styles.label}>Correo Electrónico: {email}</Text>
+                    <TextInput style={styles.input}
+                        underlineColorAndroid="transparent"
+                        placeholderTextColor="#9a73ef"
+                        autoCapitalize="none"
+                        placeholder='nuevo nombre'
+                        onChangeText={(newEmail) => this.setState({ newEmail })}
+                    //value={country}
+                    />
+                    <Text style={styles.label}>Genero: {gender}</Text>
+                    <TextInput style={styles.input}
+                        underlineColorAndroid="transparent"
+                        placeholderTextColor="#9a73ef"
+                        autoCapitalize="none"
+                        placeholder='nuevo nombre'
+                        onChangeText={(newGender) => this.setState({ newGender })}
+                    //value={country}/>
+                    />
+                    <Text style={styles.label}>Estado Civil: {civilStatus}</Text>
+                    <TextInput style={styles.input}
+                        underlineColorAndroid="transparent"
+                        placeholderTextColor="#9a73ef"
+                        autoCapitalize="none"
+                        placeholder='nuevo nombre'
+                        onChangeText={(newCivilStatus) => this.setState({ newCivilStatus })}
+                    //value={country}
+                    />
+                    <Text style={styles.label}>Tiene hijos? {children}</Text>
+                    <TextInput style={styles.input}
+                        underlineColorAndroid="transparent"
+                        placeholderTextColor="#9a73ef"
+                        autoCapitalize="none"
+                        placeholder='nuevo nombre'
+                        onChangeText={(newChildren) => this.setState({ newChildren })}
+                    //value={country}
+                    />
+                    <TouchableOpacity style={styles.submitButton}
+                        onPress={this.update}
+                    >
+                        <Text style={styles.submitButtonText}>Submit</Text>
+                    </TouchableOpacity>
+                </ScrollView>
+            </View>
+        )
         return (
             <View style={styles.container}>
                 <ScrollView>
@@ -129,6 +242,15 @@ class EditProfile extends Component {
                         autoCapitalize="none"
                         placeholder='nuevo nombre'
                         onChangeText={(newEmail) => this.setState({ newEmail })}
+                    //value={country}
+                    />
+                    <Text style={styles.label}>Edad: {age}</Text>
+                    <TextInput style={styles.input}
+                        underlineColorAndroid="transparent"
+                        placeholderTextColor="#9a73ef"
+                        autoCapitalize="none"
+                        placeholder='nuevo nombre'
+                        onChangeText={(newAge) => this.setState({ newAge })}
                     //value={country}
                     />
                     <Text style={styles.label}>Genero: {gender}</Text>
@@ -216,4 +338,4 @@ const userQuery = graphql(USER_QUERY, {
 export default compose(
     userQuery,
     editUserMutation,
-)(EditProfile);
+)(EditProfile);*/
