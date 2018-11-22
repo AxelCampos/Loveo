@@ -20,6 +20,9 @@ const UserModel = db.define('user', {
   city: { type: Sequelize.STRING },
   username: { type: Sequelize.STRING },
   age: { type: Sequelize.INTEGER },
+  gender: { type: Sequelize.STRING },
+  civilStatus: { type: Sequelize.STRING },
+  children: { type: Sequelize.STRING },
   password: { type: Sequelize.STRING },
   likes: { type: Sequelize.STRING },
 });

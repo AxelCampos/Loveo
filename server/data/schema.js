@@ -43,7 +43,15 @@ export const typeDefs = gql`
 
   input EditUserInput {
     id: Int!
-    name: String
+    username: String
+    country: String!
+    city: String!
+    email: String!
+    age: Int!
+    gender: String
+    civilStatus: String
+    children: String
+    likes: Int
   }
 
   # a group chat entity
@@ -64,6 +72,9 @@ export const typeDefs = gql`
     email: String! # we will also require a unique email per user
     username: String! # this is the name we'll show other users
     age: Int!
+    gender: String
+    civilStatus: String
+    children: String
     messages: [Message!]! # messages sent by user
     groups: [Group!]! # groups the user belongs to
     friends: [User] # user's friends/contacts

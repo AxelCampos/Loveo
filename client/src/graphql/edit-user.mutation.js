@@ -4,7 +4,15 @@ const EDIT_USER_MUTATION = gql`
     mutation editUser($user: EditUserInput!){
         editUser(user:$user){
             id
-            name
+            username
+            country
+            city
+            email
+            age
+            gender
+            civilStatus
+            children
+            likes
         }
     }
 `;

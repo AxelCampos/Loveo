@@ -14,6 +14,10 @@ export const USERS_QUERY = gql`
         id
         url
       }
+      groups {
+        id
+        name
+      }
     }
   }
 `;
