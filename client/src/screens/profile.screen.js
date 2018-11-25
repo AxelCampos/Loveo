@@ -6,11 +6,11 @@ import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { graphql, compose } from 'react-apollo';
 import { StackActions, NavigationActions } from 'react-navigation';
-import USER_QUERY from '../graphql/user.query';
 import withLoading from '../components/withLoading';
 import Menu from '../components/navigator-menu-component';
 import CREATE_CONVERSATION_MUTATION from '../graphql/create-conversation.mutation';
 import UPDATE_USER_MUTATION from '../graphql/update-user.mutation';
+import USER_QUERY from '../graphql/user.query';
 
 const styles = StyleSheet.create({
   container: {
@@ -88,14 +88,19 @@ class Profile extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { enableScrollViewScroll: true };
+    this.state = { 
+      enableScrollViewScroll: true,
+      switcher: false,
+    };
     this.create = this.create.bind(this);
     this.addLike = this.addLike.bind(this);
   }
 
   addLike() {
     const { updateUser, user } = this.props;
-
+    this.setState({
+      switcher : true
+    });
     updateUser({
       id: user.id,
       likes: user.likes + 1,
@@ -140,7 +145,10 @@ class Profile extends Component {
 
   render() {
     const { user } = this.props;
+    const { switcher } = this.state;
     return (
+
+      
       <View
         style={styles.container}
         onStartShouldSetResponderCapture={() => {
@@ -171,7 +179,7 @@ class Profile extends Component {
               <Text style={styles.textStyle}>Ultima conexión: 13h</Text>
             </View>
             <View style={styles.icons}>
-              <Icon.Button
+              {switcher == false? <Icon.Button
                 underlayColor="transparent"
                 style={styles.iconStyle}
                 color="#F0625A"
@@ -180,7 +188,17 @@ class Profile extends Component {
                 borderRadius={30}
                 name="cards-heart"
                 onPress={this.addLike}
-              />
+              />:<Icon.Button
+              underlayColor="transparent"
+              style={styles.iconStyle}
+              color="#F0625A"
+              backgroundColor="white"
+              size={30}
+              borderRadius={30}
+              name="cards-heart"
+              
+            />}
+              
               <Icon.Button
                 underlayColor="transparent"
                 style={styles.iconStyle}
@@ -274,6 +292,7 @@ const userQuery = graphql(USER_QUERY, {
     user,
   }),
 });
+
 export default compose(
   userQuery,
   withLoading,

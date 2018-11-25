@@ -57,19 +57,20 @@ export const resolvers = {
       });
     },
     async createConversation(
-      _, {
+      _,
+      {
         group: { name, userIds, userId },
       },
     ) {
       const user = await User.findOne({
         where: {
-          id: userId
-        }
+          id: userId,
+        },
       });
       const friend = await User.findOne({
         where: {
-          id: userIds
-        }
+          id: userIds,
+        },
       });
       const group = await Group.create({
         name,
@@ -131,11 +132,35 @@ export const resolvers = {
     editUser(
       _,
       {
-        user: { id, username, country, city, email, age, gender, civilState, children, likes },
+        user: {
+          id, username, country, city, email, age, gender, civilState, children, likes,
+        },
       },
     ) {
-      return User.findOne({ where: { id } }).then(user => user.update({ username, country, city, email, age, gender, civilState, children, likes }));
+      return User.findOne({ where: { id } }).then(user => user.update({
+        username,
+        country,
+        city,
+        email,
+        age,
+        gender,
+        civilState,
+        children,
+        likes,
+      }));
     },
+    async editMiscreated(_, { id, userId }) {
+      const craco = await User.findOne({ where: { id: userId } });
+      const user = await User.findOne({ where: { id } });
+      await user.addMiscreated(craco);
+      return user;
+    },
+    async editFriend(_, { id, userId}) {
+      const friend = await User.findOne({ where: { id: userId } });
+      const user = await User.findOne({ where: { id } });
+      await user.addFriend(friend);
+      return user;
+    }
   },
 
   Group: {
@@ -188,6 +213,9 @@ export const resolvers = {
     },
     activities(user) {
       return user.getActivities();
+    },
+    miscreated(user) {
+      return user.getMiscreated();
     },
   },
   Photo: {

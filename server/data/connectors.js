@@ -48,6 +48,7 @@ const ActivityModel = db.define('activity', {
 UserModel.belongsToMany(GroupModel, { through: 'GroupUser' });
 // users belong to multiple users as friends
 UserModel.belongsToMany(UserModel, { through: 'Friends', as: 'friends' });
+UserModel.belongsToMany(UserModel, { through: 'Miscreated', as: 'miscreated' });
 // messages are sent from users
 MessageModel.belongsTo(UserModel);
 // messages are sent to groups
