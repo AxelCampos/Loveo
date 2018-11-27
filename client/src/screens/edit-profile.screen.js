@@ -18,21 +18,58 @@ import {
 } from 'react-native';
 import { graphql, compose } from 'react-apollo';
 import { StackActions, NavigationActions } from 'react-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { USER_QUERY } from '../graphql/user.query';
 import EDIT_USER_MUTATION from '../graphql/edit-user.mutation';
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        flexDirection: 'column',
         //flexDirection: 'row', //'column', 'row'
         //justifyContent: 'flex-start', //'center', 'flex-start', 'flex-end', 'space-around', 'space-between'
         //alignItems: "flex-start", //'center', 'flex-start', 'flex-end', 'stretched'
-        paddingTop: 23
+        paddingTop: 10
     },
-    formContainer: {
-        justifyContent: 'center',
-        marginTop: 50,
-        padding: 20,
-        backgroundColor: '#ffffff',
+    header: {
+        flex: 0.1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 5
+    },
+    main: {
+        flex: 0.8,
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginTop: 5,
+    },
+    submit: {
+        flex: 0.1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginTop: 5,
+        marginBottom: 15,
+    },
+    icon: {
+        flex: 0.5,
+        //alignItems: 'center',
+        marginLeft: 35,
+        marginRight: 165,
+        alignSelf: 'center',
+        //position: 'absolute',
+        //left: 5
+    },
+    button: {
+        flex: 0.5,
+        //position: 'absolute',
+        //alignItems: 'flex-end',
+        //marginLeft: 300,
+        //left: 130,
+        //right: 130,
+        padding: 6,
+        borderColor: '#eee',
+        borderBottomWidth: 1,
+        alignSelf: "center",
     },
     input: {
         marginBottom: 15,
@@ -44,7 +81,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 20,
         padding: 10,
-
+        width: 350,
     },
     submitButton: {
         backgroundColor: '#9cb1b7',
@@ -52,9 +89,10 @@ const styles = StyleSheet.create({
         margin: 15,
         height: 40,
         borderRadius: 20,
+        width: 200,
     },
     submitButtonText: {
-        //color: 'white'
+        textAlign: 'center',
     },
     label: {
         marginBottom: 0,
@@ -76,22 +114,32 @@ const styles = StyleSheet.create({
         height: 40,
         borderRadius: 20,
         padding: 10,
-        //borderColor: '#c7d6db',
-        //backgroundColor: 'lightblue',
         //color: '#7a42f4',
     },
-    header: {
-        alignItems: 'flex-end',
-        padding: 6,
-        borderColor: '#eee',
-        borderBottomWidth: 1,
-    },
 });
-const Header = ({ onPress }) => (
+
+/*class Header extends Component {
+    goToProfile = () => {
+        const { navigation: { navigate } } = this.props;
+        navigate('User', { userId: 1 });
+    };
+    render() {
+        return (
+            <View >
+                <Icon size={40} name="cogs" color="lightgreen" />
+                <Button style={styles.button} title="Volver al Perfil" onPress={this.goToProfile} />
+            </View>
+        );
+    }
+}*/
+
+const Header = ({ goToProfile }) => (
     <View style={styles.header}>
-        <Button title="Volver al Perfil" onPress={onPress} />
+        <Icon style={styles.icon} size={40} name="cogs" color="lightgreen" />
+        <Button style={styles.button} title="Volver al Perfil" onPress={goToProfile} />
     </View>
 );
+
 class EditProfile extends Component {
     constructor(props) {
         super(props);
@@ -112,7 +160,7 @@ class EditProfile extends Component {
     update = () => {
         const { editUser, user } = this.props;
         const { newName, newCountry, newCity, newEmail, newAge, newGender, newCivilStatus, newChildren } = this.state;
-        console.log('aqui', user.id);
+        console.log('aqui', newCivilStatus);
         editUser({
             id: user.id,
             username: newName,
@@ -128,10 +176,7 @@ class EditProfile extends Component {
         alert('Usuário actualizado.');
     }
     goToProfile = () => {
-        const {
-            navigation: { navigate },
-            user,
-        } = this.props;
+        const { user, navigation: { navigate } } = this.props;
         ToastAndroid.showWithGravity(
             'Salir de la Pagina y volver al Perfil',
             ToastAndroid.SHORT,
@@ -141,14 +186,13 @@ class EditProfile extends Component {
             userId: user.id,
         });
     };
-
     render() {
         const { user: { username, country, city, email, age, gender, civilStatus, children } } = this.props;
         return (
             <View style={styles.container}>
-                <ScrollView>
-                    <Header onPress={this.goToProfile} />
-                    <ScrollView>
+                <Header goToProfile={this.goToProfile} />
+                <View style={styles.main}>
+                    <ScrollView >
                         <Text style={styles.label}>Nombre de Usuário: {username}</Text>
                         <TextInput style={styles.input}
                             underlineColorAndroid="transparent"
@@ -219,17 +263,21 @@ class EditProfile extends Component {
                             <Picker.Item label='tiene hijos' value='tiene hijos' />
                             <Picker.Item label='no especificado' value='no especificado' />
                         </Picker>
+
+                    </ScrollView>
+                    <View style={styles.submit}>
                         <TouchableOpacity style={styles.submitButton}
                             onPress={this.update}
                         >
                             <Text style={styles.submitButtonText}>Submit</Text>
                         </TouchableOpacity>
-                    </ScrollView>
-                </ScrollView>
+                    </View>
+                </View>
             </View>
         )
     }
 }
+
 const editUserMutation = graphql(EDIT_USER_MUTATION, {
     props: ({ mutate }) => ({
         editUser: user => mutate({

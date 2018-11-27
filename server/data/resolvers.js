@@ -133,7 +133,7 @@ export const resolvers = {
       _,
       {
         user: {
-          id, username, country, city, email, age, gender, civilState, children, likes,
+          id, username, country, city, email, age, gender, civilStatus, children, likes,
         },
       },
     ) {
@@ -144,7 +144,7 @@ export const resolvers = {
         email,
         age,
         gender,
-        civilState,
+        civilStatus,
         children,
         likes,
       }));
@@ -155,7 +155,7 @@ export const resolvers = {
       await user.addMiscreated(craco);
       return user;
     },
-    async editFriend(_, { id, userId}) {
+    async editFriend(_, { id, userId }) {
       const friend = await User.findOne({ where: { id: userId } });
       const user = await User.findOne({ where: { id } });
       await user.addFriend(friend);
