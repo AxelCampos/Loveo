@@ -9,6 +9,10 @@ const GROUP_QUERY = gql`
       users {
         id
         username
+        photoprofile {
+          id
+          url
+        }
       }
       messages {
         ...MessageFragment
