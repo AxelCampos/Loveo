@@ -252,7 +252,7 @@ class EditProfile extends Component {
                         </Picker>
                         <Text style={styles.label}>Estado Civil: {civilStatus}</Text>
                         <Picker style={styles.picker} selectedValue={this.state.newCivilStatus} onValueChange={(newCivilStatus) => this.setState({ newCivilStatus })}>
-                            <Picker.Item label='soltero nunca casado' value='soltero nunca casado' />
+                            <Picker.Item label='soltero' value='soltero' />
                             <Picker.Item label='divorciado' value='divorciado' />
                             <Picker.Item label='separado' value='separado' />
                             <Picker.Item label='casado' value='casado' />
