@@ -270,7 +270,12 @@ const AppNavigator = createStackNavigator(
     GroupDetails: { screen: GroupDetails },
     NewGroup: { screen: NewGroup },
     FinalizeGroup: { screen: FinalizeGroup },
-    EditProfile: { screen: EditProfile },
+    EditProfile: {
+      screen: EditProfile,
+      navigationOptions: {
+        title: 'Editar Perfil',
+      }
+    },
   },
   {
     navigationOptions: {

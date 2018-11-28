@@ -83,6 +83,7 @@ export const typeDefs = gql`
     photoprofile: Photo
     lifestyle: Lifestyle
     activities: [Activity]
+    miscreated: [User]
   }
 
   #union To = User | Group
@@ -148,8 +149,10 @@ export const typeDefs = gql`
     leaveGroup(id: Int!, userId: Int!): Group
     updateGroup(group: UpdateGroupInput!): Group
     updateUser(user: UpdateUserInput!): User
-    editUser(user: EditUserInput!): User
     createUser(user: CreateUserInput!): User
+    editUser(user: EditUserInput!): User
+    editMiscreated(id: Int, userId: Int): User
+    editFriend(id: Int, userId: Int): User
   }
   schema {
     query: Query

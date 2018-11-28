@@ -11,6 +11,9 @@ import {
   onButtonPress,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { graphql, compose } from 'react-apollo';
+import { USER_QUERY } from '../graphql/user.query';
+import CREATE_USER_MUTATION from '../graphql/create-user.mutation';
 
 // create a component
 class RegisterForm extends Component {
@@ -56,13 +59,70 @@ class RegisterForm extends Component {
             secureTextEntry
           />
         </View>
-        <TouchableOpacity style={styles.buttonContainer} onPress={onButtonPress}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={this.createUserMutation}>
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
       </View>
     );
   }
 }
+
+creachione = () => {
+  const { createUser } = this.props;
+
+  createUser({
+    name: user.username,
+    mail: user.email,
+    pass: user.password,
+  })
+    .then(() => {
+      ToastAndroid.showWithGravity('Usuario creado!', ToastAndroid.SHORT, ToastAndroid.CENTER);
+    })
+    .catch((error) => {
+      Alert.alert('Error Creating New User', error.message, [{ text: 'OK', onPress: () => {} }]);
+    });
+};
+
+const createUserMutation = graphql(CREATE_USER_MUTATION, {
+  props: ({ mutate }) => ({
+    createUser: user => mutate({
+      variables: { user },
+      update: (store, { data: { createUser } }) => {
+        const data = store.readQuery({
+          query: USER_QUERY,
+          variables: {
+            id: user.id,
+          },
+        });
+        data.user.username = createUser.username;
+        data.user.email = createUser.email;
+        data.user.password = createUser.password;
+        // data.user.likes = 0;
+        console.log('*****username', createUser.username);
+        console.log('<<<<<<<<<<<email', createUser.email);
+        console.log('>>>>>>>>>>password', createUser.password);
+        store.writeQuery({
+          query: USER_QUERY,
+          variables: {
+            id: user.id,
+          },
+          data,
+        });
+      },
+    }),
+  }),
+});
+
+const userQuery = graphql(USER_QUERY, {
+  options: {
+    variables: {
+      id: 50,
+    },
+  },
+  props: ({ data: { user } }) => ({
+    user: user || null,
+  }),
+});
 
 // defining styles
 const styles = StyleSheet.create({
@@ -95,4 +155,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
-export default RegisterForm;
+export default compose(
+  userQuery,
+  createUserMutation,
+)(RegisterForm);

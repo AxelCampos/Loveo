@@ -129,14 +129,7 @@ export const resolvers = {
     ) {
       return Group.findOne({ where: { id } }).then(group => group.update({ name }));
     },
-    editUser(
-      _,
-      {
-        user: { id, username, country, city, email, age, gender, civilState, children, likes },
-      },
-    ) {
-      return User.findOne({ where: { id } }).then(user => user.update({ username, country, city, email, age, gender, civilState, children, likes }));
-    },
+
     createUser(
       _,
       {
@@ -148,6 +141,39 @@ export const resolvers = {
         email,
         password,
       });
+    },
+
+    editUser(
+      _,
+      {
+        user: {
+          id, username, country, city, email, age, gender, civilStatus, children, likes,
+        },
+      },
+    ) {
+      return User.findOne({ where: { id } }).then(user => user.update({
+        username,
+        country,
+        city,
+        email,
+        age,
+        gender,
+        civilStatus,
+        children,
+        likes,
+      }));
+    },
+    async editMiscreated(_, { id, userId }) {
+      const craco = await User.findOne({ where: { id: userId } });
+      const user = await User.findOne({ where: { id } });
+      await user.addMiscreated(craco);
+      return user;
+    },
+    async editFriend(_, { id, userId }) {
+      const friend = await User.findOne({ where: { id: userId } });
+      const user = await User.findOne({ where: { id } });
+      await user.addFriend(friend);
+      return user;
     },
   },
 
@@ -201,6 +227,9 @@ export const resolvers = {
     },
     activities(user) {
       return user.getActivities();
+    },
+    miscreated(user) {
+      return user.getMiscreated();
     },
   },
   Photo: {

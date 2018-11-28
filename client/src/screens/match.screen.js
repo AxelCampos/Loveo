@@ -16,6 +16,8 @@ import Swiper from 'react-native-deck-swiper';
 import USERS_QUERY from '../graphql/users.query';
 import CREATE_CONVERSATION_MUTATION from '../graphql/create-conversation.mutation';
 import UPDATE_USER_MUTATION from '../graphql/update-user.mutation';
+import EDIT_MISCREATED_MUTATION from '../graphql/edit-miscreated.mutation';
+import EDIT_FRIEND_MUTATION from '../graphql/edit-friend.mutation';
 import withLoading from '../components/withLoading';
 
 const styles = StyleSheet.create({
@@ -135,19 +137,33 @@ class Match extends PureComponent {
   };
 
   swipeRight = (index) => {
-    console.log('loveo');
-    const { updateUser } = this.props;
+    
+    const { updateUser, editFriend } = this.props;
 
     const user = this.props.users.sort(this.compareUsers)[index];
-    console.log(user.id, 'jbfaghfragh', user.likes);
+    
     updateUser({
       id: user.id,
       likes: user.likes + 1,
     });
+
+    editFriend({
+      id: 1,
+      userId: user.id,
+    }).catch((error)=>{
+      Alert.alert('Error Creating New Group' , error.message, [{ text: 'OK',onPress:()=>{}}]);
+    })
   };
 
   swipeLeft = (index) => {
-    console.log('no lo veo', this.props.users.sort(this.compareUsers)[index]);
+
+    const { editMiscreated } = this.props;
+    const user = this.props.users.sort(this.compareUsers)[index];
+
+    editMiscreated({
+      id: 1,
+      userId: user.id,
+    })
   };
 
   onSwiped = (index) => {
@@ -155,8 +171,7 @@ class Match extends PureComponent {
     this.setState({
       cardIndex: cardIndex + 1,
     });
-    console.log(this.props.users.sort(this.compareUsers)[index]);
-    console.log('swiped!!!', index);
+    
   };
 
   compareUsers = (a, b) => a.id - b.id;
@@ -169,8 +184,7 @@ class Match extends PureComponent {
     const {cardIndex}=this.state;
     const user = this.props.users.sort(this.compareUsers)[index];
     
-    console.log("WWERETRWEr", this.props.users.sort(this.compareUsers)[index]);
-    console.log("ñklsdfsdgfkoñjdg", user);
+    
     createConversation({
       name:user.username,
       userIds:user.id,
@@ -187,7 +201,7 @@ class Match extends PureComponent {
   render = () => {
     const { users } = this.props;
     const { swipedAllCards } = this.state;
-    console.log(users, 'AAAAAAAAA');
+    
     return (
       <View style={styles.container}>
         {!swipedAllCards && (
@@ -311,7 +325,7 @@ const createConversationMutation = graphql(CREATE_CONVERSATION_MUTATION, {
 const updateUserMutation = graphql(UPDATE_USER_MUTATION, {
   props: ({ mutate }) => ({
     updateUser: (user) => {
-      console.log('lirios', user);
+      
       return mutate({
         variables: { user },
 
@@ -335,10 +349,67 @@ const updateUserMutation = graphql(UPDATE_USER_MUTATION, {
     },
   }),
 });
+const editFriendMutation = graphql(EDIT_FRIEND_MUTATION, {
+  props: ({ mutate }) => ({
+    editFriend: (id,userId) => {
+
+      return mutate({
+        variables: id, userId,
+
+        /* update: (store, { data: { editFriend } }) => {
+          const data = store.readQuery({
+            query: USERS_QUERY,
+            variables: {
+              id: user.id,
+            },
+          });
+          data.user.friends.push(editFriend);
+          store.writeQuery({
+            query: USERS_QUERY,
+            variables: {
+              id: user.id,
+            },
+            data,
+          });
+         },*/
+      })
+    }
+  })
+})
+
+const editMiscreatedMutation = graphql(EDIT_MISCREATED_MUTATION, {
+  props: ({ mutate }) => ({
+    editMiscreated: (id,userId) => {
+
+      return mutate({
+        variables: id, userId
+
+       /* update: (store, { data: {editMiscreated} }) => {
+          const data = store.readQuery({
+            query: USERS_QUERY,
+            variables: {
+              id: user.id,
+            },
+          });
+          data.user.miscreated.push(editMiscreated);
+          store.writeQuery({
+            query: USERS_QUERY,
+            variables: {
+              id: user.id,
+            },
+            data,
+          });
+        },*/
+      })
+    }
+  })
+})
 
 export default compose(
   updateUserMutation,
   createConversationMutation,
   usersQuery,
   withLoading,
+  editFriendMutation,
+  editMiscreatedMutation,
 )(Match);
