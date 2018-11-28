@@ -112,23 +112,26 @@ const styles = StyleSheet.create({
     },
 });
 
-const UserChosen = ({ item, goToProfile }) => (
-    <TouchableHighlight key={item.id} onPress={goToProfile}>
-        <View style={styles.tendencyContainer}>
-            <Image style={styles.userImage} source={{ uri: item.photoprofile.url }} />
-            <View style={styles.userLikes}>
-                <Icon size={12} name="heart" color="#F0625A" />
-                <Text style={styles.textLikes}>{item.likes}</Text>
-            </View>
-            <Text style={styles.userName}>
-                {item.username} /
+const UserChosen = ({ item, goToProfile }) => {
+    console.log(item.username, item.gender, item.civilStatus, item.children);
+    return (
+        <TouchableHighlight key={item.id} onPress={goToProfile}>
+            <View style={styles.tendencyContainer}>
+                <Image style={styles.userImage} source={{ uri: item.photoprofile.url }} />
+                <View style={styles.userLikes}>
+                    <Icon size={12} name="heart" color="#F0625A" />
+                    <Text style={styles.textLikes}>{item.likes}</Text>
+                </View>
+                <Text style={styles.userName}>
+                    {item.username} /
                 {item.gender} /
                 {item.civilStatus} /
                 {item.children}
-            </Text>
-        </View>
-    </TouchableHighlight>
-);
+                </Text>
+            </View>
+        </TouchableHighlight>
+    );
+};
 
 UserChosen.propTypes = {
     goToProfile: PropTypes.func,
@@ -158,26 +161,18 @@ class Lifestyle extends Component {
         navigate('Profile', { userId: item.id });
     }
 
-    selectGender = () => {
-        const { users } = this.props;
-        return (
-            users.filter((item) => (item.gender = this.state.gender))
-        );
+    selectGender = (item) => {
+        return item.gender == this.state.gender;
     }
-    selectCivilStatus = () => {
-        const { users } = this.props;
-        return (
-            users.filter((item) => (item.civilStatus = this.state.civilStatus))
-        );
+    selectCivilStatus = (item) => {
+        return item.civilStatus == this.state.civilStatus;
     }
-    selectChildren = () => {
-        const { users } = this.props;
-        return (
-            users.filter((item) => (item.children = this.state.children))
-        );
+    selectChildren = (item) => {
+        return item.children == this.state.children;
     }
 
     render() {
+
         const { users } = this.props;
         return (
             <View style={styles.container}>
@@ -209,7 +204,7 @@ class Lifestyle extends Component {
                 </View>
                 <View style={styles.main}>
                     <FlatList
-                        data={users.sort(this.selectGender()).sort(this.selectCivilStatus()).sort(this.selectChildren()).slice().reverse()}
+                        data={users.slice().filter(this.selectGender).filter(this.selectCivilStatus).filter(this.selectChildren)}
                         keyExtractor={this.keyExtractor}
                         renderItem={this.renderItem}
                     //numColumns={2}
