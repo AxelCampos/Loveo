@@ -261,23 +261,7 @@ const updateUserMutation = graphql(UPDATE_USER_MUTATION, {
     updateUser: user => mutate({
       variables: { user },
 
-      update: (store, { data: { updateUser } }) => {
-        const data = store.readQuery({
-          query: USER_QUERY,
-          variables: {
-            id: user.id,
-          },
-        });
-        data.user.likes = updateUser.likes;
-
-        store.writeQuery({
-          query: USER_QUERY,
-          variables: {
-            id: user.id,
-          },
-          data,
-        });
-      },
+     
     }),
   }),
 });

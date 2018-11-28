@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
 
 const Header = ({ goToProfile }) => (
     <View style={styles.header}>
-        <Icon style={styles.icon} size={40} name="cogs" color="lightgreen" />
+        <Icon style={styles.icon} size={40} name="cog" color="lightgreen" />
         <Button style={styles.button} title="Volver al Perfil" onPress={goToProfile} />
     </View>
 );

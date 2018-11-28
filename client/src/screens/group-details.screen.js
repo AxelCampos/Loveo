@@ -83,12 +83,7 @@ class GroupDetails extends Component {
     title: `${navigation.state.params.title}`,
   });
 
-  constructor(props) {
-    super(props);
-    this.deleteGroup = this.deleteGroup.bind(this);
-    this.leaveGroup = this.leaveGroup.bind(this);
-    this.renderItem = this.renderItem.bind(this);
-  }
+  
 
   keyExtractor = item => item.id.toString();
 
@@ -99,7 +94,7 @@ class GroupDetails extends Component {
     </View>
   );
 
-  deleteGroup() {
+  deleteGroup=()=> {
     const { deleteGroup, navigation } = this.props;
     deleteGroup(navigation.state.params.id)
       .then(() => {
@@ -108,9 +103,9 @@ class GroupDetails extends Component {
       .catch((e) => {
         console.log(e); // eslint-disable-line no-console
       });
-  }
+  };
 
-  leaveGroup() {
+  leaveGroup=()=> {
     const { leaveGroup, navigation } = this.props;
     leaveGroup({
       id: navigation.state.params.id,
@@ -122,7 +117,7 @@ class GroupDetails extends Component {
       .catch((e) => {
         console.log(e); // eslint-disable-line no-console
       });
-  }
+  };
 
   render() {
     const { group, loading } = this.props;
