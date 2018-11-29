@@ -2,17 +2,12 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
-
-  StyleSheet,
-  Text,
-  Alert,
-  View,
-  Image,
-
+  StyleSheet, Text, Alert, View, Image,
 } from 'react-native';
 import { graphql, compose } from 'react-apollo';
 import { StackActions, NavigationActions } from 'react-navigation';
 import Swiper from 'react-native-deck-swiper';
+import USER_QUERY from '../graphql/user.query';
 import USERS_QUERY from '../graphql/users.query';
 import CREATE_CONVERSATION_MUTATION from '../graphql/create-conversation.mutation';
 import UPDATE_USER_MUTATION from '../graphql/update-user.mutation';
@@ -137,11 +132,10 @@ class Match extends PureComponent {
   };
 
   swipeRight = (index) => {
-    
     const { updateUser, editFriend } = this.props;
 
     const user = this.props.users.sort(this.compareUsers)[index];
-    
+
     updateUser({
       id: user.id,
       likes: user.likes + 1,
@@ -150,20 +144,19 @@ class Match extends PureComponent {
     editFriend({
       id: 1,
       userId: user.id,
-    }).catch((error)=>{
-      Alert.alert('Error Creating New Group' , error.message, [{ text: 'OK',onPress:()=>{}}]);
-    })
+    }).catch((error) => {
+      Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => {} }]);
+    });
   };
 
   swipeLeft = (index) => {
-
     const { editMiscreated } = this.props;
     const user = this.props.users.sort(this.compareUsers)[index];
 
     editMiscreated({
       id: 1,
       userId: user.id,
-    })
+    });
   };
 
   onSwiped = (index) => {
@@ -171,37 +164,35 @@ class Match extends PureComponent {
     this.setState({
       cardIndex: cardIndex + 1,
     });
-    
   };
 
   compareUsers = (a, b) => a.id - b.id;
-
-  create=(index)=>{
-    const{
-      createConversation,
-      navigation,
-    }=this.props;
-    const {cardIndex}=this.state;
+  filter=()=>{
+    
+  }
+  create = (index) => {
+    const { createConversation, navigation } = this.props;
+    const { cardIndex } = this.state;
     const user = this.props.users.sort(this.compareUsers)[index];
-    
-    
+
+
     createConversation({
-      name:user.username,
-      userIds:user.id,
-      userId:1,
+      name: user.username,
+      userIds: user.id,
+      userId: 1,
     })
-    .then((res)=>{
-      navigation.dispatch(goToNewGroup(res.data.createConversation));
-    })
-    .catch((error)=>{
-      Alert.alert('Error Creating New Group' , error.message, [{ text: 'OK',onPress:()=>{}}]);
-    })
-    
+      .then((res) => {
+        navigation.dispatch(goToNewGroup(res.data.createConversation));
+      })
+      .catch((error) => {
+        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => {} }]);
+      });
   };
+
   render = () => {
     const { users } = this.props;
     const { swipedAllCards } = this.state;
-    
+
     return (
       <View style={styles.container}>
         {!swipedAllCards && (
@@ -276,7 +267,7 @@ class Match extends PureComponent {
               width={85}
               name="email-outline"
               title="Swipe Left"
-              onPress={()=>this.create(this.state.cardIndex)}
+              onPress={() => this.create(this.state.cardIndex)}
             />
             <Icon.Button
               underlayColor="transparent"
@@ -293,6 +284,17 @@ class Match extends PureComponent {
     );
   };
 }
+const userQuery = graphql(USER_QUERY, {
+  options: () => ({
+    variables: {
+      id: 1,
+    },
+  }),
+  props: ({ data: {loading, user } }) => ({
+    loading:loading,
+    user:user,
+  }),
+});
 const usersQuery = graphql(USERS_QUERY, {
   options: () => ({}),
   props: ({ data: { users } }) => ({
@@ -301,12 +303,12 @@ const usersQuery = graphql(USERS_QUERY, {
 });
 const createConversationMutation = graphql(CREATE_CONVERSATION_MUTATION, {
   props: ({ mutate }) => ({
-    createConversation: group => {
-      console.log('ayaguasca',group);
-      return(
-      mutate({
-      variables: { group },
-      update: (store, { data: { createConversation } }) => {
+    createConversation: (group) => {
+      console.log('ayaguasca', group);
+      return mutate({
+        variables: { group },
+        refetchQueries: [{ query: USERS_QUERY }],
+        /* update: (store, { data: { createConversation } }) => {
         // Read the data from our cache for this query.
         const data = store.readQuery({ query: USERS_QUERY, variables: { id: group.userId } });
        console.log("ññññññññññ",data);
@@ -318,49 +320,40 @@ const createConversationMutation = graphql(CREATE_CONVERSATION_MUTATION, {
           variables: { id: group.userId },
           data,
         });
-      },
-    }))},
-  }),
-});
-const updateUserMutation = graphql(UPDATE_USER_MUTATION, {
-  props: ({ mutate }) => ({
-    updateUser: (user) => {
-      
-      return mutate({
-        variables: { user },
-    
+      }, */
       });
     },
   }),
 });
+const updateUserMutation = graphql(UPDATE_USER_MUTATION, {
+  props: ({ mutate }) => ({
+    updateUser: user => mutate({
+      variables: { user },
+    }),
+  }),
+});
 const editFriendMutation = graphql(EDIT_FRIEND_MUTATION, {
   props: ({ mutate }) => ({
-    editFriend: (id,userId) => {
-
-      return mutate({
-        variables: id, userId,
-
-       
-      })
-    }
-  })
-})
+    editFriend: (id, userId) => mutate({
+      variables: id,
+      userId,
+    }),
+  }),
+});
 
 const editMiscreatedMutation = graphql(EDIT_MISCREATED_MUTATION, {
   props: ({ mutate }) => ({
-    editMiscreated: (id,userId) => {
-
-      return mutate({
-        variables: id, userId
-
-      })
-    }
-  })
-})
+    editMiscreated: (id, userId) => mutate({
+      variables: id,
+      userId,
+    }),
+  }),
+});
 
 export default compose(
   updateUserMutation,
   createConversationMutation,
+  userQuery,
   usersQuery,
   withLoading,
   editFriendMutation,

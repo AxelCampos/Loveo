@@ -9,6 +9,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  TextInput,
 } from 'react-native';
 import { graphql, compose } from 'react-apollo';
 import { NavigationActions, StackActions } from 'react-navigation';
@@ -16,6 +17,7 @@ import GROUP_QUERY from '../graphql/group.query';
 import { USER_QUERY } from '../graphql/user.query';
 import DELETE_GROUP_MUTATION from '../graphql/delete-group.mutation';
 import LEAVE_GROUP_MUTATION from '../graphql/leave-group.mutation';
+import EDIT_GROUP_MUTATION from '../graphql/edit-group.mutation';
 
 const resetAction = StackActions.reset({
   index: 0,
@@ -79,9 +81,19 @@ const styles = StyleSheet.create({
   },
 });
 class GroupDetails extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    title: `${navigation.state.params.title}`,
-  });
+  static navigationOptions = ({ navigation }) => {
+    const { state } = navigation;
+    const isReady = false;
+
+    return {
+      title: `${navigation.state.params.title}`,
+      headerRight: !isReady ? undefined :
+        <View style={{ paddingRight: 10 }}>
+          <Button title="Edit" />
+        </View>
+      
+    };
+  };
 
   keyExtractor = item => item.id.toString();
 
@@ -117,6 +129,8 @@ class GroupDetails extends Component {
       });
   };
 
+  
+
   render() {
     const { group, loading } = this.props;
     // render loading placeholder while we fetch messages
@@ -144,7 +158,9 @@ class GroupDetails extends Component {
                   <Text>edit</Text>
                 </TouchableOpacity>
                 <View style={styles.groupNameBorder}>
-                  <Text style={styles.groupName}>{group.name}</Text>
+                  <TextInput style={styles.groupName} placeholder={`${group.name}`} onSubmitEditing = {()=>this.setState({
+                    isReady : true
+                  })}   />
                 </View>
               </View>
               <Text style={styles.participants}>
@@ -198,6 +214,13 @@ const groupQuery = graphql(GROUP_QUERY, {
     group,
   }),
 });
+const updateGroupMutation = graphql(EDIT_GROUP_MUTATION, {
+  props: ({ mutate }) => ({
+    updateGroup: group => mutate({
+      variables: { group },
+    }),
+  }),
+});
 const deleteGroupMutation = graphql(DELETE_GROUP_MUTATION, {
   props: ({ mutate }) => ({
     deleteGroup: id => mutate({
@@ -237,6 +260,7 @@ const leaveGroupMutation = graphql(LEAVE_GROUP_MUTATION, {
   }),
 });
 export default compose(
+  updateGroupMutation,
   groupQuery,
   deleteGroupMutation,
   leaveGroupMutation,

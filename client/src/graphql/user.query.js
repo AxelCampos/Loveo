@@ -22,6 +22,10 @@ export const USER_QUERY = gql`
         name
         users {
           id
+          photoprofile {
+            id
+            url
+          }
         }
       }
       album {
@@ -35,6 +39,10 @@ export const USER_QUERY = gql`
           id
           url
         }
+      }
+      miscreated {
+        id
+        username
       }
     }
   }

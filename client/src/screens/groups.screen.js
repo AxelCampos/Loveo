@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderBottomColor: '#eee',
     borderBottomWidth: 1,
-    marginHorizontal: 8,
-    marginTop: 5,
+    marginHorizontal: 10,
+    marginTop: 10,
   },
   groupName: {
     color:'white',
@@ -75,7 +75,7 @@ const Group = ({ goToMessages, group:{id, name,users} }) => {
       <View>
         <View style={styles.groupContainer}>
 
-        {users.length <=2 ? <Image style={styles.image} source={{uri:"http://as01.epimg.net/futbol/imagenes/2016/09/13/internacional/1473785510_293618_1473785574_noticia_normal.jpg"}}></Image> :<Image style={styles.image} source={{uri:"http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg"}}></Image>}
+        {users.length <=2 ? <Image style={styles.image} source={{uri:users[1].photoprofile.url}}></Image> :<Image style={styles.image} source={{uri:"http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg"}}></Image>}
         </View>
         <Text style={styles.groupName}>{name}</Text>
       </View>
@@ -157,6 +157,10 @@ Groups.propTypes = {
         users: PropTypes.arrayOf(
           PropTypes.shape({
             id: PropTypes.id,
+            photoprofile:PropTypes.shape({
+              id:PropTypes.number,
+              url:PropTypes.string,
+            }),
           }),
         ),
       }),
