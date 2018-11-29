@@ -20,6 +20,9 @@ export const USER_QUERY = gql`
       groups {
         id
         name
+        users {
+          id
+        }
       }
       album {
         id
@@ -29,6 +32,7 @@ export const USER_QUERY = gql`
         id
         username
         photoprofile {
+          id
           url
         }
       }
