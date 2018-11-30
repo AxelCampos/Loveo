@@ -83,17 +83,40 @@ const styles = StyleSheet.create({
 class GroupDetails extends Component {
   static navigationOptions = ({ navigation }) => {
     const { state } = navigation;
-    const isReady = false;
-
+    const isReady = state.params && state.params.mode === 'ready';
     return {
       title: `${navigation.state.params.title}`,
-      headerRight: !isReady ? undefined :
+      headerRight: isReady ? (
         <View style={{ paddingRight: 10 }}>
-          <Button title="Edit" />
+          <Button title="Edit" onPress={state.params.edit} />
         </View>
-      
+      ) : (
+        undefined
+      ),
     };
   };
+
+  constructor(props) {
+    super(props);
+    const { group } = this.props;
+    this.state = {
+      groupName: group.name,
+    };
+    this.edit = this.edit.bind(this);
+  }
+
+  componentDidMount() {
+    const { groupName } = this.state;
+    this.refreshNavigation(false);
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    const { groupName } = this.state;
+    const { group } = this.props;
+    if (nextState.groupName.length !== groupName.length) {
+      this.refreshNavigation(nextState.groupName.length && nextState.groupName !== group.name);
+    }
+  }
 
   keyExtractor = item => item.id.toString();
 
@@ -129,10 +152,35 @@ class GroupDetails extends Component {
       });
   };
 
-  
+  edit = () => {
+    const { groupName } = this.state;
+    const { updateGroup, group } = this.props;
+    console.log('sahdfpiuhiu', group, 'jbsdfdgh', groupName);
+    updateGroup({
+      id: group.id,
+      name: groupName,
+    });
+  };
+
+  refreshNavigation(ready) {
+    const { navigation } = this.props;
+    const { groupName } = this.state;
+    navigation.setParams({
+      mode: ready ? 'ready' : undefined,
+      edit: this.edit,
+      groupName,
+    });
+  }
+
+  onNameChange = (text) => {
+    this.setState({
+      groupName: text,
+    });
+  };
 
   render() {
     const { group, loading } = this.props;
+    const { groupName } = this.state;
     // render loading placeholder while we fetch messages
     if (!group || loading) {
       return (
@@ -143,26 +191,26 @@ class GroupDetails extends Component {
     }
     return (
       <View style={styles.container}>
+        <View style={styles.detailsContainer}>
+          <TouchableOpacity style={styles.groupImageContainer} onPress={this.pickGroupImage}>
+            <Image style={styles.groupImage} source={{ uri: 'https://reactjs.org/logo-og.png' }} />
+            <Text>edit</Text>
+          </TouchableOpacity>
+          <View style={styles.groupNameBorder}>
+            <TextInput
+              style={styles.groupName}
+              placeholder={`${group.name}`}
+              value={groupName}
+              onChangeText={text => this.onNameChange(text)}
+            />
+          </View>
+        </View>
         <FlatList
           data={group.users}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
           ListHeaderComponent={() => (
             <View>
-              <View style={styles.detailsContainer}>
-                <TouchableOpacity style={styles.groupImageContainer} onPress={this.pickGroupImage}>
-                  <Image
-                    style={styles.groupImage}
-                    source={{ uri: 'https://reactjs.org/logo-og.png' }}
-                  />
-                  <Text>edit</Text>
-                </TouchableOpacity>
-                <View style={styles.groupNameBorder}>
-                  <TextInput style={styles.groupName} placeholder={`${group.name}`} onSubmitEditing = {()=>this.setState({
-                    isReady : true
-                  })}   />
-                </View>
-              </View>
               <Text style={styles.participants}>
                 {`participants: ${group.users.length}`.toUpperCase()}
               </Text>
@@ -206,6 +254,7 @@ GroupDetails.propTypes = {
   }),
   deleteGroup: PropTypes.func.isRequired,
   leaveGroup: PropTypes.func.isRequired,
+  updateGroup: PropTypes.func.isRequired,
 };
 const groupQuery = graphql(GROUP_QUERY, {
   options: ownProps => ({ variables: { groupId: ownProps.navigation.state.params.id } }),
@@ -218,6 +267,7 @@ const updateGroupMutation = graphql(EDIT_GROUP_MUTATION, {
   props: ({ mutate }) => ({
     updateGroup: group => mutate({
       variables: { group },
+      refetchQueries: [{ query: GROUP_QUERY }],
     }),
   }),
 });
