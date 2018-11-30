@@ -29,6 +29,7 @@ import FinalizeGroup from './screens/finalize-group.screen';
 import GroupDetails from './screens/group-details.screen';
 import Settings from './screens/setting.screen';
 import EditProfile from './screens/edit-profile.screen';
+import GroupImage from './screens/group-image.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -157,8 +158,9 @@ const AppNavigator = createStackNavigator(
       screen: EditProfile,
       navigationOptions: {
         title: 'Editar Perfil',
-      }
+      },
     },
+    GroupImage: { screen: GroupImage },
   },
   {
     navigationOptions: {

@@ -28,6 +28,7 @@ export const typeDefs = gql`
   input UpdateGroupInput {
     id: Int!
     name: String
+    photo: String
   }
 
   input UpdateUserInput {
@@ -53,6 +54,7 @@ export const typeDefs = gql`
     id: Int! # unique id for the group
     name: String # name of the group
     users: [User!]! # users in the group
+    photo: String
     messages: [Message!]! # messages sent to the group
     album: [Photo!]!
     length: Int!

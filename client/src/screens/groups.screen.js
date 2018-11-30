@@ -67,7 +67,7 @@ Header.propTypes = {
   onPress: PropTypes.func.isRequired,
 };
 
-const Group = ({ goToMessages, group:{id, name,users} }) => {
+const Group = ({ goToMessages, group:{id, name, users, photo} }) => {
  
   return (
     
@@ -75,7 +75,7 @@ const Group = ({ goToMessages, group:{id, name,users} }) => {
       <View>
         <View style={styles.groupContainer}>
 
-        {users.length <=2 ? <Image style={styles.image} source={{uri:users[1].photoprofile.url}}></Image> :<Image style={styles.image} source={{uri:"http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg"}}></Image>}
+        {users.length <=2 ? <Image style={styles.image} source={{uri:users[1].photoprofile.url}}></Image> :photo == undefined ? <Image style={styles.image} source={{uri:"http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg"}}></Image>:<Image style={styles.image} source={{uri:photo}}></Image>}
         </View>
         <Text style={styles.groupName}>{name}</Text>
       </View>
@@ -85,6 +85,7 @@ const Group = ({ goToMessages, group:{id, name,users} }) => {
 Group.propTypes = {
   goToMessages: PropTypes.func.isRequired,
   group: PropTypes.shape({
+    photo: PropTypes.string,
     id: PropTypes.number,
     name: PropTypes.string,
   }),
@@ -107,7 +108,7 @@ class Groups extends Component {
     const {
       navigation: { navigate },
     } = this.props;
-    navigate('Messages', { groupId: group.id, title: group.name });
+    navigate('Messages', { groupId: group.id, title: group.name ,photo:group.photo });
   };
 
   renderItem = ({ item }) => <Group group={item} goToMessages={this.goToMessages(item)} />;
@@ -154,6 +155,7 @@ Groups.propTypes = {
       PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
+        photo:PropTypes.string,
         users: PropTypes.arrayOf(
           PropTypes.shape({
             id: PropTypes.id,

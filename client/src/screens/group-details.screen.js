@@ -101,6 +101,7 @@ class GroupDetails extends Component {
     const { group } = this.props;
     this.state = {
       groupName: group.name,
+      groupImage:group.photo,
     };
     this.edit = this.edit.bind(this);
   }
@@ -121,7 +122,7 @@ class GroupDetails extends Component {
   keyExtractor = item => item.id.toString();
 
   renderItem = ({ item: user }) => (
-    <View style={styles.user}>
+    <View style={styles.user}>{}
       <Image style={styles.avatar} source={{ uri: user.photoprofile.url }} />
       <Text style={styles.username}>{user.username}</Text>
     </View>
@@ -151,7 +152,14 @@ class GroupDetails extends Component {
         console.log(e); // eslint-disable-line no-console
       });
   };
-
+  pickGroupImage = () => {
+    const {group} = this.props;
+    const { 
+      navigation: {navigate},
+    } = this.props;
+      navigate('GroupImage',{group:group});
+ };
+  
   edit = () => {
     const { groupName } = this.state;
     const { updateGroup, group } = this.props;
@@ -179,7 +187,7 @@ class GroupDetails extends Component {
   };
 
   render() {
-    const { group, loading } = this.props;
+    const { group, loading, navigation } = this.props;
     const { groupName } = this.state;
     // render loading placeholder while we fetch messages
     if (!group || loading) {
@@ -193,7 +201,9 @@ class GroupDetails extends Component {
       <View style={styles.container}>
         <View style={styles.detailsContainer}>
           <TouchableOpacity style={styles.groupImageContainer} onPress={this.pickGroupImage}>
+          {group.photo == undefined ?
             <Image style={styles.groupImage} source={{ uri: 'https://reactjs.org/logo-og.png' }} />
+          : <Image style={styles.groupImage} source={{ uri: group.photo }} />}
             <Text>edit</Text>
           </TouchableOpacity>
           <View style={styles.groupNameBorder}>
@@ -232,6 +242,7 @@ GroupDetails.propTypes = {
   group: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
+    photo:PropTypes.string,
     users: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number,

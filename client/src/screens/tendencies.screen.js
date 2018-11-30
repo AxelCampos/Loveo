@@ -122,7 +122,7 @@ class Tendencies extends Component {
     const {
       navigation: { navigate },
     } = this.props;
-    console.log(user);
+    
     navigate('Profile', { userId: user.id });
   };
 

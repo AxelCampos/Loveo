@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
 
 class Messages extends Component {
   static navigationOptions = ({ navigation }) => {
+    
     const { state, navigate } = navigation;
     const goToGroupDetails = () => navigate('GroupDetails', {
       id: state.params.groupId,
@@ -47,7 +48,14 @@ class Messages extends Component {
       headerTitle: (
         <TouchableOpacity style={styles.titleWrapper} onPress={goToGroupDetails}>
           <View style={styles.title}>
-            <Image style={styles.titleImage} source={{ uri: 'https://reactjs.org/logo-og.png' }} />
+            {navigation.state.params.photo == undefined ? (
+              <Image
+                style={styles.titleImage}
+                source={{ uri: 'https://reactjs.org/logo-og.png' }}
+              />
+            ) : (
+              <Image style={styles.titleImage} source={{ uri: navigation.state.params.photo }} />
+            )}
             <Text>{state.params.title}</Text>
           </View>
         </TouchableOpacity>
@@ -66,7 +74,6 @@ class Messages extends Component {
     this.state = {
       usernameColors,
     };
-
   }
 
   componentWillReceiveProps(nextProps) {

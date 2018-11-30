@@ -5,6 +5,7 @@ const EDIT_GROUP_MUTATION = gql`
     updateGroup(group: $group) {
       id
       name
+      photo
     }
   }
 `;

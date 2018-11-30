@@ -8,6 +8,7 @@ const db = new Sequelize('chatty', null, null, {
 // define groups
 const GroupModel = db.define('group', {
   name: { type: Sequelize.STRING },
+  photo: { type: Sequelize.STRING },
 });
 // define messages
 const MessageModel = db.define('message', {

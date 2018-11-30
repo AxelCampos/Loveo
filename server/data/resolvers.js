@@ -124,10 +124,10 @@ export const resolvers = {
     updateGroup(
       _,
       {
-        group: { id, name },
+        group: { id, name, photo },
       },
     ) {
-      return Group.findOne({ where: { id } }).then(group => group.update({ name }));
+      return Group.findOne({ where: { id } }).then(group => group.update({ name, photo }));
     },
     editUser(
       _,
@@ -160,7 +160,7 @@ export const resolvers = {
       const user = await User.findOne({ where: { id } });
       await user.addFriend(friend);
       return user;
-    }
+    },
   },
 
   Group: {
