@@ -10,6 +10,7 @@ import {
     ScrollView,
     Image,
     Button,
+    TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { graphql, compose } from 'react-apollo';
@@ -26,21 +27,22 @@ const styles = StyleSheet.create({
         paddingTop: 10
     },
     header: {
-        flex: 0.1,
+        flex: 0.25,
         flexDirection: 'row',
         alignItems: 'center',
         marginTop: 5
     },
     main: {
-        flex: 0.9,
+        flex: 0.75,
         flexDirection: 'column',
         alignItems: 'center',
         marginTop: 5,
     },
     sbutton1: {
         flex: 0.5,
+        flexDirection: 'column',
         padding: 6,
-        alignSelf: "center",
+        //alignSelf: "center",
         justifyContent: 'space-evenly',
     },
     sbutton2: {
@@ -70,6 +72,29 @@ const styles = StyleSheet.create({
         //position: 'absolute',
         //left: 250,
         //width: 150,
+    },
+    button3: {
+        //flex: 0.5,
+        padding: 6,
+        borderColor: '#eee',
+        borderBottomWidth: 1,
+        alignSelf: "center",
+        //marginLeft: 20,
+        //position: 'absolute',
+        //left: 250,
+        //width: 150,
+    },
+    input: {
+        marginBottom: 15,
+        marginTop: 0,
+        marginLeft: 15,
+        marginRight: 15,
+        height: 40,
+        borderColor: '#c7d6db',
+        borderWidth: 1,
+        borderRadius: 20,
+        padding: 10,
+        width: 350,
     },
     title: {
         marginBottom: 10,
@@ -124,16 +149,62 @@ const styles = StyleSheet.create({
     },
 });
 
-const Header = ({ saveSearch, goToMySearches }) => (
-    <View style={styles.header}>
-        <View style={styles.sbutton1}>
-            <Button style={styles.button1} title="Salvar" onPress={saveSearch} />
+/*const SearchName = () => {
+    <View style={[styles.container, { backgroundColor: 'yellow' }, styles.hiddenContainer]}>
+          <Text>Cannot see me</Text>
         </View>
-        <View style={styles.sbutton2}>
-            <Button style={styles.button2} title="Ver Búsquedas" onPress={goToMySearches} />
+
+};*/
+
+const MyView = (props) => {
+    const { children, hide, style } = props;
+    if (hide) {
+        return null;
+    }
+    return (
+        <View {...this.props} style={style}>
+            {children}
         </View>
+    );
+};
+
+const Search = ({ saveSearch, nameSearch }) => (
+    <View>
+        <TextInput style={styles.input}
+            underlineColorAndroid="transparent"
+            //placeholderTextColor="#9a73ef"
+            autoCapitalize="none"
+            placeholder='nombre de la búsqueda'
+            onChangeText={(name) => nameSearch({ name })}
+        //value={country}
+        />
+        <Button style={styles.button3} title="OK" onPress={saveSearch} />
     </View>
 );
+
+class Header extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        const { saveSearch, viewNameInput, nameSearch, goToMySearches, hide } = this.props;
+        return (
+            <View style={styles.header}>
+                <View style={styles.sbutton1}>
+                    <Button style={styles.button1} title="Salvar" onPress={viewNameInput} />
+                    <MyView hide={hide} >
+                        <Search saveSearch={saveSearch} nameSearch={nameSearch} />
+                    </MyView>
+                </View>
+                <View style={styles.sbutton2}>
+                    <Button style={styles.button2} title="Ver Mis Búsquedas" onPress={goToMySearches} />
+                </View>
+            </View>
+        )
+    }
+
+};
 
 const UserChosen = ({ item, goToProfile }) => {
     //console.log(item.username, item.gender, item.civilStatus, item.children);
@@ -170,6 +241,8 @@ class LifestyleResult extends Component {
             gender: state.params.gender,
             civilStatus: state.params.civilStatus,
             children: state.params.children,
+            name: "",
+            hide: true,
         }
     }
 
@@ -186,16 +259,25 @@ class LifestyleResult extends Component {
         console.log('ali');
     };
 
+    viewNameInput = () => {
+        this.setState({ hide: false });
+    };
+
+    nameSearch = ({ name }) => {
+        this.setState({ name: name });
+    }
+
     saveSearch = () => {
-        const { userId, gender, civilStatus, children } = this.state;
+        const { userId, gender, civilStatus, children, name } = this.state;
         const { createSearch } = this.props;
         createSearch({
             userId: userId,
-            name: 'search_A',
+            name: name,
             gender: gender,
             civilStatus: civilStatus,
             children: children,
         });
+        this.setState({ hide: true });
         alert('Busqueda creada!');
     };
 
@@ -245,7 +327,7 @@ class LifestyleResult extends Component {
         console.log('usuarios', users);
         return (
             <View style={styles.container}>
-                <Header saveSearch={this.saveSearch} goToMySearches={this.goToMySearches} />
+                <Header hide={this.state.hide} viewNameInput={this.viewNameInput} saveSearch={this.saveSearch} nameSearch={this.nameSearch} goToMySearches={this.goToMySearches} />
                 <View style={styles.main}>
                     <FlatList
                         data={users.filter((item) => item.id != this.state.userId).filter(this.selectGender).filter(this.selectCivilStatus).filter(this.selectChildren)}
