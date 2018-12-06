@@ -44,6 +44,12 @@ const LifestyleModel = db.define('lifestyle', {
 const ActivityModel = db.define('activity', {
   type: { type: Sequelize.STRING },
 });
+const SearchModel = db.define('search', {
+  name: { type: Sequelize.STRING },
+  gender: { type: Sequelize.STRING },
+  civilStatus: { type: Sequelize.STRING },
+  children: { type: Sequelize.STRING },
+});
 
 // users belong to multiple groups
 UserModel.belongsToMany(GroupModel, { through: 'GroupUser' });
@@ -62,6 +68,7 @@ PhotoModel.belongsTo(UserModel);
 LifestyleModel.belongsTo(UserModel);
 ActivityModel.belongsToMany(UserModel, { through: 'ActivityUser' });
 UserModel.belongsToMany(ActivityModel, { through: 'ActivityUser' });
+SearchModel.belongsTo(UserModel);
 
 const Group = db.models.group;
 const Message = db.models.message;
@@ -69,6 +76,8 @@ const User = db.models.user;
 const Photo = db.models.photo;
 const Lifestyle = db.models.lifestyle;
 const Activity = db.models.activity;
+const Search = db.models.search;
+
 export {
-  db, Group, Message, User, Photo, Lifestyle, Activity,
+  db, Group, Message, User, Photo, Lifestyle, Activity, Search,
 };

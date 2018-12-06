@@ -1,6 +1,6 @@
 import GraphQLDate from 'graphql-date';
 import {
-  Group, Message, User, Photo, Lifestyle, Activity,
+  Group, Message, User, Photo, Lifestyle, Activity, Search
 } from './connectors';
 
 export const resolvers = {
@@ -39,6 +39,11 @@ export const resolvers = {
     },
     activities(_, args) {
       return Activity.findAll({
+        where: args,
+      });
+    },
+    searches(_, args) {
+      return Search.findAll({
         where: args,
       });
     },
@@ -93,6 +98,21 @@ export const resolvers = {
       });
       await group.addUsers([user, ...friends]);
       return group;
+    },
+    async createSearch(
+      _,
+      {
+        search: { name, userId, gender, civilStatus, children },
+      },
+    ) {
+      const search = await Search.create({
+        name,
+        userId,
+        gender,
+        civilStatus,
+        children,
+      });
+      return search;
     },
     async deleteGroup(_, { id }) {
       const group = await Group.findOne({ where: id });
@@ -217,6 +237,11 @@ export const resolvers = {
     miscreated(user) {
       return user.getMiscreated();
     },
+    searches(user) {
+      return Search.findAll({
+        where: { userId: user.id },
+      });
+    },
   },
   Photo: {
     to(photo) {
@@ -234,6 +259,11 @@ export const resolvers = {
   Activity: {
     subscription(activity) {
       return activity.getUsers();
+    },
+  },
+  Search: {
+    userId(search) {
+      return search.getUser();
     },
   },
   /* To: {

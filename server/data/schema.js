@@ -25,6 +25,15 @@ export const typeDefs = gql`
     userId: Int!
   }
 
+  input CreateSearchInput {
+    id: Int!
+    userId: Int!
+    name: String    
+    gender: String
+    civilStatus: String
+    children: String
+  }
+
   input UpdateGroupInput {
     id: Int!
     name: String
@@ -47,7 +56,7 @@ export const typeDefs = gql`
     civilStatus: String
     children: String
     likes: Int
-  }
+  }  
 
   # a group chat entity
   type Group {
@@ -80,6 +89,7 @@ export const typeDefs = gql`
     lifestyle: Lifestyle
     activities: [Activity]
     miscreated: [User]
+    searches: [Search]
   }
 
   #union To = User | Group
@@ -119,6 +129,15 @@ export const typeDefs = gql`
     subscription: [User]
   }
 
+  type Search {
+    id: Int!
+    userId: User!
+    name: String    
+    gender: String
+    civilStatus: String
+    children: String
+  }
+
   # query for types
   type Query {
     users(email: String, id: Int): [User]
@@ -134,6 +153,8 @@ export const typeDefs = gql`
     lifestyles(id: Int, userId: Int): [Lifestyle]
     # Return activities
     activities(id: Int, userId: Int): [Activity]
+    # Return search
+    searches(userId: Int): [Search]
   }
 
   type Mutation {
@@ -141,6 +162,7 @@ export const typeDefs = gql`
     createMessage(message: CreateMessageInput): Message
     createConversation(group: CreateConversationInput!): Group
     createGroup(group: CreateGroupInput!): Group
+    createSearch(search: CreateSearchInput!): Search
     deleteGroup(id: Int!): Group
     leaveGroup(id: Int!, userId: Int!): Group
     updateGroup(group: UpdateGroupInput!): Group

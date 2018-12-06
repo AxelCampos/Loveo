@@ -45,6 +45,16 @@ export const USER_QUERY = gql`
         id
         username
       }
+      search {
+        id
+        userId {
+          id
+        }
+        name
+        gender
+        civilStatus
+        children
+      }
     }
   }
 `;
