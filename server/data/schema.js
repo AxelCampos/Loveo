@@ -164,6 +164,7 @@ export const typeDefs = gql`
     createGroup(group: CreateGroupInput!): Group
     createSearch(search: CreateSearchInput!): Search
     deleteGroup(id: Int!): Group
+    deleteSearch(id: Int!): Search
     leaveGroup(id: Int!, userId: Int!): Group
     updateGroup(group: UpdateGroupInput!): Group
     updateUser(user: UpdateUserInput!): User

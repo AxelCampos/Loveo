@@ -122,6 +122,11 @@ export const resolvers = {
       await group.destroy();
       return group;
     },
+    async deleteSearch(_, { id }) {
+      const search = await Search.findOne({ where: id });
+      await search.destroy();
+      return search;
+    },
     async leaveGroup(_, { id, userId }) {
       const group = await Group.findOne({ where: { id } });
       await group.removeUser(userId);
