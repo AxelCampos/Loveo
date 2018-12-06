@@ -26,7 +26,6 @@ export const typeDefs = gql`
   }
 
   input CreateSearchInput {
-    id: Int!
     userId: Int!
     name: String    
     gender: String

@@ -126,6 +126,7 @@ class Lifestyle extends Component {
         console.log("ppppp", gender);
         navigate('LifestyleResult',
             {
+                userId: 1,
                 gender: gender,
                 civilStatus: civilStatus,
                 children: children,

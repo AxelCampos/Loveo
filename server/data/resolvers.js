@@ -99,13 +99,13 @@ export const resolvers = {
       await group.addUsers([user, ...friends]);
       return group;
     },
-    async createSearch(
+    createSearch(
       _,
       {
         search: { name, userId, gender, civilStatus, children },
       },
     ) {
-      const search = await Search.create({
+      const search = Search.create({
         name,
         userId,
         gender,

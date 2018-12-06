@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { graphql, compose } from 'react-apollo';
 import { USERS_QUERY } from '../graphql/users.query';
 import withLoading from '../components/withLoading';
+import CREATE_SEARCH_MUTATION from '../graphql/create-search.mutation';
 
 const styles = StyleSheet.create({
     container: {
@@ -165,6 +166,7 @@ class LifestyleResult extends Component {
         console.log('civilStatus en constructor: ', state.params.civilStatus);
         console.log('children en constructor: ', state.params.children);
         this.state = {
+            userId: state.params.userId,
             gender: state.params.gender,
             civilStatus: state.params.civilStatus,
             children: state.params.children,
@@ -185,7 +187,16 @@ class LifestyleResult extends Component {
     };
 
     saveSearch = () => {
-        console.log('aqui');
+        const { userId, gender, civilStatus, children } = this.state;
+        const { createSearch } = this.props;
+        createSearch({
+            userId: userId,
+            name: 'search_A',
+            gender: gender,
+            civilStatus: civilStatus,
+            children: children,
+        });
+        alert('Busqueda creada!');
     };
 
     /*selectUsers = (item) => {
@@ -237,7 +248,7 @@ class LifestyleResult extends Component {
                 <Header saveSearch={this.saveSearch} goToMySearches={this.goToMySearches} />
                 <View style={styles.main}>
                     <FlatList
-                        data={users.filter(this.selectGender).filter(this.selectCivilStatus).filter(this.selectChildren)}
+                        data={users.filter((item) => item.id != this.state.userId).filter(this.selectGender).filter(this.selectCivilStatus).filter(this.selectChildren)}
                         keyExtractor={this.keyExtractor}
                         renderItem={this.renderItem}
                     //numColumns={2}
@@ -248,6 +259,26 @@ class LifestyleResult extends Component {
     }
 }
 
+const createSearchMutation = graphql(CREATE_SEARCH_MUTATION, {
+    props: ({ mutate }) => ({
+        createSearch: search => mutate({
+            variables: { search } /*,
+        update: (store, { data: { searchGroup } }) => {
+          // Read the data from our cache for this query.
+          const data = store.readQuery({ query: USER_QUERY, variables: { id: group.userId } });
+          // Add our message from the mutation to the end.
+          data.user.groups.push(createGroup);
+          // Write our data back to the cache.
+          store.writeQuery({
+            query: USER_QUERY,
+            variables: { id: group.userId },
+            data,
+          });
+        },*/
+        }),
+    }),
+});
+
 const usersQuery = graphql(USERS_QUERY, {
     options: () => ({}), // fake the user for now
     props: ({ data: { users } }) => ({
@@ -256,6 +287,7 @@ const usersQuery = graphql(USERS_QUERY, {
 });
 
 export default compose(
+    createSearchMutation,
     usersQuery,
     withLoading,
 )(LifestyleResult);
