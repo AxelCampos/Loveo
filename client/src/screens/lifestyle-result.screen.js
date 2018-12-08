@@ -243,8 +243,9 @@ class LifestyleResult extends Component {
         navigate('Profile', { userId: item.id });
     };
 
-    goToMySearches = () => {
-        console.log('ali');
+    goToMySearches = item => {
+        const { navigation: { navigate } } = this.props;
+        navigate('Searches', { userId: item.id });
     };
 
     viewNameInput = () => {

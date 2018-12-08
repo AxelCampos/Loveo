@@ -31,6 +31,7 @@ import Settings from './screens/setting.screen';
 import EditProfile from './screens/edit-profile.screen';
 import GroupImage from './screens/group-image.screen';
 import LifestyleResult from './screens/lifestyle-result.screen';
+import Searches from './screens/searches.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -48,11 +49,7 @@ const styles = StyleSheet.create({
     color: 'blue',
   },
 });
-const TestScreen = title => () => (
-  <View style={styles.container}>
-    <Text>{title}</Text>
-  </View>
-);
+
 const Search = createMaterialTopTabNavigator(
   {
     Tendencias: {
@@ -165,6 +162,12 @@ const AppNavigator = createStackNavigator(
       screen: LifestyleResult,
       navigationOptions: {
         title: 'Resultado de la Búsqueda',
+      }
+    },
+    Searches: {
+      screen: Searches,
+      navigationOptions: {
+        title: 'Búsquedas',
       }
     },
     GroupImage: { screen: GroupImage },
