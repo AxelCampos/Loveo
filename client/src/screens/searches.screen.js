@@ -19,22 +19,104 @@ import withLoading from '../components/withLoading';
 import SEARCHES_QUERY from '../graphql/searches.query';
 import DELETE_SEARCH_MUTATION from '../graphql/delete-search.mutation';
 
-/*
-const Search = ({ item, goToSearch, deleteSearch }) => {
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+        //justifyContent: 'flex-start', //'center', 'flex-start', 'flex-end', 'space-around', 'space-between', 'space-evenly', strech, baseline
+        //alignItems: "flex-start", //'center', 'flex-start', 'flex-end', 'stretch', baseline,
+        paddingTop: 10
+    },
+    header: {
+        flex: 0.15,
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        justifyContent: 'flex-start',
+        marginTop: 5,
+    },
+    main: {
+        flex: 0.85,
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        justifyContent: 'flex-end',
+        marginTop: 5,
+    },
+    tendencyContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        backgroundColor: '#F3E7E4',
+        borderBottomColor: '#eee',
+        borderBottomWidth: 1,
+        //borderRadius: 10,
+        //paddingHorizontal: 12,
+        //paddingVertical: 5,
+        margin: 5,
+    },
+    sbutton: {
+        flexDirection: 'column',
+        justifyContent: 'space-evenly',
+        padding: 6,
+    },
+    button: {
+        padding: 6,
+        borderColor: '#eee',
+        borderBottomWidth: 1,
+        //position: 'absolute',
+        //left: 30,
+        //width: 150,
+    },
+    name: {
+        height: 40,
+        padding: 10,
+    },
+    /*icon: {
+
+    }*/
+});
+//'plus-circle', 'times-circle','ban', <i class="far fa-times-circle"></i>
+const Search = ({ item, goToSearch, deleteThisSearch }) => {
     return (
-        <TouchableHighlight key={item.id} onPress={goToSearch}>
-            <View >
-                <Text>
+        <TouchableHighlight key={item.id} onPress={goToSearch} >
+            <View style={styles.tendencyContainer}>
+                <Text style={styles.name}>
+                    Busqueda:
+                    {item.id},
                     {item.name}
                 </Text>
                 <View>
-                    <Icon size={12} name="heart" color="#F0625A" />
+                    <Icon.Button
+                        name='times-circle'
+                        color='red'
+                        borderRadius={16}
+                        //iconStyle={}
+                        size={24}
+                        //style={styles.icon}
+                        onPress={deleteThisSearch}
+                    />
                 </View>
             </View>
         </TouchableHighlight>
     );
 };
+//onPress={goToSearch}  onPress={deleteThisSearch} 'far fa-times-circle'
+const Header = ({ backToLifestyle }) => (
+    <View style={styles.sbutton}>
+        <Button style={styles.button} title="Hacer nueva Búsqueda" onPress={backToLifestyle} />
+    </View>
+);
 
+/*const goToNewGroup = group => StackActions.reset({
+    index: 1,
+    actions: [
+      NavigationActions.navigate({ routeName: 'Main' }),
+      NavigationActions.navigate({
+        routeName: 'Messages',
+        params: { groupId: group.id, title: group.name },
+      }),
+    ],
+  });*/
 
 class Searches extends Component {
     constructor(props) {
@@ -43,14 +125,13 @@ class Searches extends Component {
         this.state = {
             userId: navigation.state.params.userId,
         }
-
     }
 
     keyExtractor = item => item.id.toString();
 
-    renderItem = item => <Search item={item} goToSearch={this.goToSearch(item)} deleteSearch={this.deleteSearch(item)} />
+    renderItem = item => <Search item={item} goToSearch={this.goToSearch(item)} deleteThisSearch={this.deleteThisSearch(item)} />
 
-    goToSearch = item => {
+    goToSearch = item => () => {
         const { navigation: { navigate, state } } = this.props;
         navigate('LifestyleResult',
             {
@@ -61,10 +142,11 @@ class Searches extends Component {
             });
     };
 
-    deleteSearch = item => () => {
-        deleteSearch({
+    deleteThisSearch = item => () => {
+        const { deleteSearch } = this.props;
+        /*deleteSearch({
             id: item.id,
-        })
+        });*/
         alert('Busqueda eliminada!');
     };
 
@@ -76,19 +158,25 @@ class Searches extends Component {
             });
     }
 
+
+
     render() {
         const { searches } = this.props;
         return (
-            <View>
-                <FlatList
-                    data={searches.slice()}
-                    keyExtractor={this.keyExtractor}
-                    renderItem={this.renderItem}
-                />
+            <View style={styles.container}>
+                <Header style={styles.header} backToLifestyle={this.backToLifestyle} />
+                <View style={styles.main} >
+                    <FlatList
+                        data={searches.slice()}
+                        //data={searches.slice().filter((item) => (item.id == this.state.userId))}
+                        keyExtractor={this.keyExtractor}
+                        renderItem={this.renderItem}
+                    />
+                </View>
             </View>
         )
     }
-}
+};
 
 const deleteSearchMutation = graphql(DELETE_SEARCH_MUTATION, {
     props: ({ mutate }) => ({
@@ -106,36 +194,33 @@ const deleteSearchMutation = graphql(DELETE_SEARCH_MUTATION, {
             data,
           });
         },*/
-/*}),
-}),
+        }),
+    }),
 });
 
 const searchesQuery = graphql(SEARCHES_QUERY, {
-options: () => ({}), // fake the user for now
-/*options: (ownProps) => ({
-variables: {
-    id: ownProps.navigation.state.params.userId,
-},
-}),*/
-/*props: ({ data: { loading, searches } }) => ({
-    loading,
-    searches
-}),
+    options: () => ({}),
+    /*options: (ownProps) => ({
+        variables: {
+            id: ownProps.navigation.state.params.userId,
+        },
+    }),*/
+    props: ({ data: { searches } }) => ({
+        searches: searches || [],
+    }),
 });
 
 export default compose(
-deleteSearchMutation,
-searchesQuery,
-withLoading,
+    deleteSearchMutation,
+    searchesQuery,
+    withLoading,
 )(Searches);
 
-*/
 
-const Searches = () => (
+/*const Searches = () => (
     <View>
         <Text>Busquedas</Text>
     </View>
 );
 
-
-export default Searches;
+export default Searches;*/

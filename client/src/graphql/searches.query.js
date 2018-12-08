@@ -1,10 +1,12 @@
 import gql from 'graphql-tag';
 
 export const SEARCHES_QUERY = gql`
-    query searches($userId: Int){
-        searches(userId: $userId){
+    query searches{
+        searches{
             id
-            userId
+            userId {
+                id
+            }
             name
             gender
             civilStatus
@@ -12,4 +14,20 @@ export const SEARCHES_QUERY = gql`
         }
     }
 `;
+
+/*export const SEARCHES_QUERY = gql`
+    query searches($userId: Int){
+        searches(userId: $userId){
+            id
+            userId {
+                id
+            }
+            name
+            gender
+            civilStatus
+            children
+        }
+    }
+`;*/
+
 export default SEARCHES_QUERY;
