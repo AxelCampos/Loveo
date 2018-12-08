@@ -22,81 +22,70 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        //justifyContent: 'flex-start', //'center', 'flex-start', 'flex-end', 'space-around', 'space-between'
-        //alignItems: "flex-start", //'center', 'flex-start', 'flex-end', 'stretched'
+        //justifyContent: 'flex-start', //'center', 'flex-start', 'flex-end', 'space-around', 'space-between', 'space-evenly', strech, baseline
+        //alignItems: "flex-start", //'center', 'flex-start', 'flex-end', 'stretch', baseline,
         paddingTop: 10
     },
     header: {
-        flex: 0.25,
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 5
+        flex: 0.35,
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        justifyContent: 'flex-start',
+        marginTop: 5,
     },
     main: {
-        flex: 0.75,
+        flex: 0.65,
         flexDirection: 'column',
         alignItems: 'center',
+        justifyContent: 'flex-end',
         marginTop: 5,
     },
     sbutton1: {
-        flex: 0.5,
         flexDirection: 'column',
-        padding: 6,
-        //alignSelf: "center",
         justifyContent: 'space-evenly',
+        padding: 6,
     },
     sbutton2: {
-        flex: 0.5,
+        justifyContent: 'space-evenly',
         padding: 6,
-        alignSelf: "center",
     },
     button1: {
-        //flex: 0.5,
         padding: 6,
         borderColor: '#eee',
         borderBottomWidth: 1,
-        alignSelf: "center",
-        //marginLeft: 35,
-        //marginRight: 165,
         //position: 'absolute',
         //left: 30,
         //width: 150,
     },
     button2: {
-        //flex: 0.5,
         padding: 6,
         borderColor: '#eee',
         borderBottomWidth: 1,
-        alignSelf: "center",
-        //marginLeft: 20,
         //position: 'absolute',
         //left: 250,
         //width: 150,
     },
     button3: {
-        //flex: 0.5,
         padding: 6,
         borderColor: '#eee',
         borderBottomWidth: 1,
-        alignSelf: "center",
-        //marginLeft: 20,
         //position: 'absolute',
         //left: 250,
         //width: 150,
     },
     input: {
-        marginBottom: 15,
-        marginTop: 0,
-        marginLeft: 15,
-        marginRight: 15,
+        marginBottom: 10,
+        marginTop: 10,
+        //marginLeft: 15,
+        //marginRight: 15,
         height: 40,
         borderColor: '#c7d6db',
         borderWidth: 1,
-        borderRadius: 20,
-        padding: 10,
-        width: 350,
+        //borderRadius: 20,
+        padding: 6,
+        //width: 350,
     },
-    title: {
+    /*title: {
         marginBottom: 10,
         marginTop: 10,
         marginLeft: 15,
@@ -106,12 +95,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#c7d6db',
         borderRadius: 10,
         //color: '#7a42f4',
-    },
+    },*/
     tendencyContainer: {
         flex: 1,
-        width: 200,
-        height: 190,
+        justifyContent: 'flex-start',
         alignItems: 'center',
+        width: 160,
+        height: 195,
         backgroundColor: '#F3E7E4',
         borderBottomColor: '#eee',
         borderBottomWidth: 1,
@@ -123,13 +113,13 @@ const styles = StyleSheet.create({
     userName: {
         fontSize: 12,
         position: 'absolute',
-        top: 160,
+        top: 147,
         left: 10,
         color: 'black',
     },
     userImage: {
-        width: 200,
-        height: 150,
+        width: 150,
+        height: 135,
         borderRadius: 10,
     },
     userLikes: {
@@ -147,14 +137,13 @@ const styles = StyleSheet.create({
         color: 'white',
         marginLeft: 3,
     },
+    textLocation: {
+        fontSize: 10,
+        position: 'absolute',
+        bottom: 5,
+        left: 10,
+    },
 });
-
-/*const SearchName = () => {
-    <View style={[styles.container, { backgroundColor: 'yellow' }, styles.hiddenContainer]}>
-          <Text>Cannot see me</Text>
-        </View>
-
-};*/
 
 const MyView = (props) => {
     const { children, hide, style } = props;
@@ -191,19 +180,18 @@ class Header extends Component {
         const { saveSearch, viewNameInput, nameSearch, goToMySearches, hide } = this.props;
         return (
             <View style={styles.header}>
+                <View style={styles.sbutton2}>
+                    <Button style={styles.button2} title="Ver Mis Búsquedas" onPress={goToMySearches} />
+                </View>
                 <View style={styles.sbutton1}>
-                    <Button style={styles.button1} title="Salvar" onPress={viewNameInput} />
+                    <Button style={styles.button1} title="Guardar" onPress={viewNameInput} />
                     <MyView hide={hide} >
                         <Search saveSearch={saveSearch} nameSearch={nameSearch} />
                     </MyView>
                 </View>
-                <View style={styles.sbutton2}>
-                    <Button style={styles.button2} title="Ver Mis Búsquedas" onPress={goToMySearches} />
-                </View>
             </View>
         )
     }
-
 };
 
 const UserChosen = ({ item, goToProfile }) => {
@@ -217,9 +205,9 @@ const UserChosen = ({ item, goToProfile }) => {
                     <Text style={styles.textLikes}>{item.likes}</Text>
                 </View>
                 <Text style={styles.userName}>
-                    {item.username} /
-                {item.gender} /
-                {item.civilStatus} /
+                    {item.username} :
+                {item.gender},
+                {item.civilStatus},
                 {item.children}
                 </Text>
             </View>
@@ -333,7 +321,7 @@ class LifestyleResult extends Component {
                         data={users.filter((item) => item.id != this.state.userId).filter(this.selectGender).filter(this.selectCivilStatus).filter(this.selectChildren)}
                         keyExtractor={this.keyExtractor}
                         renderItem={this.renderItem}
-                    //numColumns={2}
+                        numColumns={2}
                     />
                 </View>
             </View>
