@@ -222,9 +222,9 @@ class LifestyleResult extends Component {
         //const { users } = props;
         //const { navigation } = this.props;
         const { state } = this.props.navigation;
-        console.log('gender en constructor: ', state.params.gender);
-        console.log('civilStatus en constructor: ', state.params.civilStatus);
-        console.log('children en constructor: ', state.params.children);
+        //console.log('gender en constructor: ', state.params.gender);
+        //console.log('civilStatus en constructor: ', state.params.civilStatus);
+        //console.log('children en constructor: ', state.params.children);
         this.state = {
             userId: state.params.userId,
             gender: state.params.gender,
@@ -234,6 +234,23 @@ class LifestyleResult extends Component {
             hide: true,
         }
     }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.userId != this.props.navigation.state.params.userId) {
+            this.setState({ userId: this.props.navigation.state.params.userId })
+        }
+        console.log('prevState', prevState.gender);
+        console.log('prop', this.props.navigation.state.params.gender);
+        if (prevState.gender != this.props.navigation.state.params.gender) {
+            this.setState({ gender: this.props.navigation.state.params.gender })
+        }
+        if (prevState.civilStatus != this.props.navigation.state.params.civilStatus) {
+            this.setState({ civilStatus: this.props.navigation.state.params.civilStatus })
+        }
+        if (prevState.children != this.props.navigation.state.params.children) {
+            this.setState({ children: this.props.navigation.state.params.children })
+        }
+    };
 
     keyExtractor = item => item.id.toString();
 
@@ -278,34 +295,34 @@ class LifestyleResult extends Component {
 
     selectGender = (item) => {
         const { gender } = this.state;
-        console.log('gender final: ');
+        //console.log('gender final: ');
         if (gender == 'todos') {
-            console.log(item.username, item.gender);
+            //console.log(item.username, item.gender);
             return item.gender == item.gender;
         } else {
-            console.log(item.username, item.gender);
+            //console.log(item.username, item.gender);
             return item.gender == this.state.gender;
         }
     };
     selectCivilStatus = (item) => {
         const { civilStatus } = this.state;
-        console.log('civilStatus final: ');
+        //console.log('civilStatus final: ');
         if (civilStatus == 'todos') {
-            console.log(item.username, item.civilStatus);
+            //console.log(item.username, item.civilStatus);
             return item.civilStatus == item.civilStatus;
         } else {
-            console.log(item.username, item.civilStatus);
+            //console.log(item.username, item.civilStatus);
             return item.civilStatus == this.state.civilStatus;
         }
     };
     selectChildren = (item) => {
         const { children } = this.state;
-        console.log('children final: ');
+        //console.log('children final: ');
         if (children == 'todos') {
-            console.log(item.username, item.children);
+            //console.log(item.username, item.children);
             return item.children == item.children;
         } else {
-            console.log(item.username, item.children);
+            //console.log(item.username, item.children);
             return item.children == this.state.children;
         }
     };
@@ -314,7 +331,7 @@ class LifestyleResult extends Component {
 
     render() {
         const { users } = this.props;
-        console.log('usuarios', users);
+        //console.log('usuarios', users);
         return (
             <View style={styles.container}>
                 <Header hide={this.state.hide} viewNameInput={this.viewNameInput} saveSearch={this.saveSearch} nameSearch={this.nameSearch} goToMySearches={this.goToMySearches} />

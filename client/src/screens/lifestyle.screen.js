@@ -123,7 +123,7 @@ class Lifestyle extends Component {
     goToResult = users => () => {
         const { navigation: { navigate } } = this.props;
         const { gender, civilStatus, children, enabledpickerGender, enabledpickerCivilStatus, enabledpickerChildren } = this.state;
-        console.log("ppppp", gender);
+        //console.log("ppppp", gender);
         navigate('LifestyleResult',
             {
                 userId: 1,

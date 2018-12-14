@@ -12,7 +12,6 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { graphql, compose } from 'react-apollo';
 import withLoading from '../components/withLoading';
 import SEARCHES_QUERY from '../graphql/searches.query';
-//import USER2_QUERY from '../graphql/user2.query';
 import DELETE_SEARCH_MUTATION from '../graphql/delete-search.mutation';
 
 const styles = StyleSheet.create({
@@ -141,7 +140,7 @@ class Searches extends Component {
 
     deleteThisSearch = item => () => {
         const { deleteSearch } = this.props;
-        console.log('delete item.id', item.id);
+        //console.log('delete item.id', item.id);
         deleteSearch(item.id);
         alert('Busqueda eliminada!');
     };
@@ -157,8 +156,8 @@ class Searches extends Component {
     userFilter = item => {
         const { navigation } = this.props;
         const { userId } = this.state;
-        console.log('item id', item.userId.id);
-        console.log('userId', userId);
+        //console.log('item id', item.userId.id);
+        //console.log('userId', userId);
         return item.userId.id == userId;
     };
 
@@ -218,21 +217,8 @@ const searchesQuery = graphql(SEARCHES_QUERY, {
     }),
 });
 
-/*const userQuery = graphql(USER2_QUERY, {
-    options: ownProps => ({
-        variables: {
-            id: ownProps.navigation.state.params.userId,
-        },
-    }),
-    props: ({ data: { loading, user } }) => ({
-        loading,
-        user,
-    }),
-});*/
-
 export default compose(
     deleteSearchMutation,
-    //userQuery,
     searchesQuery,
     withLoading,
 )(Searches);
