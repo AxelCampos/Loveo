@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
 });
 //'plus-circle', 'times-circle','ban', <i class="far fa-times-circle"></i>
 const Search = ({ item, goToSearch, deleteThisSearch }) => {
+    //console.log('search name', item.name);
     return (
         <TouchableHighlight key={item.id} onPress={goToSearch} >
             <View style={styles.tendencyContainer}>

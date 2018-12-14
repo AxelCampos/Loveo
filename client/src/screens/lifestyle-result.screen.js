@@ -158,7 +158,7 @@ const MyView = (props) => {
     );
 };
 
-const Search = ({ saveSearch, nameSearch }) => (
+const Search = ({ saveSearch, nameSearch, isdisabled }) => (
     <View>
         <TextInput style={styles.input}
             underlineColorAndroid="transparent"
@@ -168,7 +168,7 @@ const Search = ({ saveSearch, nameSearch }) => (
             onChangeText={(name) => nameSearch({ name })}
         //value={country}
         />
-        <Button style={styles.button3} title="OK" onPress={saveSearch} />
+        <Button disabled={isdisabled} style={styles.button3} title="OK" onPress={saveSearch} />
     </View>
 );
 
@@ -178,7 +178,7 @@ class Header extends Component {
     }
 
     render() {
-        const { saveSearch, viewNameInput, nameSearch, goToMySearches, hide } = this.props;
+        const { saveSearch, viewNameInput, nameSearch, goToMySearches, hide, isdisabled } = this.props;
         return (
             <View style={styles.header}>
                 <View style={styles.sbutton2}>
@@ -187,7 +187,7 @@ class Header extends Component {
                 <View style={styles.sbutton1}>
                     <Button style={styles.button1} title="Guardar" onPress={viewNameInput} />
                     <MyView hide={hide} >
-                        <Search saveSearch={saveSearch} nameSearch={nameSearch} />
+                        <Search saveSearch={saveSearch} nameSearch={nameSearch} isdisabled={isdisabled} />
                     </MyView>
                 </View>
             </View>
@@ -232,6 +232,7 @@ class LifestyleResult extends Component {
             children: state.params.children,
             name: "",
             hide: true,
+            disabled: true,
         }
     }
 
@@ -249,6 +250,17 @@ class LifestyleResult extends Component {
         }
         if (prevState.children != this.props.navigation.state.params.children) {
             this.setState({ children: this.props.navigation.state.params.children })
+        }
+        if (prevState.name !== this.state.name) {
+            //console.log('name', this.state.name);
+            if (this.state.name !== "") {
+                this.setState({ disabled: false });
+                //console.log('lleno');
+            }
+            if (this.state.name === "") {
+                this.setState({ disabled: true });
+                //console.log('vacío');
+            }
         }
     };
 
@@ -334,7 +346,7 @@ class LifestyleResult extends Component {
         //console.log('usuarios', users);
         return (
             <View style={styles.container}>
-                <Header hide={this.state.hide} viewNameInput={this.viewNameInput} saveSearch={this.saveSearch} nameSearch={this.nameSearch} goToMySearches={this.goToMySearches} />
+                <Header hide={this.state.hide} viewNameInput={this.viewNameInput} saveSearch={this.saveSearch} nameSearch={this.nameSearch} goToMySearches={this.goToMySearches} isdisabled={this.state.disabled} />
                 <View style={styles.main}>
                     <FlatList
                         data={users.filter((item) => item.id != this.state.userId).filter(this.selectGender).filter(this.selectCivilStatus).filter(this.selectChildren)}
