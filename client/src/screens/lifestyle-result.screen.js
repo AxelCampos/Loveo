@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { graphql, compose } from 'react-apollo';
 import { USERS_QUERY } from '../graphql/users.query';
 import withLoading from '../components/withLoading';
+import SEARCHES_QUERY from '../graphql/searches.query';
 import CREATE_SEARCH_MUTATION from '../graphql/create-search.mutation';
 
 const styles = StyleSheet.create({
@@ -333,7 +334,9 @@ class LifestyleResult extends Component {
 const createSearchMutation = graphql(CREATE_SEARCH_MUTATION, {
     props: ({ mutate }) => ({
         createSearch: search => mutate({
-            variables: { search } /*,
+            variables: { search },
+            refetchQueries: [{ query: SEARCHES_QUERY }]
+            /*,
         update: (store, { data: { searchGroup } }) => {
           // Read the data from our cache for this query.
           const data = store.readQuery({ query: USER_QUERY, variables: { id: group.userId } });
@@ -357,8 +360,21 @@ const usersQuery = graphql(USERS_QUERY, {
     }),
 });
 
+const searchesQuery = graphql(SEARCHES_QUERY, {
+    options: () => ({}),
+    /*options: (ownProps) => ({
+        variables: {
+            id: ownProps.navigation.state.params.userId,
+        },
+    }),*/
+    props: ({ data: { searches } }) => ({
+        searches: searches || [],
+    }),
+});
+
 export default compose(
     createSearchMutation,
+    searchesQuery,
     usersQuery,
     withLoading,
 )(LifestyleResult);

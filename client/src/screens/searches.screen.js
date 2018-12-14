@@ -81,17 +81,17 @@ const Search = ({ item, goToSearch, deleteThisSearch }) => {
                     {item.id}:
                     {item.name}
                 </Text>
-                <View>
-                    <Icon.Button
-                        name='times-circle'
-                        color='red'
-                        borderRadius={16}
-                        //iconStyle={}
-                        size={24}
-                        style={styles.icon}
-                        onPress={deleteThisSearch}
-                    />
-                </View>
+
+                <Icon.Button
+                    name='times-circle'
+                    color='red'
+                    borderRadius={16}
+                    //iconStyle={}
+                    size={24}
+                    style={styles.icon}
+                    onPress={deleteThisSearch}
+                />
+
             </View>
         </TouchableHighlight>
     );
@@ -141,9 +141,8 @@ class Searches extends Component {
 
     deleteThisSearch = item => () => {
         const { deleteSearch } = this.props;
-        /*deleteSearch({
-            id: item.id,
-        });*/
+        console.log('delete item.id', item.id);
+        deleteSearch(item.id);
         alert('Busqueda eliminada!');
     };
 
@@ -188,20 +187,21 @@ class Searches extends Component {
 
 const deleteSearchMutation = graphql(DELETE_SEARCH_MUTATION, {
     props: ({ mutate }) => ({
-        deleteSearch: search => mutate({
-            variables: { search } /*,
-        update: (store, { data: { searchGroup } }) => {
-          // Read the data from our cache for this query.
-          const data = store.readQuery({ query: USER_QUERY, variables: { id: group.userId } });
-          // Add our message from the mutation to the end.
-          data.user.groups.push(createGroup);
-          // Write our data back to the cache.
-          store.writeQuery({
-            query: USER_QUERY,
-            variables: { id: group.userId },
-            data,
-          });
-        },*/
+        deleteSearch: id => mutate({
+            variables: { id },
+            refetchQueries: [{ query: SEARCHES_QUERY }] /*,
+            update: (store, { data: { deleteSearch } }) => {
+                // Read the data from our cache for this query.
+                const data = store.readQuery({ query: SEARCH_QUERY, variables: { id: 1 } });
+                // Add our message from the mutation to the end.
+                data.search = data.search.filter(item => deleteSearch.id !== item.id);
+                // Write our data back to the cache.
+                store.writeQuery({
+                    query: SEARCH_QUERY,
+                    variables: { id: 1 },
+                    data,
+                });
+            },*/
         }),
     }),
 });
