@@ -243,9 +243,9 @@ class LifestyleResult extends Component {
         navigate('Profile', { userId: item.id });
     };
 
-    goToMySearches = item => {
+    goToMySearches = () => {
         const { navigation: { navigate } } = this.props;
-        navigate('Searches', { userId: item.id });
+        navigate('Searches', { userId: this.state.userId });
     };
 
     viewNameInput = () => {

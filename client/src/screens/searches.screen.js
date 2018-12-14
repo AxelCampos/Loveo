@@ -1,22 +1,18 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { node } from 'prop-types';
 import {
     StyleSheet,
     Text,
     View,
     FlatList,
     TouchableHighlight,
-    Picker,
-    ScrollView,
-    Image,
     Button,
-    TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { graphql, compose } from 'react-apollo';
-import { USERS_QUERY } from '../graphql/users.query';
 import withLoading from '../components/withLoading';
 import SEARCHES_QUERY from '../graphql/searches.query';
+//import USER2_QUERY from '../graphql/user2.query';
 import DELETE_SEARCH_MUTATION from '../graphql/delete-search.mutation';
 
 const styles = StyleSheet.create({
@@ -71,9 +67,9 @@ const styles = StyleSheet.create({
         height: 40,
         padding: 10,
     },
-    /*icon: {
-
-    }*/
+    icon: {
+        backgroundColor: '#F3E7E4',
+    },
 });
 //'plus-circle', 'times-circle','ban', <i class="far fa-times-circle"></i>
 const Search = ({ item, goToSearch, deleteThisSearch }) => {
@@ -81,8 +77,8 @@ const Search = ({ item, goToSearch, deleteThisSearch }) => {
         <TouchableHighlight key={item.id} onPress={goToSearch} >
             <View style={styles.tendencyContainer}>
                 <Text style={styles.name}>
-                    Busqueda:
-                    {item.id},
+                    Busqueda
+                    {item.id}:
                     {item.name}
                 </Text>
                 <View>
@@ -92,7 +88,7 @@ const Search = ({ item, goToSearch, deleteThisSearch }) => {
                         borderRadius={16}
                         //iconStyle={}
                         size={24}
-                        //style={styles.icon}
+                        style={styles.icon}
                         onPress={deleteThisSearch}
                     />
                 </View>
@@ -100,7 +96,7 @@ const Search = ({ item, goToSearch, deleteThisSearch }) => {
         </TouchableHighlight>
     );
 };
-//onPress={goToSearch}  onPress={deleteThisSearch} 'far fa-times-circle'
+
 const Header = ({ backToLifestyle }) => (
     <View style={styles.sbutton}>
         <Button style={styles.button} title="Hacer nueva Búsqueda" onPress={backToLifestyle} />
@@ -124,12 +120,13 @@ class Searches extends Component {
         const { navigation } = this.props;
         this.state = {
             userId: navigation.state.params.userId,
+            gender: navigation.state.params.gender,
         }
     }
 
     keyExtractor = item => item.id.toString();
 
-    renderItem = item => <Search item={item} goToSearch={this.goToSearch(item)} deleteThisSearch={this.deleteThisSearch(item)} />
+    renderItem = ({ item }) => <Search item={item} goToSearch={this.goToSearch(item)} deleteThisSearch={this.deleteThisSearch(item)} />
 
     goToSearch = item => () => {
         const { navigation: { navigate, state } } = this.props;
@@ -158,23 +155,34 @@ class Searches extends Component {
             });
     }
 
-
+    userFilter = item => {
+        const { navigation } = this.props;
+        const { userId } = this.state;
+        console.log('item id', item.userId.id);
+        console.log('userId', userId);
+        return item.userId.id == userId;
+    };
 
     render() {
         const { searches } = this.props;
+        //const { user: { searches } } = this.props;
+        /*if (!searches) {
+            return null
+        } else {*/
         return (
             <View style={styles.container}>
                 <Header style={styles.header} backToLifestyle={this.backToLifestyle} />
                 <View style={styles.main} >
                     <FlatList
-                        data={searches.slice()}
+                        data={searches.slice().filter(this.userFilter)}
                         //data={searches.slice().filter((item) => (item.id == this.state.userId))}
                         keyExtractor={this.keyExtractor}
                         renderItem={this.renderItem}
                     />
                 </View>
             </View>
-        )
+        );
+
     }
 };
 
@@ -210,17 +218,21 @@ const searchesQuery = graphql(SEARCHES_QUERY, {
     }),
 });
 
+/*const userQuery = graphql(USER2_QUERY, {
+    options: ownProps => ({
+        variables: {
+            id: ownProps.navigation.state.params.userId,
+        },
+    }),
+    props: ({ data: { loading, user } }) => ({
+        loading,
+        user,
+    }),
+});*/
+
 export default compose(
     deleteSearchMutation,
+    //userQuery,
     searchesQuery,
     withLoading,
 )(Searches);
-
-
-/*const Searches = () => (
-    <View>
-        <Text>Busquedas</Text>
-    </View>
-);
-
-export default Searches;*/
