@@ -11,6 +11,7 @@ import Menu from '../components/navigator-menu-component';
 import CREATE_CONVERSATION_MUTATION from '../graphql/create-conversation.mutation';
 import UPDATE_USER_MUTATION from '../graphql/update-user.mutation';
 import USER_QUERY from '../graphql/user.query';
+import EDIT_FRIEND_MUTATION from '../graphql/edit-friend.mutation';
 
 const styles = StyleSheet.create({
   container: {
@@ -88,7 +89,7 @@ class Profile extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       enableScrollViewScroll: true,
       switcher: false,
     };
@@ -97,13 +98,21 @@ class Profile extends Component {
   }
 
   addLike() {
-    const { updateUser, user } = this.props;
+    const { updateUser, user, editFriend } = this.props;
     this.setState({
-      switcher : true
+      switcher: true,
     });
+
     updateUser({
       id: user.id,
       likes: user.likes + 1,
+    });
+
+    editFriend({
+      id: 1,
+      userId: user.id,
+    }).catch((error) => {
+      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => {} }]);
     });
   }
 
@@ -111,13 +120,14 @@ class Profile extends Component {
     const {
       createConversation,
       navigation,
-      user: { username, id },
+      user: { username, id, photoprofile},
     } = this.props;
 
     createConversation({
       name: username,
       userIds: id,
       userId: 1,
+      photo: photoprofile.url,
     })
       .then((res) => {
         navigation.dispatch(goToNewGroup(res.data.createConversation));
@@ -144,11 +154,10 @@ class Profile extends Component {
   }
 
   render() {
-    const { user } = this.props;
-    const { switcher } = this.state;
+    const { user, navigation } = this.props;
+    const { switcher} = this.state;
+   
     return (
-
-      
       <View
         style={styles.container}
         onStartShouldSetResponderCapture={() => {
@@ -179,26 +188,29 @@ class Profile extends Component {
               <Text style={styles.textStyle}>Ultima conexión: 13h</Text>
             </View>
             <View style={styles.icons}>
-              {switcher == false? <Icon.Button
-                underlayColor="transparent"
-                style={styles.iconStyle}
-                color="#F0625A"
-                backgroundColor="white"
-                size={30}
-                borderRadius={30}
-                name="cards-heart"
-                onPress={this.addLike}
-              />:<Icon.Button
-              underlayColor="transparent"
-              style={styles.iconStyle}
-              color="#F0625A"
-              backgroundColor="white"
-              size={30}
-              borderRadius={30}
-              name="cards-heart"
-              
-            />}
-              
+              {switcher == false ? (
+                <Icon.Button
+                  underlayColor="transparent"
+                  style={styles.iconStyle}
+                  color="#F0625A"
+                  backgroundColor="white"
+                  size={30}
+                  borderRadius={30}
+                  name="cards-heart"
+                  onPress={this.addLike}
+                />
+              ) : (
+                <Icon.Button
+                  underlayColor="transparent"
+                  style={styles.iconStyle}
+                  color="grey"
+                  backgroundColor="white"
+                  size={30}
+                  borderRadius={30}
+                  name="cards-heart"
+                />
+              )}
+
               <Icon.Button
                 underlayColor="transparent"
                 style={styles.iconStyle}
@@ -241,18 +253,7 @@ const createConversationMutation = graphql(CREATE_CONVERSATION_MUTATION, {
   props: ({ mutate }) => ({
     createConversation: group => mutate({
       variables: { group },
-      update: (store, { data: { createConversation } }) => {
-        // Read the data from our cache for this query.
-        const data = store.readQuery({ query: USER_QUERY, variables: { id: group.userId } });
-        // Add our message from the mutation to the end.
-        data.user.groups.push(createConversation);
-        // Write our data back to the cache.
-        store.writeQuery({
-          query: USER_QUERY,
-          variables: { id: group.userId },
-          data,
-        });
-      },
+      refetchQueries: [{ query: USER_QUERY }],
     }),
   }),
 });
@@ -261,7 +262,23 @@ const updateUserMutation = graphql(UPDATE_USER_MUTATION, {
     updateUser: user => mutate({
       variables: { user },
 
-     
+      update: (store, { data: { updateUser } }) => {
+        const data = store.readQuery({
+          query: USER_QUERY,
+          variables: {
+            id: user.id,
+          },
+        });
+        data.user.likes = updateUser.likes;
+
+        store.writeQuery({
+          query: USER_QUERY,
+          variables: {
+            id: user.id,
+          },
+          data,
+        });
+      },
     }),
   }),
 });
@@ -276,10 +293,20 @@ const userQuery = graphql(USER_QUERY, {
     user,
   }),
 });
+const editFriendMutation = graphql(EDIT_FRIEND_MUTATION, {
+  props: ({ mutate }) => ({
+    editFriend: (id, userId) => mutate({
+      variables: id,
+      userId,
+      refetchQueries:[{query:USER_QUERY}],
+    }),
+  }),
+});
 
 export default compose(
   userQuery,
   withLoading,
   createConversationMutation,
   updateUserMutation,
+  editFriendMutation,
 )(Profile);

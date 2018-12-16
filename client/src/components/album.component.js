@@ -70,12 +70,14 @@ class Album extends Component {
     }
     return (
       <View style={styles.albumContainer}>
-        <FlatList
-          data={user.album.slice()}
-          numColumns={2}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-        />
+        {user ? (
+          <FlatList
+            data={user.album.slice()}
+            numColumns={2}
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderItem}
+          />
+        ) : null}
       </View>
     );
   }
@@ -94,9 +96,9 @@ Album.propTypes = {
 };
 
 const userQuery = graphql(USER_QUERY, {
-  options: ownProps => ({
+  options: () => ({
     variables: {
-      id: ownProps.navigation.state.params,
+      id: 1,
     },
   }),
 

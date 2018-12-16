@@ -17,17 +17,19 @@ export const typeDefs = gql`
     name: String!
     userIds: Int!
     userId: Int!
+    photo: String
   }
 
   input CreateGroupInput {
     name: String!
     userIds: [Int!]
     userId: Int!
+    photo: String
   }
 
   input CreateSearchInput {
     userId: Int!
-    name: String    
+    name: String
     gender: String
     civilStatus: String
     children: String
@@ -55,7 +57,7 @@ export const typeDefs = gql`
     civilStatus: String
     children: String
     likes: Int
-  }  
+  }
 
   # a group chat entity
   type Group {
@@ -131,7 +133,7 @@ export const typeDefs = gql`
   type Search {
     id: Int!
     userId: User!
-    name: String    
+    name: String
     gender: String
     civilStatus: String
     children: String

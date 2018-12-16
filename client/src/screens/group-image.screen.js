@@ -56,6 +56,7 @@ class GroupImage extends Component {
       navigation: { navigate, dispatch },
       updateGroup,
     } = this.props;
+    
 
     updateGroup({
       id: this.props.navigation.state.params.group.id,

@@ -84,6 +84,7 @@ class GroupDetails extends Component {
   static navigationOptions = ({ navigation }) => {
     const { state } = navigation;
     const isReady = state.params && state.params.mode === 'ready';
+
     return {
       title: `${navigation.state.params.title}`,
       headerRight: isReady ? (
@@ -162,11 +163,14 @@ class GroupDetails extends Component {
   
   edit = () => {
     const { groupName } = this.state;
-    const { updateGroup, group } = this.props;
-    console.log('sahdfpiuhiu', group, 'jbsdfdgh', groupName);
+    const { updateGroup, group, navigation : { navigate, dispatch } } = this.props;
+  
     updateGroup({
       id: group.id,
       name: groupName,
+      photo: group.photo
+    }).then((res) => {
+      dispatch(navigate('Chats', res));
     });
   };
 
@@ -190,6 +194,7 @@ class GroupDetails extends Component {
     const { group, loading, navigation } = this.props;
     const { groupName } = this.state;
     // render loading placeholder while we fetch messages
+
     if (!group || loading) {
       return (
         <View style={[styles.loading, styles.container]}>
@@ -200,20 +205,31 @@ class GroupDetails extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.detailsContainer}>
+        {group.users.length > 2 ?
           <TouchableOpacity style={styles.groupImageContainer} onPress={this.pickGroupImage}>
           {group.photo == undefined ?
-            <Image style={styles.groupImage} source={{ uri: 'https://reactjs.org/logo-og.png' }} />
+            <Image style={styles.groupImage} source={{ uri: "http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg"}} />
           : <Image style={styles.groupImage} source={{ uri: group.photo }} />}
             <Text>edit</Text>
-          </TouchableOpacity>
-          <View style={styles.groupNameBorder}>
+          </TouchableOpacity>:
+          <View style={styles.groupImageContainer}>
+          {group.photo == undefined ?
+            <Image style={styles.groupImage} source={{ uri: "http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg" }} />
+          : <Image style={styles.groupImage} source={{ uri: group.photo }} />}
+          </View>
+        }
+        {group.users.length > 2 ? <View style={styles.groupNameBorder}>
             <TextInput
               style={styles.groupName}
               placeholder={`${group.name}`}
               value={groupName}
               onChangeText={text => this.onNameChange(text)}
             />
-          </View>
+          </View>:
+          <View style={styles.groupNameBorder}>
+          <Text style={styles.groupName}>{groupName}</Text>
+        </View>}
+          
         </View>
         <FlatList
           data={group.users}

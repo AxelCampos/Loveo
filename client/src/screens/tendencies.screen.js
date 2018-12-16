@@ -120,9 +120,10 @@ class Tendencies extends Component {
 
   goToProfiles = user => () => {
     const {
+      users,
       navigation: { navigate },
     } = this.props;
-    
+
     navigate('Profile', { userId: user.id });
   };
 

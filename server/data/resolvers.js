@@ -64,7 +64,7 @@ export const resolvers = {
     async createConversation(
       _,
       {
-        group: { name, userIds, userId },
+        group: { name, userIds, userId,photo },
       },
     ) {
       const user = await User.findOne({
@@ -79,6 +79,7 @@ export const resolvers = {
       });
       const group = await Group.create({
         name,
+        photo,
         users: [user, friend],
       });
       await group.addUsers([user, friend]);
@@ -87,13 +88,14 @@ export const resolvers = {
     async createGroup(
       _,
       {
-        group: { name, userIds, userId },
+        group: { name, userIds, userId,photo},
       },
     ) {
       const user = await User.findOne({ where: { id: userId } });
       const friends = await user.getFriends({ where: { id: { $in: userIds } } });
       const group = await Group.create({
         name,
+        photo,
         users: [user, ...friends],
       });
       await group.addUsers([user, ...friends]);

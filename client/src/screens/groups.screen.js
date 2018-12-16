@@ -68,14 +68,18 @@ Header.propTypes = {
 };
 
 const Group = ({ goToMessages, group:{id, name, users, photo} }) => {
- 
+  
   return (
     
     <TouchableHighlight key={id} onPress={goToMessages}>
       <View>
         <View style={styles.groupContainer}>
 
-        {users.length <=2 ? <Image style={styles.image} source={{uri:users[1].photoprofile.url}}></Image> :photo == undefined ? <Image style={styles.image} source={{uri:"http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg"}}></Image>:<Image style={styles.image} source={{uri:photo}}></Image>}
+        {photo != undefined ? <Image style={styles.image} source={{uri:photo}}></Image> :
+         <Image style={styles.image} source={{uri:"http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg"}}></Image> 
+        }
+           
+      
         </View>
         <Text style={styles.groupName}>{name}</Text>
       </View>

@@ -2,13 +2,15 @@ import R from 'ramda';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  ActivityIndicator, Button, Image, StyleSheet, Text, View,
+  ActivityIndicator, Button, Image, StyleSheet, Text, View, Alert,
 } from 'react-native';
+import {  StackActions, NavigationActions } from 'react-navigation';
 import { graphql, compose } from 'react-apollo';
 import AlphabetListView from 'react-native-alpha-listview';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SelectedUserList from '../components/selected-user-list.component';
 import { USER_QUERY } from '../graphql/user.query';
+import CREATE_CONVERSATION_MUTATION from '../graphql/create-conversation.mutation';
 
 const styles = StyleSheet.create({
   container: {
@@ -134,6 +136,18 @@ Cell.propTypes = {
   }).isRequired,
   toggle: PropTypes.func.isRequired,
 };
+
+const goToNewGroup = group => StackActions.reset({
+  index: 1,
+  actions: [
+    NavigationActions.navigate({ routeName: 'Main' }),
+    NavigationActions.navigate({
+      routeName: 'Messages',
+      params: { groupId: group.id, title: group.name },
+    }),
+  ],
+});
+
 class NewGroup extends Component {
   static navigationOptions = ({ navigation }) => {
     const { state } = navigation;
@@ -194,6 +208,8 @@ class NewGroup extends Component {
     }
   }
 
+  
+
   refreshNavigation = (selected) => {
     const { navigation } = this.props;
     navigation.setParams({
@@ -204,15 +220,31 @@ class NewGroup extends Component {
 
   finalizeGroup = () => {
     const {
-      navigation: { navigate },
+      navigation: { navigate, dispatch },
       user,
+      createConversation,
     } = this.props;
     const { selected } = this.state;
-    navigate('FinalizeGroup', {
-      selected,
-      friendCount: user.friends.length,
-      userId: user.id,
-    });
+
+    selected.length >= 2 ?
+      navigate('FinalizeGroup', {
+        selected,
+        friendCount: user.friends.length,
+        userId: user.id,
+      }) :
+
+      createConversation({
+        name: selected[0].username,
+        userIds: selected[0].id,
+        userId: 1,
+        photo: selected[0].photoprofile.url,
+      })
+        .then((res) => {
+          dispatch(goToNewGroup(res.data.createConversation));
+        })
+        .catch((error) => {
+          Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => {} }]);
+        });
   };
 
   isSelected = (user) => {
@@ -271,6 +303,7 @@ class NewGroup extends Component {
   }
 }
 NewGroup.propTypes = {
+  createConversation: PropTypes.func,
   loading: PropTypes.bool.isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
@@ -300,4 +333,14 @@ const userQuery = graphql(USER_QUERY, {
     user,
   }),
 });
-export default compose(userQuery)(NewGroup);
+
+const createConversationMutation = graphql(CREATE_CONVERSATION_MUTATION, {
+  props: ({ mutate }) => ({
+    createConversation: group => mutate({
+      variables: { group },
+      refetchQueries: [{ query: USER_QUERY }],
+    }),
+  }),
+});
+
+export default compose(userQuery, createConversationMutation)(NewGroup);

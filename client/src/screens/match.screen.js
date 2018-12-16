@@ -145,7 +145,7 @@ class Match extends PureComponent {
       id: 1,
       userId: user.id,
     }).catch((error) => {
-      Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => {} }]);
+      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => {} }]);
     });
   };
 
@@ -180,6 +180,7 @@ class Match extends PureComponent {
       name: user.username,
       userIds: user.id,
       userId: 1,
+      photo: user.photoprofile.url,
     })
       .then((res) => {
         navigation.dispatch(goToNewGroup(res.data.createConversation));
@@ -303,26 +304,11 @@ const usersQuery = graphql(USERS_QUERY, {
 });
 const createConversationMutation = graphql(CREATE_CONVERSATION_MUTATION, {
   props: ({ mutate }) => ({
-    createConversation: (group) => {
-      console.log('ayaguasca', group);
-      return mutate({
+    createConversation: (group) => 
+       mutate({
         variables: { group },
         refetchQueries: [{ query: USERS_QUERY }],
-        /* update: (store, { data: { createConversation } }) => {
-        // Read the data from our cache for this query.
-        const data = store.readQuery({ query: USERS_QUERY, variables: { id: group.userId } });
-       console.log("ññññññññññ",data);
-        // Add our message from the mutation to the end.
-        data.users[group.userId].groups.push(createConversation);
-        // Write our data back to the cache.
-        store.writeQuery({
-          query: USERS_QUERY,
-          variables: { id: group.userId },
-          data,
-        });
-      }, */
-      });
-    },
+      })
   }),
 });
 const updateUserMutation = graphql(UPDATE_USER_MUTATION, {
@@ -337,7 +323,9 @@ const editFriendMutation = graphql(EDIT_FRIEND_MUTATION, {
     editFriend: (id, userId) => mutate({
       variables: id,
       userId,
+      refetchQueries:[{query:USER_QUERY}],
     }),
+    
   }),
 });
 

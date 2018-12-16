@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   titleWrapper: {
-    alignItems: 'center',
     position: 'absolute',
     left: 0,
     right: 0,
@@ -48,14 +47,7 @@ class Messages extends Component {
       headerTitle: (
         <TouchableOpacity style={styles.titleWrapper} onPress={goToGroupDetails}>
           <View style={styles.title}>
-            {navigation.state.params.photo == undefined ? (
-              <Image
-                style={styles.titleImage}
-                source={{ uri: 'https://reactjs.org/logo-og.png' }}
-              />
-            ) : (
-              <Image style={styles.titleImage} source={{ uri: navigation.state.params.photo }} />
-            )}
+            <Image style={styles.titleImage} source={{ uri: navigation.state.params.photo }} />
             <Text>{state.params.title}</Text>
           </View>
         </TouchableOpacity>
