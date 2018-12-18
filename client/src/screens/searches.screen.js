@@ -77,8 +77,7 @@ const Search = ({ item, goToSearch, deleteThisSearch }) => {
         <TouchableHighlight key={item.id} onPress={goToSearch} >
             <View style={styles.tendencyContainer}>
                 <Text style={styles.name}>
-                    Busqueda
-                    {item.id}:
+                    Búsqueda:
                     {item.name}
                 </Text>
 

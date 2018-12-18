@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        //justifyContent: 'flex-start', //'center', 'flex-start', 'flex-end', 'space-around', 'space-between', 'space-evenly', strech, baseline
+        //justifyContent: 'flex-start', //'center', 'flex-start', 'flex-end', 'space-around', 'space-between', 'space-evenly', baseline
         //alignItems: "flex-start", //'center', 'flex-start', 'flex-end', 'stretch', baseline,
         paddingTop: 10
     },
@@ -41,16 +41,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         marginTop: 5,
     },
-    sbutton1: {
-        flexDirection: 'column',
-        justifyContent: 'space-evenly',
-        padding: 6,
-    },
-    sbutton2: {
-        justifyContent: 'space-evenly',
-        padding: 6,
-    },
-    button1: {
+    buttonCrearSearch: {
         padding: 6,
         borderColor: '#eee',
         borderBottomWidth: 1,
@@ -58,21 +49,45 @@ const styles = StyleSheet.create({
         //left: 30,
         //width: 150,
     },
-    button2: {
-        padding: 6,
-        borderColor: '#eee',
-        borderBottomWidth: 1,
-        //position: 'absolute',
-        //left: 250,
-        //width: 150,
+    viewButtonBusquedas: {
+        flexDirection: 'row',
+        alignItems: 'stretch',
+        justifyContent: 'space-between',
+        padding: 1,
     },
-    button3: {
+    viewButtonNueva: {
+        flex: 0.5,
+        padding: 6,
+    },
+    viewButtonVer: {
+        flex: 0.5,
+        padding: 6,
+    },
+    buttonNuevaBusqueda: {
+        flex: 0.5,
+        borderColor: '#eee',
+        borderBottomWidth: 1,
+        //position: 'absolute',
+        //left: 250,
+    },
+    buttonVerBusqueda: {
+        flex: 0.5,
+        borderColor: '#eee',
+        borderBottomWidth: 1,
+        //position: 'absolute',
+        //left: 250,
+    },
+    viewGuardar: {
+        flexDirection: 'column',
+        justifyContent: 'space-evenly',
+        padding: 6,
+    },
+    buttomGuardar: {
         padding: 6,
         borderColor: '#eee',
         borderBottomWidth: 1,
         //position: 'absolute',
         //left: 250,
-        //width: 150,
     },
     input: {
         marginBottom: 10,
@@ -84,19 +99,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         //borderRadius: 20,
         padding: 6,
-        //width: 350,
     },
-    /*title: {
-        marginBottom: 10,
-        marginTop: 10,
-        marginLeft: 15,
-        marginRight: 15,
-        height: 40,
-        padding: 10,
-        backgroundColor: '#c7d6db',
-        borderRadius: 10,
-        //color: '#7a42f4',
-    },*/
     tendencyContainer: {
         flex: 1,
         justifyContent: 'flex-start',
@@ -168,7 +171,7 @@ const Search = ({ saveSearch, nameSearch, isdisabled }) => (
             onChangeText={(name) => nameSearch({ name })}
         //value={country}
         />
-        <Button disabled={isdisabled} style={styles.button3} title="OK" onPress={saveSearch} />
+        <Button disabled={isdisabled} style={styles.buttonCrearSearch} title="OK" onPress={saveSearch} />
     </View>
 );
 
@@ -178,19 +181,24 @@ class Header extends Component {
     }
 
     render() {
-        const { saveSearch, viewNameInput, nameSearch, goToMySearches, hide, isdisabled } = this.props;
+        const { saveSearch, viewNameInput, nameSearch, goToMySearches, goToLifestyle, hide, isdisabled } = this.props;
         return (
             <View style={styles.header}>
-                <View style={styles.sbutton2}>
-                    <Button style={styles.button2} title="Ver Mis Búsquedas" onPress={goToMySearches} />
+                <View style={styles.viewButtonBusquedas}>
+                    <View style={styles.viewButtonNueva}>
+                        <Button style={styles.buttonNuevaBusqueda} title="Hacer nueva Búsqueda" onPress={goToLifestyle} />
+                    </View>
+                    <View style={styles.viewButtonVer}>
+                        <Button style={styles.buttonVerBusqueda} title="Ver Mis Búsquedas" onPress={goToMySearches} />
+                    </View>
                 </View>
-                <View style={styles.sbutton1}>
-                    <Button style={styles.button1} title="Guardar" onPress={viewNameInput} />
+                <View style={styles.viewGuardar}>
+                    <Button style={styles.buttomGuardar} title="Guardar" onPress={viewNameInput} />
                     <MyView hide={hide} >
                         <Search saveSearch={saveSearch} nameSearch={nameSearch} isdisabled={isdisabled} />
                     </MyView>
                 </View>
-            </View>
+            </View >
         )
     }
 };
@@ -278,6 +286,16 @@ class LifestyleResult extends Component {
         navigate('Searches', { userId: this.state.userId });
     };
 
+    goToLifestyle = () => {
+        const { navigation: { navigate } } = this.props;
+        navigate('Lifestyle', {
+            userId: this.state.userId,
+            gender: this.state.gender,
+            civilStatus: this.state.civilStatus,
+            children: this.state.children,
+        });
+    };
+
     viewNameInput = () => {
         this.setState({ hide: false });
     };
@@ -346,7 +364,7 @@ class LifestyleResult extends Component {
         //console.log('usuarios', users);
         return (
             <View style={styles.container}>
-                <Header hide={this.state.hide} viewNameInput={this.viewNameInput} saveSearch={this.saveSearch} nameSearch={this.nameSearch} goToMySearches={this.goToMySearches} isdisabled={this.state.disabled} />
+                <Header hide={this.state.hide} viewNameInput={this.viewNameInput} saveSearch={this.saveSearch} nameSearch={this.nameSearch} goToMySearches={this.goToMySearches} goToLifestyle={this.goToLifestyle} isdisabled={this.state.disabled} />
                 <View style={styles.main}>
                     <FlatList
                         data={users.filter((item) => item.id != this.state.userId).filter(this.selectGender).filter(this.selectCivilStatus).filter(this.selectChildren)}

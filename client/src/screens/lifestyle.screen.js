@@ -105,6 +105,7 @@ class Lifestyle extends Component {
         super(props);
         const { users } = props;
         this.state = {
+            userId: 1,
             gender: 'todos',
             civilStatus: 'todos',
             children: 'todos',
@@ -120,13 +121,34 @@ class Lifestyle extends Component {
         }
     }
 
+    //componentDidUpdate(prevProps, prevState) {
+    //const { params } = this.props.navigation.state;
+    //var x = this.props.navigation.state.params.userId;
+    //if (this.props.navigation.state.params.userId == undefined) {
+    /*if (prevState.userId != x) {
+        this.setState({ userId: params.userId })
+    }*/
+    //}
+    //console.log('prevState', prevState.gender);
+    //console.log('prop', params.gender);
+    /*if (prevState.gender != params.gender) {
+        this.setState({ gender: params.gender })
+    }
+    if (prevState.civilStatus != params.civilStatus) {
+        this.setState({ civilStatus: params.civilStatus })
+    }
+    if (prevState.children != params.children) {
+        this.setState({ children: params.children })
+    }*/
+    //};
+
     goToResult = users => () => {
         const { navigation: { navigate } } = this.props;
-        const { gender, civilStatus, children, enabledpickerGender, enabledpickerCivilStatus, enabledpickerChildren } = this.state;
+        const { userId, gender, civilStatus, children } = this.state;
         //console.log("ppppp", gender);
         navigate('LifestyleResult',
             {
-                userId: 1,
+                userId: userId,
                 gender: gender,
                 civilStatus: civilStatus,
                 children: children,
@@ -181,7 +203,6 @@ class Lifestyle extends Component {
         }
     };
 
-    //<Switch onValueChange={this.switchGender} value={false} disabled={true} thumbColor='green'/>
     render() {
         const { users } = this.props;
         return (
@@ -244,23 +265,6 @@ class Lifestyle extends Component {
         );
     }
 }
-
-/*Lifestyle.propTypes = {
-    navigation: PropTypes.shape({
-        navitate: PropTypes.func,
-    }),
-    users: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number,
-            username: PropTypes.string,
-            album: PropTypes.arrayOf(
-                PropTypes.shape({
-                    id: PropTypes.number,
-                }),
-            ),
-        }),
-    ),
-};*/
 
 const usersQuery = graphql(USERS_QUERY, {
     options: () => ({}), // fake the user for now
