@@ -1,6 +1,6 @@
 import GraphQLDate from 'graphql-date';
 import {
-  Group, Message, User, Photo, Lifestyle, Activity,
+  Group, Message, User, Photo, Lifestyle, Activity, Search
 } from './connectors';
 
 export const resolvers = {
@@ -42,6 +42,11 @@ export const resolvers = {
         where: args,
       });
     },
+    searches(_, args) {
+      return Search.findAll({
+        where: args,
+      });
+    },
   },
   Mutation: {
     createMessage(
@@ -59,7 +64,7 @@ export const resolvers = {
     async createConversation(
       _,
       {
-        group: { name, userIds, userId },
+        group: { name, userIds, userId,photo },
       },
     ) {
       const user = await User.findOne({
@@ -74,6 +79,7 @@ export const resolvers = {
       });
       const group = await Group.create({
         name,
+        photo,
         users: [user, friend],
       });
       await group.addUsers([user, friend]);
@@ -82,17 +88,33 @@ export const resolvers = {
     async createGroup(
       _,
       {
-        group: { name, userIds, userId },
+        group: { name, userIds, userId,photo},
       },
     ) {
       const user = await User.findOne({ where: { id: userId } });
       const friends = await user.getFriends({ where: { id: { $in: userIds } } });
       const group = await Group.create({
         name,
+        photo,
         users: [user, ...friends],
       });
       await group.addUsers([user, ...friends]);
       return group;
+    },
+    createSearch(
+      _,
+      {
+        search: { name, userId, gender, civilStatus, children },
+      },
+    ) {
+      const search = Search.create({
+        name,
+        userId,
+        gender,
+        civilStatus,
+        children,
+      });
+      return search;
     },
     async deleteGroup(_, { id }) {
       const group = await Group.findOne({ where: id });
@@ -101,6 +123,11 @@ export const resolvers = {
       await Message.destroy({ where: { groupId: group.id } });
       await group.destroy();
       return group;
+    },
+    async deleteSearch(_, { id }) {
+      const search = await Search.findOne({ where: id });
+      await search.destroy();
+      return search;
     },
     async leaveGroup(_, { id, userId }) {
       const group = await Group.findOne({ where: { id } });
@@ -124,10 +151,10 @@ export const resolvers = {
     updateGroup(
       _,
       {
-        group: { id, name },
+        group: { id, name, photo },
       },
     ) {
-      return Group.findOne({ where: { id } }).then(group => group.update({ name }));
+      return Group.findOne({ where: { id } }).then(group => group.update({ name, photo }));
     },
 
     createUser(
@@ -231,6 +258,11 @@ export const resolvers = {
     miscreated(user) {
       return user.getMiscreated();
     },
+    searches(user) {
+      return Search.findAll({
+        where: { userId: user.id },
+      });
+    },
   },
   Photo: {
     to(photo) {
@@ -248,6 +280,11 @@ export const resolvers = {
   Activity: {
     subscription(activity) {
       return activity.getUsers();
+    },
+  },
+  Search: {
+    userId(search) {
+      return search.getUser();
     },
   },
   /* To: {

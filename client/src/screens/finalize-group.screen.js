@@ -144,6 +144,7 @@ class FinalizeGroup extends Component {
       name,
       userId: 1, // fake user for now
       userIds: R.map(R.prop('id'), selected),
+      photo: "http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg",
     })
       .then((res) => {
         navigation.dispatch(goToNewGroup(res.data.createGroup));
@@ -169,7 +170,7 @@ class FinalizeGroup extends Component {
       <View style={styles.container}>
         <View style={styles.detailsContainer}>
           <TouchableOpacity style={styles.imageContainer}>
-            <Image style={styles.groupImage} source={{ uri: 'https://reactjs.org/logo-og.png' }} />
+            <Image style={styles.groupImage} source={{ uri: "http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg" }} />
             <Text>edit</Text>
           </TouchableOpacity>
           <View style={styles.inputContainer}>

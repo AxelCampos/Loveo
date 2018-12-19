@@ -32,6 +32,14 @@ import Settings from './screens/setting.screen';
 import EditProfile from './screens/edit-profile.screen';
 import Login from './screens/login.screen';
 import Register from './screens/register.screen';
+import GroupImage from './screens/group-image.screen';
+import LifestyleResult from './screens/lifestyle-result.screen';
+import Searches from './screens/searches.screen';
+import MyLikes from './screens/my-likes.screen';
+import WhoLikesMe from './screens/who-likes-me.screen';
+import MatchList from './screens/match-list.screen';
+import Notifications from './screens/notifications.screen';
+import Blacklist from './screens/blacklist.screen';
 
 const styles = StyleSheet.create({
   container: {
@@ -49,11 +57,7 @@ const styles = StyleSheet.create({
     color: 'blue',
   },
 });
-const TestScreen = title => () => (
-  <View style={styles.container}>
-    <Text>{title}</Text>
-  </View>
-);
+
 const Search = createMaterialTopTabNavigator(
   {
     Tendencias: {
@@ -72,73 +76,42 @@ const Search = createMaterialTopTabNavigator(
   },
 );
 
-// tabs in main screen
-const MainScreenNavigator = StackNavigator(
+const MyUser = createMaterialTopTabNavigator(
   {
-    /* Search: {
-      screen: Search,
-      navigationOptions: {
-        tabBarLabel: 'Search',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="search" color={tintColor} />,
-        tabBarColor: 'blue',
-      },
-    },
-
-    Match: {
-      screen: Match,
-      navigationOptions: {
-        tabBarLabel: 'Match',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="burn" color={tintColor} />,
-        tabBarColor: 'pink',
-      },
-    },
-
-    Chats: {
-      screen: Groups,
-      navigationOptions: {
-        tabBarLabel: 'Chats',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="rocketchat" color={tintColor} />,
-        tabBarColor: 'green',
-      },
-    },
-
     User: {
       screen: User,
       navigationOptions: {
-        tabBarLabel: 'Profile',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />,
-        tabBarColor: 'orange',
+        title: 'Profile',
       },
     },
-
-    Settings: {
-      screen: Settings,
+    MyLikes: {
+      screen: MyLikes,
       navigationOptions: {
-        tabBarLabel: 'Settings',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="cog" color={tintColor} />,
-        tabBarColor: 'violet',
+        title: 'My Likes',
       },
     },
-
-    Register: {
-      screen: Register,
+    WhoLikesMe: {
+      screen: WhoLikesMe,
       navigationOptions: {
-        tabBarLabel: 'Register',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="cog" color={tintColor} />,
-        tabBarColor: 'violet',
+        title: 'Who Likes Me',
       },
     },
-
-    Login: {
-      screen: Login,
+    MatchList: {
+      screen: MatchList,
       navigationOptions: {
-        tabBarLabel: 'Login',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="lock" color={tintColor} />,
-        tabBarColor: 'orange',
+        title: 'Match List',
       },
     },
   },
-    */
+  {
+    initialRouteName: 'User',
+    activeColor: 'black',
+  },
+);
+
+// tabs in main screen
+const MainScreenNavigator = StackNavigator(
+  {
     loginComp: {
       screen: createBottomTabNavigator({
         register: {
@@ -192,8 +165,8 @@ const MainScreenNavigator = StackNavigator(
               },
             },
 
-            User: {
-              screen: User,
+            MyUser: {
+              screen: MyUser,
               navigationOptions: {
                 tabBarLabel: 'Profile',
                 tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />,
@@ -211,8 +184,9 @@ const MainScreenNavigator = StackNavigator(
             },
           }),
           navigationOptions: {
-            header: null,
+            title: 'Loveo',
           },
+          headerMode: 'screen',
         },
       }),
     },
@@ -222,6 +196,7 @@ const MainScreenNavigator = StackNavigator(
     initialRouteName: 'loginComp',
     navigationOptions: {
       tabBarVisible: true,
+      header: null,
     },
     tabBarOptions: {
       activeTintColor: '#251d26',
@@ -274,8 +249,33 @@ const AppNavigator = createStackNavigator(
       screen: EditProfile,
       navigationOptions: {
         title: 'Editar Perfil',
-      }
+      },
     },
+    LifestyleResult: {
+      screen: LifestyleResult,
+      navigationOptions: {
+        title: 'Resultado de la Búsqueda',
+      },
+    },
+    Searches: {
+      screen: Searches,
+      navigationOptions: {
+        title: 'Búsquedas',
+      },
+    },
+    Notifications: {
+      screen: Notifications,
+      navigationOptions: {
+        title: 'Notifications',
+      },
+    },
+    Blacklist: {
+      screen: Blacklist,
+      navigationOptions: {
+        title: 'Blacklist',
+      },
+    },
+    GroupImage: { screen: GroupImage },
   },
   {
     navigationOptions: {

@@ -9,6 +9,7 @@ const MESSAGES_PER_USER = 5;
 const PHOTOS_PER_USER = 8;
 const LIFESTYLE_PER_USER = 1;
 const ACTIVITY_PER_USER = 1;
+const SEARCH_PER_USER = 2;
 
 faker.seed(123); // get consistent data every time we reload app
 
@@ -107,6 +108,27 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
               ]),
             }),
             LIFESTYLE_PER_USER,
+          );
+          R.times(
+            () => db.models.search.create({
+              userId: user.id,
+              name: faker.lorem.words(1),
+              gender: faker.random.arrayElement(['todos', 'hombre', 'mujer', 'otro']),
+              civilStatus: faker.random.arrayElement([
+                'todos',
+                'soltero',
+                'separado',
+                'divorciado',
+                'viudo',
+                'otro',
+              ]),
+              children: faker.random.arrayElement([
+                'todos',
+                'no tiene hijos',
+                'tiene hijos',
+              ]),
+            }),
+            SEARCH_PER_USER,
           );
           R.times(
             () => db.models.activity.create({

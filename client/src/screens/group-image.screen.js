@@ -6,7 +6,8 @@ import {
 } from 'react-native';
 import { graphql, compose } from 'react-apollo';
 import { USER_QUERY } from '../graphql/user.query';
-import withLoading from './withLoading';
+import EDIT_GROUP_MUTATION from '../graphql/edit-group.mutation';
+import GROUP_QUERY from '../graphql/group.query';
 
 const styles = StyleSheet.create({
   albumContainer: {
@@ -31,36 +32,44 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
-const Photo = ({ album: { id, url } }) => (
-  <TouchableHighlight key={id} underlayColor="transparent">
+const Photo = ({ album: { id, url }, selected }) => (
+  <TouchableHighlight key={id} underlayColor="transparent" onPress={() => selected(url)}>
     <View style={styles.photoContainer}>
       <Image style={styles.userImage} source={{ uri: url }} />
     </View>
   </TouchableHighlight>
 );
 Photo.propTypes = {
+  selected: PropTypes.func,
   album: PropTypes.shape({
     id: PropTypes.number,
     url: PropTypes.string,
   }),
 };
-class Album extends Component {
+class GroupImage extends Component {
   constructor(props) {
     super(props);
   }
 
+  selected = (url) => {
+    const {
+      navigation: { navigate, dispatch },
+      updateGroup,
+    } = this.props;
+    
+
+    updateGroup({
+      id: this.props.navigation.state.params.group.id,
+      name: this.props.navigation.state.params.group.name,
+      photo: url,
+    }).then((res) => {
+      dispatch(navigate('GroupDetails', res));
+    });
+  };
+
   keyExtractor = item => item.id.toString();
 
-  renderItem = ({ item: album }) => <Photo album={album} />;
-
-  tabHandler = () => {
-    this.props.navigation.dispatch(
-      StackActions.reset({
-        index: 0,
-        actions: [NavigationActions.navigate({ routeName: 'Album' })],
-      }),
-    );
-  };
+  renderItem = ({ item: album }) => <Photo album={album} selected={this.selected} />;
 
   render() {
     const { user } = this.props;
@@ -70,20 +79,22 @@ class Album extends Component {
     }
     return (
       <View style={styles.albumContainer}>
-        {user ? (
-          <FlatList
-            data={user.album.slice()}
-            numColumns={2}
-            keyExtractor={this.keyExtractor}
-            renderItem={this.renderItem}
-          />
-        ) : null}
+        <FlatList
+          data={user.album.slice()}
+          numColumns={2}
+          keyExtractor={this.keyExtractor}
+          renderItem={this.renderItem}
+        />
       </View>
     );
   }
 }
 
-Album.propTypes = {
+GroupImage.propTypes = {
+  updateGroup: PropTypes.func,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }),
   user: PropTypes.shape({
     id: PropTypes.number.isRequired,
     album: PropTypes.arrayOf(
@@ -108,7 +119,25 @@ const userQuery = graphql(USER_QUERY, {
   }),
 });
 
+const updateGroupMutation = graphql(EDIT_GROUP_MUTATION, {
+  props: ({ mutate }) => ({
+    updateGroup: group => mutate({
+      variables: { group },
+      refetchQueries: [{ query: GROUP_QUERY }],
+    }),
+  }),
+});
+
+const groupQuery = graphql(GROUP_QUERY, {
+  options: ownProps => ({ variables: { groupId: ownProps.navigation.state.params.id } }),
+  props: ({ data: { loading, group } }) => ({
+    loading,
+    group,
+  }),
+});
+
 export default compose(
   userQuery,
-  withLoading,
-)(Album);
+  updateGroupMutation,
+  groupQuery,
+)(GroupImage);

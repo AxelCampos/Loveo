@@ -14,6 +14,7 @@ const GROUP_QUERY = gql`
           url
         }
       }
+      photo
       messages {
         ...MessageFragment
       }
