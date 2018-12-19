@@ -32,6 +32,11 @@ import EditProfile from './screens/edit-profile.screen';
 import GroupImage from './screens/group-image.screen';
 import LifestyleResult from './screens/lifestyle-result.screen';
 import Searches from './screens/searches.screen';
+import MyLikes from './screens/my-likes.screen';
+import WhoLikesMe from './screens/who-likes-me.screen';
+import MatchList from './screens/match-list.screen';
+import Notifications from './screens/notifications.screen';
+import Blacklist from './screens/blacklist.screem';
 
 const styles = StyleSheet.create({
   container: {
@@ -68,6 +73,39 @@ const Search = createMaterialTopTabNavigator(
   },
 );
 
+const MyProfile = createMaterialTopTabNavigator(
+  {
+    User: {
+      screen: User,
+      navigationOptions: {
+        title: 'Profile',
+      },
+    },
+    MyLikes: {
+      screen: MyLikes,
+      navigationOptions: {
+        title: 'My Likes',
+      },
+    },
+    WhoLikesMe: {
+      screen: WhoLikesMe,
+      navigationOptions: {
+        title: 'Who Likes Me',
+      },
+    },
+    MatchList: {
+      screen: MatchList,
+      navigationOptions: {
+        title: 'Match List',
+      },
+    },
+  },
+  {
+    initialRouteName: 'User',
+    activeColor: 'black',
+  },
+);
+
 // tabs in main screen
 const MainScreenNavigator = createBottomTabNavigator(
   {
@@ -98,8 +136,8 @@ const MainScreenNavigator = createBottomTabNavigator(
       },
     },
 
-    User: {
-      screen: User,
+    MyProfile: {
+      screen: MyProfile,
       navigationOptions: {
         tabBarLabel: 'Profile',
         tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />,
@@ -117,7 +155,7 @@ const MainScreenNavigator = createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: 'Chats',
+    initialRouteName: 'Search',
     navigationOptions: {
       tabBarVisible: true,
     },
@@ -169,6 +207,18 @@ const AppNavigator = createStackNavigator(
       navigationOptions: {
         title: 'Búsquedas',
       }
+    },
+    Notifications: {
+      screen: Notifications,
+      navigationOptions: {
+        title: 'Notifications',
+      },
+    },
+    Blacklist: {
+      screen: Blacklist,
+      navigationOptions: {
+        title: 'Blacklist',
+      },
     },
     GroupImage: { screen: GroupImage },
   },
