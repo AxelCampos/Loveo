@@ -36,7 +36,7 @@ import MyLikes from './screens/my-likes.screen';
 import WhoLikesMe from './screens/who-likes-me.screen';
 import MatchList from './screens/match-list.screen';
 import Notifications from './screens/notifications.screen';
-import Blacklist from './screens/blacklist.screem';
+import Blacklist from './screens/blacklist.screen';
 
 const styles = StyleSheet.create({
   container: {

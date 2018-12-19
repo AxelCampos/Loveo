@@ -17,7 +17,7 @@ import { USERS_QUERY } from '../graphql/users.query';
 import { USER_QUERY } from '../graphql/user.query';
 import withLoading from '../components/withLoading';
 
-/*const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         alignItems: 'center',
@@ -116,15 +116,7 @@ const Tendency = ({
     }),
 };*/
 
-/*class WhoLikesMe extends Component {
-    constructor(props) {
-        super(props);
-        const { users } = props;
-        const { user } = props;
-        this.state = {
-            userId: user.id,
-        }
-    };
+class WhoLikesMe extends Component {
 
     keyExtractor = item => item.id.toString();
 
@@ -162,15 +154,13 @@ const Tendency = ({
     };
 
     selectMyFriends = (item) => {
-        //const { user } = this.props;
-        const { userId } = this.state;
-        console.log('user', user);
-        console.log('item', item);
-        return item.friends.filter((dato) => dato.id == userId).length !== 0;
+        const { user } = this.props;
+        return item.friends.filter((dato) => dato.id == user.id).length !== 0;
     };
 
     render() {
         const { users } = this.props;
+        const { user } = this.props;
 
         return (
             <View style={styles.container}>
@@ -204,7 +194,7 @@ const Tendency = ({
     ),
 };*/
 
-/*const userQuery = graphql(USER_QUERY, {
+const userQuery = graphql(USER_QUERY, {
     options: ownProps => ({
         variables: {
             id: 1,
@@ -212,14 +202,13 @@ const Tendency = ({
     }),
     props: ({ data: { loading, user } }) => ({
         loading,
-        user: user || null,
+        user,
     }),
 });
 
 const usersQuery = graphql(USERS_QUERY, {
     options: () => ({}), // fake the user for now
-    props: ({ data: { loading, users } }) => ({
-        loading,
+    props: ({ data: { users } }) => ({
         users: users || [],
     }),
 });
@@ -228,12 +217,12 @@ export default compose(
     userQuery,
     usersQuery,
     withLoading,
-)(WhoLikesMe);*/
+)(WhoLikesMe);
 
-const WhoLikesMe = () => (
+/*const WhoLikesMe = () => (
     <View>
         <Text>Who Likes Me</Text>
     </View>
 )
 
-export default WhoLikesMe;
+export default WhoLikesMe;*/
