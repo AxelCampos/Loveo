@@ -95,7 +95,7 @@ class Match extends PureComponent {
       swipedAllCards: false,
       swipeDirection: '',
       isSwipingBack: false,
-      cardIndex: 0,
+      cardIndex: 1,
     };
   }
 
@@ -328,23 +328,7 @@ const updateUserMutation = graphql(UPDATE_USER_MUTATION, {
       
       return mutate({
         variables: { user },
-
-        /*update: (store, { data: { updateUser } }) => {
-          const data = store.readQuery({
-            query: USERS_QUERY,
-            variables: {
-              id: user.id,
-            },
-          });
-          data.user.likes = updateUser.likes;
-          store.writeQuery({
-            query: USERS_QUERY,
-            variables: {
-              id: user.id,
-            },
-            data,
-          });
-        },*/
+    
       });
     },
   }),
@@ -356,22 +340,7 @@ const editFriendMutation = graphql(EDIT_FRIEND_MUTATION, {
       return mutate({
         variables: id, userId,
 
-        /* update: (store, { data: { editFriend } }) => {
-          const data = store.readQuery({
-            query: USERS_QUERY,
-            variables: {
-              id: user.id,
-            },
-          });
-          data.user.friends.push(editFriend);
-          store.writeQuery({
-            query: USERS_QUERY,
-            variables: {
-              id: user.id,
-            },
-            data,
-          });
-         },*/
+       
       })
     }
   })
@@ -384,22 +353,6 @@ const editMiscreatedMutation = graphql(EDIT_MISCREATED_MUTATION, {
       return mutate({
         variables: id, userId
 
-       /* update: (store, { data: {editMiscreated} }) => {
-          const data = store.readQuery({
-            query: USERS_QUERY,
-            variables: {
-              id: user.id,
-            },
-          });
-          data.user.miscreated.push(editMiscreated);
-          store.writeQuery({
-            query: USERS_QUERY,
-            variables: {
-              id: user.id,
-            },
-            data,
-          });
-        },*/
       })
     }
   })

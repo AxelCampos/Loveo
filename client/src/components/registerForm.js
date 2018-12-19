@@ -5,18 +5,34 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-  Button,
   StyleSheet,
-  StatusBar,
-  onButtonPress,
+  ToastAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { graphql, compose } from 'react-apollo';
-import { USER_QUERY } from '../graphql/user.query';
+import { withNavigation } from 'react-navigation';
 import CREATE_USER_MUTATION from '../graphql/create-user.mutation';
 
 // create a component
 class RegisterForm extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  // funcion de la mutasion
+  mutasion = () => {
+    const { createUser } = this.props;
+    createUser(this.state)
+      .then(() => {
+        ToastAndroid.showWithGravity('Usuario creado!', ToastAndroid.SHORT, ToastAndroid.CENTER);
+        const { navigate } = this.props.navigation;
+        navigate('User');
+      })
+      .catch((error) => {
+        Alert.alert('ERRORRRRR', error.message, [{ text: 'OK', onPress: () => {} }]);
+      });
+  };
+
   render() {
     return (
       <View style={StyleSheet.container}>
@@ -31,6 +47,7 @@ class RegisterForm extends Component {
             returnKeyType="next"
             placeholder="Enter your username "
             placeholderTextColor="white"
+            onChangeText={username => this.setState({ username })}
           />
         </View>
 
@@ -45,6 +62,7 @@ class RegisterForm extends Component {
             returnKeyType="next"
             placeholder="Enter your email"
             placeholderTextColor="white"
+            onChangeText={email => this.setState({ email })}
           />
         </View>
 
@@ -57,9 +75,10 @@ class RegisterForm extends Component {
             placeholder="Password"
             placeholderTextColor="white"
             secureTextEntry
+            onChangeText={password => this.setState({ password })}
           />
         </View>
-        <TouchableOpacity style={styles.buttonContainer} onPress={this.createUserMutation}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={this.mutasion}>
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
       </View>
@@ -67,60 +86,13 @@ class RegisterForm extends Component {
   }
 }
 
-creachione = () => {
-  const { createUser } = this.props;
-
-  createUser({
-    name: user.username,
-    mail: user.email,
-    pass: user.password,
-  })
-    .then(() => {
-      ToastAndroid.showWithGravity('Usuario creado!', ToastAndroid.SHORT, ToastAndroid.CENTER);
-    })
-    .catch((error) => {
-      Alert.alert('Error Creating New User', error.message, [{ text: 'OK', onPress: () => {} }]);
-    });
-};
-
 const createUserMutation = graphql(CREATE_USER_MUTATION, {
   props: ({ mutate }) => ({
     createUser: user => mutate({
-      variables: { user },
-      update: (store, { data: { createUser } }) => {
-        const data = store.readQuery({
-          query: USER_QUERY,
-          variables: {
-            id: user.id,
-          },
-        });
-        data.user.username = createUser.username;
-        data.user.email = createUser.email;
-        data.user.password = createUser.password;
-        // data.user.likes = 0;
-        console.log('*****username', createUser.username);
-        console.log('<<<<<<<<<<<email', createUser.email);
-        console.log('>>>>>>>>>>password', createUser.password);
-        store.writeQuery({
-          query: USER_QUERY,
-          variables: {
-            id: user.id,
-          },
-          data,
-        });
+      variables: {
+        user,
       },
     }),
-  }),
-});
-
-const userQuery = graphql(USER_QUERY, {
-  options: {
-    variables: {
-      id: 50,
-    },
-  },
-  props: ({ data: { user } }) => ({
-    user: user || null,
   }),
 });
 
@@ -156,6 +128,6 @@ const styles = StyleSheet.create({
   },
 });
 export default compose(
-  userQuery,
   createUserMutation,
+  withNavigation,
 )(RegisterForm);

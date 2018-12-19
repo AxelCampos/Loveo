@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
 
 const Header = ({ goToProfile }) => (
     <View style={styles.header}>
-        <Icon style={styles.icon} size={40} name="cogs" color="lightgreen" />
+        <Icon style={styles.icon} size={40} name="cog" color="lightgreen" />
         <Button style={styles.button} title="Volver al Perfil" onPress={goToProfile} />
     </View>
 );
@@ -155,17 +155,15 @@ class EditProfile extends Component {
             newChildren: user.children,
         };
     }
-
-    //TODO: fix age input
     update = () => {
         const { editUser, user } = this.props;
         const { newName, newCountry, newCity, newEmail, newAge, newGender, newCivilStatus, newChildren } = this.state;
-        console.log('aqui', newCivilStatus);
+        //console.log('ali', newAge);
         editUser({
             id: user.id,
             username: newName,
             email: newEmail,
-            age: user.age,
+            age: newAge,
             gender: newGender,
             civilStatus: newCivilStatus,
             children: newChildren,
@@ -218,7 +216,11 @@ class EditProfile extends Component {
                             //placeholderTextColor="#9a73ef"
                             autoCapitalize="none"
                             placeholder='nueva edad'
-                            onChangeText={(newAge) => this.setState({ newAge })}
+                            onChangeText={(newAge) => {
+                                num = parseInt(newAge);
+                                this.setState({ newAge: num });
+                            }
+                            }
                         //value={country}
                         />
                         <Text style={styles.label}>País: {country}</Text>
@@ -250,7 +252,7 @@ class EditProfile extends Component {
                         </Picker>
                         <Text style={styles.label}>Estado Civil: {civilStatus}</Text>
                         <Picker style={styles.picker} selectedValue={this.state.newCivilStatus} onValueChange={(newCivilStatus) => this.setState({ newCivilStatus })}>
-                            <Picker.Item label='soltero nunca casado' value='soltero nunca casado' />
+                            <Picker.Item label='soltero' value='soltero' />
                             <Picker.Item label='divorciado' value='divorciado' />
                             <Picker.Item label='separado' value='separado' />
                             <Picker.Item label='casado' value='casado' />
@@ -299,8 +301,8 @@ const editUserMutation = graphql(EDIT_USER_MUTATION, {
                 data.user.children = editUser.children;
                 console.log('<<<<<Username', data.user.username);
                 console.log('<<<<<Username', editUser.username);
-                console.log('*****Country', data.user.country);
-                console.log('*****Country', editUser.country);
+                console.log('*****Age', data.user.age);
+                console.log('*****Age', editUser.age);
                 store.writeQuery({
                     query: USER_QUERY,
                     variables: {

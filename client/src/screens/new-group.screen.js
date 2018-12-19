@@ -7,9 +7,10 @@ import {
 import { graphql, compose } from 'react-apollo';
 import AlphabetListView from 'react-native-alpha-listview';
 import Icon from 'react-native-vector-icons/FontAwesome';
- import SelectedUserList from '../components/selected-user-list.component';
+import SelectedUserList from '../components/selected-user-list.component';
 import { USER_QUERY } from '../graphql/user.query';
- const styles = StyleSheet.create({
+
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
@@ -60,7 +61,7 @@ import { USER_QUERY } from '../graphql/user.query';
     marginRight: -4, // default is 12
   },
 });
- const SectionHeader = ({ title }) => {
+const SectionHeader = ({ title }) => {
   // inline styles used for brevity, use a stylesheet when possible
   const textStyle = {
     textAlign: 'center',
@@ -68,7 +69,7 @@ import { USER_QUERY } from '../graphql/user.query';
     fontWeight: '700',
     fontSize: 16,
   };
-   const viewStyle = {
+  const viewStyle = {
     backgroundColor: '#ccc',
   };
   return (
@@ -80,35 +81,32 @@ import { USER_QUERY } from '../graphql/user.query';
 SectionHeader.propTypes = {
   title: PropTypes.string,
 };
- const SectionItem = ({ title }) => <Text style={{ color: 'blue' }}>{title}</Text>;
+const SectionItem = ({ title }) => <Text style={{ color: 'blue' }}>{title}</Text>;
 SectionItem.propTypes = {
   title: PropTypes.string,
 };
- class Cell extends Component {
+class Cell extends Component {
   constructor(props) {
     super(props);
-    this.toggle = this.toggle.bind(this);
     this.state = {
       isSelected: props.isSelected(props.item),
     };
   }
-   componentWillReceiveProps(nextProps) {
+
+  componentWillReceiveProps(nextProps) {
     this.setState({
       isSelected: nextProps.isSelected(nextProps.item),
     });
   }
-   toggle() {
+
+  render() {
     const { item, toggle } = this.props;
-    toggle(item);
-  }
-   render() {
-    const {
-      item: { username },
-    } = this.props;
+    const { username,photoprofile } = item;
     const { isSelected } = this.state;
+    
     return (
       <View style={styles.cellContainer}>
-        <Image style={styles.cellImage} source={{ uri: 'https://reactjs.org/logo-og.png' }} />
+        <Image style={styles.cellImage} source={{ uri: photoprofile.url }} />
         <Text style={styles.cellLabel}>{username}</Text>
         <View style={styles.checkButtonContainer}>
           <Icon.Button
@@ -117,7 +115,7 @@ SectionItem.propTypes = {
             color="white"
             iconStyle={styles.checkButtonIcon}
             name="check"
-            onPress={this.toggle}
+            onPress={() => toggle(item)}
             size={16}
             style={styles.checkButton}
           />
@@ -130,10 +128,13 @@ Cell.propTypes = {
   isSelected: PropTypes.func,
   item: PropTypes.shape({
     username: PropTypes.string.isRequired,
+    photoprofile: PropTypes.shape({
+      url: PropTypes.string,
+    }),
   }).isRequired,
   toggle: PropTypes.func.isRequired,
 };
- class NewGroup extends Component {
+class NewGroup extends Component {
   static navigationOptions = ({ navigation }) => {
     const { state } = navigation;
     const isReady = state.params && state.params.mode === 'ready';
@@ -148,28 +149,28 @@ Cell.propTypes = {
       ),
     };
   };
-   constructor(props) {
+
+  constructor(props) {
     super(props);
-     const { navigation } = this.props;
+    const { navigation } = this.props;
     let selected = [];
     if (navigation.state.params) {
       selected = navigation.state.params.selected;
     }
-     this.state = {
+    this.state = {
       selected: selected || [],
       friends: props.user
         ? R.groupBy(friend => friend.username.charAt(0).toUpperCase(), props.user.friends)
         : [],
     };
-     this.finalizeGroup = this.finalizeGroup.bind(this);
-    this.isSelected = this.isSelected.bind(this);
-    this.toggle = this.toggle.bind(this);
   }
-   componentDidMount() {
+
+  componentDidMount() {
     const { selected } = this.state;
     this.refreshNavigation(selected);
   }
-   componentWillReceiveProps(nextProps) {
+
+  componentWillReceiveProps(nextProps) {
     const { user } = this.props;
     const state = {};
     if (nextProps.user && nextProps.user.friends && nextProps.user !== user) {
@@ -178,27 +179,30 @@ Cell.propTypes = {
         nextProps.user.friends,
       );
     }
-     if (nextProps.selected) {
+    if (nextProps.selected) {
       Object.assign(state, {
         selected: nextProps.selected,
       });
     }
-     this.setState(state);
+    this.setState(state);
   }
-   componentWillUpdate(nextProps, nextState) {
+
+  componentWillUpdate(nextProps, nextState) {
     const { selected } = this.state;
     if (!!selected.length !== !!nextState.selected.length) {
       this.refreshNavigation(nextState.selected);
     }
   }
-   refreshNavigation(selected) {
+
+  refreshNavigation = (selected) => {
     const { navigation } = this.props;
     navigation.setParams({
       mode: selected && selected.length ? 'ready' : undefined,
       finalizeGroup: this.finalizeGroup,
     });
-  }
-   finalizeGroup() {
+  };
+
+  finalizeGroup = () => {
     const {
       navigation: { navigate },
       user,
@@ -209,22 +213,26 @@ Cell.propTypes = {
       friendCount: user.friends.length,
       userId: user.id,
     });
-  }
-   isSelected(user) {
+  };
+
+  isSelected = (user) => {
     const { selected } = this.state;
     return ~selected.indexOf(user);
-  }
-   toggle(user) {
+  };
+
+  toggle = (user) => {
     const { selected } = this.state;
     const index = selected.indexOf(user);
-     this.setState({
+    this.setState({
       selected: ~index ? selected.filter((_, i) => i !== index) : [...selected, user],
     });
-  }
-   render() {
+  };
+
+  render() {
     const { user, loading } = this.props;
     const { selected, friends } = this.state;
-     // render loading placeholder while we fetch messages
+    
+    // render loading placeholder while we fetch messages
     if (loading || !user) {
       return (
         <View style={[styles.loading, styles.container]}>
@@ -232,7 +240,7 @@ Cell.propTypes = {
         </View>
       );
     }
-     return (
+    return (
       <View style={styles.container}>
         {selected.length ? (
           <View style={styles.selected}>
@@ -262,7 +270,7 @@ Cell.propTypes = {
     );
   }
 }
- NewGroup.propTypes = {
+NewGroup.propTypes = {
   loading: PropTypes.bool.isRequired,
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
@@ -277,16 +285,19 @@ Cell.propTypes = {
       PropTypes.shape({
         id: PropTypes.number,
         username: PropTypes.string,
+        photoprofile: PropTypes.shape({
+          url: PropTypes.string,
+        }),
       }),
     ),
   }),
   selected: PropTypes.arrayOf(PropTypes.object),
 };
- const userQuery = graphql(USER_QUERY, {
+const userQuery = graphql(USER_QUERY, {
   options: () => ({ variables: { id: 1 } }), // fake for now
   props: ({ data: { loading, user } }) => ({
     loading,
     user,
   }),
 });
- export default compose(userQuery)(NewGroup);
+export default compose(userQuery)(NewGroup);

@@ -28,6 +28,9 @@ export const USER_QUERY = gql`
       friends {
         id
         username
+        photoprofile {
+          url
+        }
       }
     }
   }

@@ -5,10 +5,13 @@ export const USERS_QUERY = gql`
     users {
       id
       email
-      country
-      city
       username
       age
+      gender
+      civilStatus
+      children
+      city
+      country
       likes
       photoprofile {
         id
@@ -17,6 +20,10 @@ export const USERS_QUERY = gql`
       groups {
         id
         name
+      }
+      album {
+        id
+        url
       }
     }
   }

@@ -127,7 +127,7 @@ class FinalizeGroup extends Component {
     navigation.goBack();
   }
 
-  remove(user) {
+  remove=(user)=> {
     const { selected } = this.state;
     const index = selected.indexOf(user);
     if (~index) {
@@ -135,9 +135,9 @@ class FinalizeGroup extends Component {
         selected: selected.filter((_, i) => i !== index),
       });
     }
-  }
+  };
 
-  create() {
+  create=()=> {
     const { createGroup, navigation } = this.props;
     const { name, selected } = this.state;
     createGroup({
@@ -151,7 +151,7 @@ class FinalizeGroup extends Component {
       .catch((error) => {
         Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => {} }]);
       });
-  }
+  };
 
   refreshNavigation(ready) {
     const { navigation } = this.props;
