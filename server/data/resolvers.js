@@ -1,6 +1,6 @@
 import GraphQLDate from 'graphql-date';
 import {
-  Group, Message, User, Photo, Lifestyle, Activity, Search
+  Group, Message, User, Photo, Lifestyle, Activity, Search,
 } from './connectors';
 
 export const resolvers = {
@@ -64,7 +64,12 @@ export const resolvers = {
     async createConversation(
       _,
       {
-        group: { name, userIds, userId,photo },
+        group: {
+          name,
+          userIds,
+          userId,
+          photo,
+        },
       },
     ) {
       const user = await User.findOne({
@@ -88,7 +93,12 @@ export const resolvers = {
     async createGroup(
       _,
       {
-        group: { name, userIds, userId,photo},
+        group: {
+          name,
+          userIds,
+          userId,
+          photo,
+        },
       },
     ) {
       const user = await User.findOne({ where: { id: userId } });
@@ -104,7 +114,13 @@ export const resolvers = {
     createSearch(
       _,
       {
-        search: { name, userId, gender, civilStatus, children },
+        search: {
+          name,
+          userId,
+          gender,
+          civilStatus,
+          children,
+        },
       },
     ) {
       const search = Search.create({
@@ -145,7 +161,8 @@ export const resolvers = {
         user: { id, likes },
       },
     ) {
-      const user = await User.findOne({ where: { id } }).then(user => user.update({ likes }));
+      const user = await User.findOne({ where: { id } })
+        .then(userFound => userFound.update({ likes }));
       return user;
     },
     updateGroup(

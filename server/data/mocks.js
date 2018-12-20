@@ -149,13 +149,17 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
   await Promise.all(
     R.flatten(
       R.map(
-        users => users.map((current, i) => users.map((user, j) => (i !== j ? current.addFriend(user) : false))),
+        users => users.map(
+          (current, i) => users.map((user, j) => (i !== j ? current.addFriend(user) : false)),
+        ),
         usersGroups,
       ),
     ),
   );
 
   console.log('¡DATABASE CREATED!');
+
+  return 'Este es un return para que eslint no se queje, porque no le mola una función async sin return, o algo asínc';
 };
 
 export default mockDB;
