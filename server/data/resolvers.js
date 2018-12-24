@@ -119,7 +119,11 @@ export const resolvers = {
           userId,
           gender,
           civilStatus,
+<<<<<<< HEAD
           children
+=======
+          children,
+>>>>>>> e13552b2c27407608a60a4278f9b75d5cfc6862f
         },
       },
     ) {
