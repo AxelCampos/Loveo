@@ -158,10 +158,6 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
   );
 
   console.log('¡DATABASE CREATED!');
-<<<<<<< HEAD
-=======
-
->>>>>>> e13552b2c27407608a60a4278f9b75d5cfc6862f
   return 'Este es un return para que eslint no se queje, porque no le mola una función async sin return, o algo asínc';
 };
 
