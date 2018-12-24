@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     header: {
         flex: 0.1,
         flexDirection: 'row',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
         marginTop: 5
     },
@@ -53,11 +54,27 @@ const styles = StyleSheet.create({
     icon: {
         flex: 0.5,
         //alignItems: 'center',
-        marginLeft: 35,
-        marginRight: 165,
-        alignSelf: 'center',
+        //marginLeft: 35,
+        //marginRight: 165,
+        //alignSelf: 'center',
         //position: 'absolute',
         //left: 5
+    },
+    viewButton2: {
+        padding: 6,
+        //borderColor: '#eee',
+        //borderBottomWidth: 1,
+        alignSelf: "flex-end",
+        //width: 200,
+    },
+    button2: {
+
+        padding: 6,
+        borderColor: '#eee',
+        borderBottomWidth: 1,
+        //width: 200,
+        backgroundColor: 'red',
+        borderRadius: 20,
     },
     button: {
         flex: 0.5,
@@ -69,7 +86,7 @@ const styles = StyleSheet.create({
         padding: 6,
         borderColor: '#eee',
         borderBottomWidth: 1,
-        alignSelf: "center",
+        //alignSelf: "center",
     },
     input: {
         marginBottom: 15,
@@ -184,6 +201,17 @@ class EditProfile extends Component {
             userId: user.id,
         });
     };
+    goToBlacklist = () => {
+        const { user, navigation: { navigate } } = this.props;
+        ToastAndroid.showWithGravity(
+            'Go to Blacklist',
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+        );
+        navigate('Blacklist', {
+            userId: user.id,
+        });
+    };
     render() {
         const { user: { username, country, city, email, age, gender, civilStatus, children } } = this.props;
         return (
@@ -265,6 +293,11 @@ class EditProfile extends Component {
                             <Picker.Item label='tiene hijos' value='tiene hijos' />
                             <Picker.Item label='no especificado' value='no especificado' />
                         </Picker>
+                        <View style={styles.viewButton2}>
+                            <TouchableOpacity style={styles.button2} onPress={this.goToBlacklist} >
+                                <Text style={styles.submitButtonText}>See Blacklist</Text>
+                            </TouchableOpacity>
+                        </View>
 
                     </ScrollView>
                     <View style={styles.submit}>

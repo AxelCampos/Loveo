@@ -172,6 +172,8 @@ export const typeDefs = gql`
     editUser(user: EditUserInput!): User
     editMiscreated(id: Int, userId: Int): User
     editFriend(id: Int, userId: Int): User
+    deleteMiscreated(id: Int, userId: Int): User
+    deleteFriend(id: Int, userId: Int): User
   }
   schema {
     query: Query

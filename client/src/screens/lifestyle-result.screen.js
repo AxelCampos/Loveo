@@ -15,6 +15,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { graphql, compose } from 'react-apollo';
 import { USERS_QUERY } from '../graphql/users.query';
+import { USER_QUERY } from '../graphql/user.query';
 import withLoading from '../components/withLoading';
 import SEARCHES_QUERY from '../graphql/searches.query';
 import CREATE_SEARCH_MUTATION from '../graphql/create-search.mutation';
@@ -356,8 +357,10 @@ class LifestyleResult extends Component {
             return item.children == this.state.children;
         }
     };
-
-    //data={users.filter(this.selectGender).filter(this.selectCivilStatus).filter(this.selectChildren)}
+    selectBlacklist = (item) => {
+        const { user } = this.props;
+        return user.miscreated.filter((dato) => dato.id == item.id).length === 0;
+    };
 
     render() {
         const { users } = this.props;
@@ -367,7 +370,7 @@ class LifestyleResult extends Component {
                 <Header hide={this.state.hide} viewNameInput={this.viewNameInput} saveSearch={this.saveSearch} nameSearch={this.nameSearch} goToMySearches={this.goToMySearches} goToLifestyle={this.goToLifestyle} isdisabled={this.state.disabled} />
                 <View style={styles.main}>
                     <FlatList
-                        data={users.filter((item) => item.id != this.state.userId).filter(this.selectGender).filter(this.selectCivilStatus).filter(this.selectChildren)}
+                        data={users.filter((item) => item.id != this.state.userId).filter(this.selectGender).filter(this.selectCivilStatus).filter(this.selectChildren).filter(this.selectBlacklist)}
                         keyExtractor={this.keyExtractor}
                         renderItem={this.renderItem}
                         numColumns={2}
@@ -400,6 +403,18 @@ const createSearchMutation = graphql(CREATE_SEARCH_MUTATION, {
     }),
 });
 
+const userQuery = graphql(USER_QUERY, {
+    options: ownProps => ({
+        variables: {
+            id: 1,
+        },
+    }),
+    props: ({ data: { loading, user } }) => ({
+        loading,
+        user,
+    }),
+});
+
 const usersQuery = graphql(USERS_QUERY, {
     options: () => ({}), // fake the user for now
     props: ({ data: { users } }) => ({
@@ -422,6 +437,7 @@ const searchesQuery = graphql(SEARCHES_QUERY, {
 export default compose(
     createSearchMutation,
     searchesQuery,
+    userQuery,
     usersQuery,
     withLoading,
 )(LifestyleResult);
