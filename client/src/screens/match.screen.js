@@ -88,7 +88,6 @@ class Match extends PureComponent {
     super(props);
     this.state = {
       swipedAllCards: false,
-      swipeDirection: '',
       isSwipingBack: false,
       cardIndex: 1,
     };
@@ -145,7 +144,7 @@ class Match extends PureComponent {
       id: 1,
       userId: user.id,
     }).catch((error) => {
-      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => {} }]);
+      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => { } }]);
     });
   };
 
@@ -159,7 +158,7 @@ class Match extends PureComponent {
     });
   };
 
-  onSwiped = (index) => {
+  onSwiped = () => {
     const { cardIndex } = this.state;
     this.setState({
       cardIndex: cardIndex + 1,
@@ -167,12 +166,12 @@ class Match extends PureComponent {
   };
 
   compareUsers = (a, b) => a.id - b.id;
-  filter=()=>{
-    
+
+  filter = () => {
   }
+
   create = (index) => {
     const { createConversation, navigation } = this.props;
-    const { cardIndex } = this.state;
     const user = this.props.users.sort(this.compareUsers)[index];
 
 
@@ -186,7 +185,7 @@ class Match extends PureComponent {
         navigation.dispatch(goToNewGroup(res.data.createConversation));
       })
       .catch((error) => {
-        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => {} }]);
+        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => { } }]);
       });
   };
 
@@ -291,9 +290,9 @@ const userQuery = graphql(USER_QUERY, {
       id: 1,
     },
   }),
-  props: ({ data: {loading, user } }) => ({
-    loading:loading,
-    user:user,
+  props: ({ data: { loading, user } }) => ({
+    loading,
+    user,
   }),
 });
 const usersQuery = graphql(USERS_QUERY, {
@@ -304,11 +303,10 @@ const usersQuery = graphql(USERS_QUERY, {
 });
 const createConversationMutation = graphql(CREATE_CONVERSATION_MUTATION, {
   props: ({ mutate }) => ({
-    createConversation: (group) => 
-       mutate({
-        variables: { group },
-        refetchQueries: [{ query: USERS_QUERY }],
-      })
+    createConversation: group => mutate({
+      variables: { group },
+      refetchQueries: [{ query: USERS_QUERY }],
+    }),
   }),
 });
 const updateUserMutation = graphql(UPDATE_USER_MUTATION, {
@@ -323,9 +321,9 @@ const editFriendMutation = graphql(EDIT_FRIEND_MUTATION, {
     editFriend: (id, userId) => mutate({
       variables: id,
       userId,
-      refetchQueries:[{query:USER_QUERY}],
+      refetchQueries: [{ query: USER_QUERY }],
     }),
-    
+
   }),
 });
 

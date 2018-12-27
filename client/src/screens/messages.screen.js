@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
 
 class Messages extends Component {
   static navigationOptions = ({ navigation }) => {
-    
     const { state, navigate } = navigation;
     const goToGroupDetails = () => navigate('GroupDetails', {
       id: state.params.groupId,
@@ -189,7 +188,7 @@ const createMessageMutation = graphql(CREATE_MESSAGE_MUTATION, {
             groupId: message.groupId,
           },
         });
-          // Add our message from the mutation to the end
+        // Add our message from the mutation to the end
         groupData.group.messages.unshift(createMessage);
         // Write our data back to the cache.
         store.writeQuery({

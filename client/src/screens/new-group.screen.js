@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
   ActivityIndicator, Button, Image, StyleSheet, Text, View, Alert,
 } from 'react-native';
-import {  StackActions, NavigationActions } from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
 import { graphql, compose } from 'react-apollo';
 import AlphabetListView from 'react-native-alpha-listview';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -103,9 +103,9 @@ class Cell extends Component {
 
   render() {
     const { item, toggle } = this.props;
-    const { username,photoprofile } = item;
+    const { username, photoprofile } = item;
     const { isSelected } = this.state;
-    
+
     return (
       <View style={styles.cellContainer}>
         <Image style={styles.cellImage} source={{ uri: photoprofile.url }} />
@@ -158,19 +158,17 @@ class NewGroup extends Component {
         <View style={{ paddingRight: 10 }}>
           <Button title="Next" onPress={state.params.finalizeGroup} />
         </View>
-      ) : (
-        undefined
-      ),
+      )
+        : (
+          undefined
+        ),
     };
   };
 
   constructor(props) {
     super(props);
-    const { navigation } = this.props;
-    let selected = [];
-    if (navigation.state.params) {
-      selected = navigation.state.params.selected;
-    }
+    const { navigation: { state: { params } } } = this.props;
+    const { selected } = params || { selected: [] };
     this.state = {
       selected: selected || [],
       friends: props.user
@@ -208,8 +206,6 @@ class NewGroup extends Component {
     }
   }
 
-  
-
   refreshNavigation = (selected) => {
     const { navigation } = this.props;
     navigation.setParams({
@@ -226,13 +222,13 @@ class NewGroup extends Component {
     } = this.props;
     const { selected } = this.state;
 
-    selected.length >= 2 ?
+    if (selected.length >= 2) {
       navigate('FinalizeGroup', {
         selected,
         friendCount: user.friends.length,
         userId: user.id,
-      }) :
-
+      });
+    } else {
       createConversation({
         name: selected[0].username,
         userIds: selected[0].id,
@@ -243,8 +239,9 @@ class NewGroup extends Component {
           dispatch(goToNewGroup(res.data.createConversation));
         })
         .catch((error) => {
-          Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => {} }]);
+          Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => { } }]);
         });
+    }
   };
 
   isSelected = (user) => {
@@ -263,7 +260,7 @@ class NewGroup extends Component {
   render() {
     const { user, loading } = this.props;
     const { selected, friends } = this.state;
-    
+
     // render loading placeholder while we fetch messages
     if (loading || !user) {
       return (
@@ -278,9 +275,10 @@ class NewGroup extends Component {
           <View style={styles.selected}>
             <SelectedUserList data={selected} remove={this.toggle} />
           </View>
-        ) : (
-          undefined
-        )}
+        )
+          : (
+            undefined
+          )}
         {R.keys(friends).length ? (
           <AlphabetListView
             style={{ flex: 1 }}
@@ -295,9 +293,10 @@ class NewGroup extends Component {
             sectionHeader={SectionHeader}
             sectionHeaderHeight={22.5}
           />
-        ) : (
-          undefined
-        )}
+        )
+          : (
+            undefined
+          )}
       </View>
     );
   }

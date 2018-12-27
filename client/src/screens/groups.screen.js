@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    
     borderRadius: 50,
     borderBottomColor: '#eee',
     borderBottomWidth: 1,
@@ -32,8 +31,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   groupName: {
-    color:'white',
-    borderRadius:10,
+    color: 'white',
+    borderRadius: 10,
     marginHorizontal: 0.6,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     fontWeight: 'bold',
@@ -51,11 +50,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 12,
   },
-  image:{
-    width:100,
-    height:100,
-    borderRadius:50,
-  }
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
 });
 
 const Header = ({ onPress }) => (
@@ -67,25 +66,22 @@ Header.propTypes = {
   onPress: PropTypes.func.isRequired,
 };
 
-const Group = ({ goToMessages, group:{id, name, users, photo} }) => {
-  
-  return (
-    
-    <TouchableHighlight key={id} onPress={goToMessages}>
-      <View>
-        <View style={styles.groupContainer}>
+const Group = ({ goToMessages, group: { id, name, photo } }) => (
 
-        {photo != undefined ? <Image style={styles.image} source={{uri:photo}}></Image> :
-         <Image style={styles.image} source={{uri:"http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg"}}></Image> 
+  <TouchableHighlight key={id} onPress={goToMessages}>
+    <View>
+      <View style={styles.groupContainer}>
+        {
+          photo !== undefined
+            ? <Image style={styles.image} source={{ uri: photo }} />
+            : <Image style={styles.image} source={{ uri: 'http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg' }} />
         }
-           
-      
-        </View>
-        <Text style={styles.groupName}>{name}</Text>
       </View>
-    </TouchableHighlight>
-  );
-};
+      <Text style={styles.groupName}>{name}</Text>
+    </View>
+  </TouchableHighlight>
+);
+
 Group.propTypes = {
   goToMessages: PropTypes.func.isRequired,
   group: PropTypes.shape({
@@ -112,7 +108,7 @@ class Groups extends Component {
     const {
       navigation: { navigate },
     } = this.props;
-    navigate('Messages', { groupId: group.id, title: group.name ,photo:group.photo });
+    navigate('Messages', { groupId: group.id, title: group.name, photo: group.photo });
   };
 
   renderItem = ({ item }) => <Group group={item} goToMessages={this.goToMessages(item)} />;
@@ -159,13 +155,13 @@ Groups.propTypes = {
       PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
-        photo:PropTypes.string,
+        photo: PropTypes.string,
         users: PropTypes.arrayOf(
           PropTypes.shape({
             id: PropTypes.id,
-            photoprofile:PropTypes.shape({
-              id:PropTypes.number,
-              url:PropTypes.string,
+            photoprofile: PropTypes.shape({
+              id: PropTypes.number,
+              url: PropTypes.string,
             }),
           }),
         ),
