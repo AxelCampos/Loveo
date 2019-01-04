@@ -1,19 +1,11 @@
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   StyleSheet, Text, Alert, View, Image,
 } from 'react-native';
-import { graphql, compose } from 'react-apollo';
+
 import { StackActions, NavigationActions } from 'react-navigation';
 import Swiper from 'react-native-deck-swiper';
-import USER_QUERY from '../graphql/user.query';
-import USERS_QUERY from '../graphql/users.query';
-import CREATE_CONVERSATION_MUTATION from '../graphql/create-conversation.mutation';
-import UPDATE_USER_MUTATION from '../graphql/update-user.mutation';
-import EDIT_MISCREATED_MUTATION from '../graphql/edit-miscreated.mutation';
-import EDIT_FRIEND_MUTATION from '../graphql/edit-friend.mutation';
-import withLoading from '../components/withLoading';
 
 const styles = StyleSheet.create({
   container: {
@@ -73,6 +65,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
 const goToNewGroup = group => StackActions.reset({
   index: 1,
   actions: [
@@ -83,6 +76,7 @@ const goToNewGroup = group => StackActions.reset({
     }),
   ],
 });
+
 class Match extends PureComponent {
   constructor(props) {
     super(props);
@@ -150,6 +144,7 @@ class Match extends PureComponent {
 
   swipeLeft = (index) => {
     const { editMiscreated } = this.props;
+
     const user = this.props.users.sort(this.compareUsers)[index];
 
     editMiscreated({
@@ -167,13 +162,9 @@ class Match extends PureComponent {
 
   compareUsers = (a, b) => a.id - b.id;
 
-  filter = () => {
-  }
-
   create = (index) => {
     const { createConversation, navigation } = this.props;
     const user = this.props.users.sort(this.compareUsers)[index];
-
 
     createConversation({
       name: user.username,
@@ -284,64 +275,5 @@ class Match extends PureComponent {
     );
   };
 }
-const userQuery = graphql(USER_QUERY, {
-  options: () => ({
-    variables: {
-      id: 1,
-    },
-  }),
-  props: ({ data: { loading, user } }) => ({
-    loading,
-    user,
-  }),
-});
-const usersQuery = graphql(USERS_QUERY, {
-  options: () => ({}),
-  props: ({ data: { users } }) => ({
-    users: users || [],
-  }),
-});
-const createConversationMutation = graphql(CREATE_CONVERSATION_MUTATION, {
-  props: ({ mutate }) => ({
-    createConversation: group => mutate({
-      variables: { group },
-      refetchQueries: [{ query: USERS_QUERY }],
-    }),
-  }),
-});
-const updateUserMutation = graphql(UPDATE_USER_MUTATION, {
-  props: ({ mutate }) => ({
-    updateUser: user => mutate({
-      variables: { user },
-    }),
-  }),
-});
-const editFriendMutation = graphql(EDIT_FRIEND_MUTATION, {
-  props: ({ mutate }) => ({
-    editFriend: (id, userId) => mutate({
-      variables: id,
-      userId,
-      refetchQueries: [{ query: USER_QUERY }],
-    }),
 
-  }),
-});
-
-const editMiscreatedMutation = graphql(EDIT_MISCREATED_MUTATION, {
-  props: ({ mutate }) => ({
-    editMiscreated: (id, userId) => mutate({
-      variables: id,
-      userId,
-    }),
-  }),
-});
-
-export default compose(
-  updateUserMutation,
-  createConversationMutation,
-  userQuery,
-  usersQuery,
-  withLoading,
-  editFriendMutation,
-  editMiscreatedMutation,
-)(Match);
+export default Match;
