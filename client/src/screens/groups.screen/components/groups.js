@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
-  FlatList, StyleSheet, Text, TouchableHighlight, View, Button, Image,
+  FlatList, StyleSheet, Text, View,
 } from 'react-native';
-
-import { Query } from 'react-apollo';
-
-import { USER_QUERY } from '../graphql/user.query';
-import withLoading from '../components/withLoading';
+import withLoading from '../../../components/withLoading';
+import Header from './header';
+import Group from './group';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,78 +16,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-  groupContainer: {
-    width: 100,
-    height: 100,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    borderRadius: 50,
-    borderBottomColor: '#eee',
-    borderBottomWidth: 1,
-    marginHorizontal: 10,
-    marginTop: 10,
-  },
-  groupName: {
-    color: 'white',
-    borderRadius: 10,
-    marginHorizontal: 0.6,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    fontWeight: 'bold',
-    flex: 0.7,
-    textAlign: 'center',
-    marginTop: -10,
-  },
-  header: {
-    alignItems: 'flex-end',
-    padding: 6,
-    borderColor: '#eee',
-    borderBottomWidth: 1,
-  },
+
   warning: {
     textAlign: 'center',
     padding: 12,
   },
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-  },
 });
 
-const Header = ({ onPress }) => (
-  <View style={styles.header}>
-    <Button title="New Group" onPress={onPress} />
-  </View>
-);
-Header.propTypes = {
-  onPress: PropTypes.func.isRequired,
-};
-
-const Group = ({ goToMessages, group: { id, name, photo } }) => (
-
-  <TouchableHighlight key={id} onPress={goToMessages}>
-    <View>
-      <View style={styles.groupContainer}>
-        {
-          photo !== undefined
-            ? <Image style={styles.image} source={{ uri: photo }} />
-            : <Image style={styles.image} source={{ uri: 'http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg' }} />
-        }
-      </View>
-      <Text style={styles.groupName}>{name}</Text>
-    </View>
-  </TouchableHighlight>
-);
-
-Group.propTypes = {
-  goToMessages: PropTypes.func.isRequired,
-  group: PropTypes.shape({
-    photo: PropTypes.string,
-    id: PropTypes.number,
-    name: PropTypes.string,
-  }),
-};
 class Groups extends Component {
   static navigationOptions = {
     title: 'Chats',
@@ -171,10 +104,4 @@ Groups.propTypes = {
 };
 const GroupsWithLoading = withLoading(Groups);
 
-const UserQuery = props => (
-  <Query query={USER_QUERY} variables={{ id: 1 }}>
-    {({ data }) => <GroupsWithLoading {...props} {...data} />}
-  </Query>
-);
-
-export default UserQuery;
+export default GroupsWithLoading;
