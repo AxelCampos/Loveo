@@ -2,40 +2,23 @@ import R from 'ramda';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  ActivityIndicator, Button, Image, StyleSheet, Text, View, Alert,
+  ActivityIndicator, Button,  StyleSheet, Text, View, Alert,
 } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
-import { graphql, compose } from 'react-apollo';
+
 import AlphabetListView from 'react-native-alpha-listview';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import SelectedUserList from '../components/selected-user-list.component';
-import { USER_QUERY } from '../graphql/user.query';
-import CREATE_CONVERSATION_MUTATION from '../graphql/create-conversation.mutation';
+
+import SelectedUserList from '../../../components/selected-user-list.component';
+import Cell from './cell';
+import SectionHeader from './sectionHeader';
+import SectionItem from './sectionItem';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
   },
-  cellContainer: {
-    alignItems: 'center',
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-  },
-  cellImage: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-  },
-  cellLabel: {
-    flex: 1,
-    fontSize: 16,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-  },
+
   selected: {
     flexDirection: 'row',
   },
@@ -43,99 +26,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
   },
-  navIcon: {
-    color: 'blue',
-    fontSize: 18,
-    paddingTop: 2,
-  },
-  checkButtonContainer: {
-    paddingRight: 12,
-    paddingVertical: 6,
-  },
-  checkButton: {
-    borderWidth: 1,
-    borderColor: '#dbdbdb',
-    padding: 4,
-    height: 24,
-    width: 24,
-  },
-  checkButtonIcon: {
-    marginRight: -4, // default is 12
-  },
+ 
 });
-const SectionHeader = ({ title }) => {
-  // inline styles used for brevity, use a stylesheet when possible
-  const textStyle = {
-    textAlign: 'center',
-    color: '#fff',
-    fontWeight: '700',
-    fontSize: 16,
-  };
-  const viewStyle = {
-    backgroundColor: '#ccc',
-  };
-  return (
-    <View style={viewStyle}>
-      <Text style={textStyle}>{title}</Text>
-    </View>
-  );
-};
-SectionHeader.propTypes = {
-  title: PropTypes.string,
-};
-const SectionItem = ({ title }) => <Text style={{ color: 'blue' }}>{title}</Text>;
-SectionItem.propTypes = {
-  title: PropTypes.string,
-};
-class Cell extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isSelected: props.isSelected(props.item),
-    };
-  }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      isSelected: nextProps.isSelected(nextProps.item),
-    });
-  }
 
-  render() {
-    const { item, toggle } = this.props;
-    const { username, photoprofile } = item;
-    const { isSelected } = this.state;
-
-    return (
-      <View style={styles.cellContainer}>
-        <Image style={styles.cellImage} source={{ uri: photoprofile.url }} />
-        <Text style={styles.cellLabel}>{username}</Text>
-        <View style={styles.checkButtonContainer}>
-          <Icon.Button
-            backgroundColor={isSelected ? 'blue' : 'white'}
-            borderRadius={12}
-            color="white"
-            iconStyle={styles.checkButtonIcon}
-            name="check"
-            onPress={() => toggle(item)}
-            size={16}
-            style={styles.checkButton}
-          />
-        </View>
-      </View>
-    );
-  }
-}
-Cell.propTypes = {
-  isSelected: PropTypes.func,
-  item: PropTypes.shape({
-    username: PropTypes.string.isRequired,
-    photoprofile: PropTypes.shape({
-      url: PropTypes.string,
-    }),
-  }).isRequired,
-  toggle: PropTypes.func.isRequired,
-};
 
 const goToNewGroup = group => StackActions.reset({
   index: 1,
@@ -158,16 +52,19 @@ class NewGroup extends Component {
         <View style={{ paddingRight: 10 }}>
           <Button title="Next" onPress={state.params.finalizeGroup} />
         </View>
-      )
-        : (
-          undefined
-        ),
+      ) : (
+        undefined
+      ),
     };
   };
 
   constructor(props) {
     super(props);
-    const { navigation: { state: { params } } } = this.props;
+    const {
+      navigation: {
+        state: { params },
+      },
+    } = this.props;
     const { selected } = params || { selected: [] };
     this.state = {
       selected: selected || [],
@@ -239,7 +136,9 @@ class NewGroup extends Component {
           dispatch(goToNewGroup(res.data.createConversation));
         })
         .catch((error) => {
-          Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => { } }]);
+          Alert.alert('Error Creating New Group', error.message, [
+            { text: 'OK', onPress: () => {} },
+          ]);
         });
     }
   };
@@ -275,10 +174,9 @@ class NewGroup extends Component {
           <View style={styles.selected}>
             <SelectedUserList data={selected} remove={this.toggle} />
           </View>
-        )
-          : (
-            undefined
-          )}
+        ) : (
+          undefined
+        )}
         {R.keys(friends).length ? (
           <AlphabetListView
             style={{ flex: 1 }}
@@ -293,10 +191,9 @@ class NewGroup extends Component {
             sectionHeader={SectionHeader}
             sectionHeaderHeight={22.5}
           />
-        )
-          : (
-            undefined
-          )}
+        ) : (
+          undefined
+        )}
       </View>
     );
   }
@@ -325,21 +222,4 @@ NewGroup.propTypes = {
   }),
   selected: PropTypes.arrayOf(PropTypes.object),
 };
-const userQuery = graphql(USER_QUERY, {
-  options: () => ({ variables: { id: 1 } }), // fake for now
-  props: ({ data: { loading, user } }) => ({
-    loading,
-    user,
-  }),
-});
-
-const createConversationMutation = graphql(CREATE_CONVERSATION_MUTATION, {
-  props: ({ mutate }) => ({
-    createConversation: group => mutate({
-      variables: { group },
-      refetchQueries: [{ query: USER_QUERY }],
-    }),
-  }),
-});
-
-export default compose(userQuery, createConversationMutation)(NewGroup);
+export default NewGroup;
