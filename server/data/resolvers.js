@@ -5,6 +5,14 @@ import {
 
 export const resolvers = {
   Date: GraphQLDate,
+  PageInfo: {
+    hasNextPage(connection) {
+      return connection.hasNextPage();
+    },
+    hasPreviousPage(connection) {
+      return connection.hasPreviousPage();
+    },
+  },
   Query: {
     group(_, args) {
       return Group.find({ where: args });
@@ -65,10 +73,7 @@ export const resolvers = {
       _,
       {
         group: {
-          name,
-          userIds,
-          userId,
-          photo,
+          name, userIds, userId, photo,
         },
       },
     ) {
@@ -94,10 +99,7 @@ export const resolvers = {
       _,
       {
         group: {
-          name,
-          userIds,
-          userId,
-          photo,
+          name, userIds, userId, photo,
         },
       },
     ) {
@@ -115,11 +117,7 @@ export const resolvers = {
       _,
       {
         search: {
-          name,
-          userId,
-          gender,
-          civilStatus,
-          children,
+          name, userId, gender, civilStatus, children,
         },
       },
     ) {
@@ -161,8 +159,7 @@ export const resolvers = {
         user: { id, likes },
       },
     ) {
-      const user = await User.findOne({ where: { id } })
-        .then(userFound => userFound.update({ likes }));
+      const user = await User.findOne({ where: { id } }).then(userFound => userFound.update({ likes }));
       return user;
     },
     updateGroup(
@@ -199,7 +196,7 @@ export const resolvers = {
       const friends = await user.friends;
       await user.addMiscreated(craco);
       await user.removeFriend(craco);
-      //}
+      // }
       return user;
     },
     async editFriend(_, { id, userId }) {
@@ -226,10 +223,67 @@ export const resolvers = {
     users(group) {
       return group.getUsers();
     },
-    messages(group) {
+    messages(group, { messageConnection = {} }) {
+      const {
+        first, last, before, after,
+      } = messageConnection;
+
+      // base query -- get messages from the right group
+      const where = { groupId: group.id };
+
+      // because we return messages from newest -> oldest
+      // before actually means newer (id > cursor)
+      // after actually means older (id < cursor)
+
+      if (before) {
+        // convert base-64 to utf8 id
+        where.id = { $gt: Buffer.from(before, 'base64').toString() };
+      }
+
+      if (after) {
+        where.id = { $lt: Buffer.from(after, 'base64').toString() };
+      }
+
       return Message.findAll({
-        where: { groupId: group.id },
-        order: [['createdAt', 'DESC']],
+        where,
+        order: [['id', 'DESC']],
+        limit: first || last,
+      }).then((messages) => {
+        const edges = messages.map(message => ({
+          cursor: Buffer.from(message.id.toString()).toString('base64'),
+          // convert id to cursor
+          node: message,
+          // the node is the message itself
+        }));
+        return {
+          edges,
+          pageInfo: {
+            hasNextPage() {
+              if (messages.length < (last || first)) {
+                return Promise.resolve(false);
+              }
+
+              return Message.findOne({
+                where: {
+                  groupId: group.id,
+                  id: {
+                    [before ? '$gt' : '$lt']: messages[messages.length - 1].id,
+                  },
+                },
+                order: [['id', 'DESC']],
+              }).then(message => !!message);
+            },
+            hasPreviousPage() {
+              return Message.findOne({
+                where: {
+                  groupId: group.id,
+                  id: where.id,
+                },
+                order: [['id']],
+              }).then(message => !!message);
+            },
+          },
+        };
       });
     },
   },

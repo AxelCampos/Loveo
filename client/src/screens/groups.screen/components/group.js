@@ -38,7 +38,7 @@ const Group = ({ goToMessages, group: { id, name, photo } }) => (
   <TouchableHighlight key={id} onPress={goToMessages}>
     <View>
       <View style={styles.groupContainer}>
-        {photo !== undefined ? (
+        {photo !== null ? (
           <Image style={styles.image} source={{ uri: photo }} />
         ) : (
           <Image

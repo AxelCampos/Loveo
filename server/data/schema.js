@@ -58,6 +58,25 @@ export const typeDefs = gql`
     children: String
     likes: Int
   }
+  #input for relay cursor connections
+  input ConnectionInput {
+    first: Int
+    after: String
+    last: Int
+    before: String
+  }
+  type MessageConnection {
+    edges: [MessageEdge]
+    pageInfo: PageInfo!
+  }
+  type MessageEdge {
+    cursor: String!
+    node: Message!
+  }
+  type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+  }
 
   # a group chat entity
   type Group {
@@ -65,7 +84,7 @@ export const typeDefs = gql`
     name: String # name of the group
     users: [User!]! # users in the group
     photo: String
-    messages: [Message!]! # messages sent to the group
+    messages(messageConnection: ConnectionInput): MessageConnection # messages sent to the group
     album: [Photo!]!
     length: Int!
   }
