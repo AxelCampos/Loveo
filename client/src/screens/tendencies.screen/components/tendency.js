@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {
- StyleSheet, Text, TouchableHighlight, View, Image,
+  StyleSheet, Text, TouchableHighlight, View, Image,
 } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -86,6 +86,7 @@ const Tendency = ({
 );
 Tendency.propTypes = {
   goToProfiles: PropTypes.func.isRequired,
+  reduceString: PropTypes.func.isRequired,
   users: PropTypes.shape({
     id: PropTypes.number,
     country: PropTypes.string,

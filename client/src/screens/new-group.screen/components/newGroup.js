@@ -2,7 +2,7 @@ import R from 'ramda';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  ActivityIndicator, Button,  StyleSheet, Text, View, Alert,
+  ActivityIndicator, Button, StyleSheet, View, Alert,
 } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 
@@ -26,9 +26,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
   },
- 
 });
-
 
 
 const goToNewGroup = group => StackActions.reset({

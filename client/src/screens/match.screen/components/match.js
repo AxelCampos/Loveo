@@ -106,7 +106,8 @@ class Match extends PureComponent {
   };
 
   swipeBack = () => {
-    if (!this.state.isSwipingBack) {
+    const { isSwipingBack } = this.state;
+    if (!isSwipingBack) {
       this.setIsSwipingBack(true, () => {
         this.swiper.swipeBack(() => {
           this.setIsSwipingBack(false);
@@ -125,9 +126,9 @@ class Match extends PureComponent {
   };
 
   swipeRight = (index) => {
-    const { updateUser, editFriend } = this.props;
+    const { updateUser, editFriend, users } = this.props;
 
-    const user = this.props.users.sort(this.compareUsers)[index];
+    const user = users.sort(this.compareUsers)[index];
 
     updateUser({
       id: user.id,
@@ -143,9 +144,9 @@ class Match extends PureComponent {
   };
 
   swipeLeft = (index) => {
-    const { editMiscreated } = this.props;
+    const { editMiscreated, users } = this.props;
 
-    const user = this.props.users.sort(this.compareUsers)[index];
+    const user = users.sort(this.compareUsers)[index];
 
     editMiscreated({
       id: 1,
@@ -163,8 +164,8 @@ class Match extends PureComponent {
   compareUsers = (a, b) => a.id - b.id;
 
   create = (index) => {
-    const { createConversation, navigation } = this.props;
-    const user = this.props.users.sort(this.compareUsers)[index];
+    const { createConversation, navigation, users } = this.props;
+    const user = users.sort(this.compareUsers)[index];
 
     createConversation({
       name: user.username,
@@ -182,7 +183,7 @@ class Match extends PureComponent {
 
   render = () => {
     const { users } = this.props;
-    const { swipedAllCards } = this.state;
+    const { swipedAllCards, cardIndex } = this.state;
 
     return (
       <View style={styles.container}>
@@ -191,7 +192,7 @@ class Match extends PureComponent {
             ref={(swiper) => {
               this.swiper = swiper;
             }}
-            cardIndex={this.state.cardIndex}
+            cardIndex={cardIndex}
             verticalSwipe={false}
             backgroundColor="white"
             onSwiped={this.onSwiped}
@@ -258,7 +259,7 @@ class Match extends PureComponent {
               width={85}
               name="email-outline"
               title="Swipe Left"
-              onPress={() => this.create(this.state.cardIndex)}
+              onPress={() => this.create(cardIndex)}
             />
             <Icon.Button
               underlayColor="transparent"
