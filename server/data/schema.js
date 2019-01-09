@@ -77,7 +77,14 @@ export const typeDefs = gql`
     hasNextPage: Boolean!
     hasPreviousPage: Boolean!
   }
-
+  type UserConnection {
+    edges: [UserEdge]
+    pageInfo: PageInfo!
+  }
+  type UserEdge {
+    cursor: String!
+    node: User!
+  }
   # a group chat entity
   type Group {
     id: Int! # unique id for the group
@@ -161,6 +168,7 @@ export const typeDefs = gql`
   # query for types
   type Query {
     users(email: String, id: Int): [User]
+    usersPage(userConnection: ConnectionInput): UserConnection
     # Return a user by their email or id
     user(email: String, id: Int): User
     # Return messages sent by a user via userId

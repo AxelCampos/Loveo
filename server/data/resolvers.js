@@ -29,6 +29,68 @@ export const resolvers = {
         order: [['createdAt', 'DESC']],
       });
     },
+    usersPage(_,args,{userConnection={}}) {
+      const {
+        first, last, before, after,
+      } = userConnection;
+
+      const where = {};
+
+      // because we return messages from newest -> oldest
+      // before actually means newer (id > cursor)
+      // after actually means older (id < cursor)
+
+      if (before) {
+        // convert base-64 to utf8 id
+        where.id = { $gt: Buffer.from(before, 'base64').toString() };
+      }
+
+      if (after) {
+        where.id = { $lt: Buffer.from(after, 'base64').toString() };
+      }
+      return User.findAll({
+        where: {
+          id: where.id, // FIXME: aaaaaaa
+        },
+        order: [['id', 'DESC']],
+        limit: first || last,
+      }).then((users) => {
+        const edges = users.map(user => ({
+          cursor: Buffer.from(user.id.toString()).toString('base64'), // convert id to cursor
+          node: user, // the node is the user itself
+        }));
+
+        return {
+          edges,
+          pageInfo: {
+            hasNextPage() {
+              if (users.length < (last || first)) {
+                return Promise.resolve(false);
+              }
+
+              return User.findOne({
+                where: {
+                  id: {
+                    [before ? '$gt' : '$lt']: users[users.length - 1].id,
+                  },
+                },
+                order: [['id', 'DESC']],
+              }).then(user => !!user);
+            },
+            hasPreviousPage() {
+              return User.findOne({
+                where: {
+                  id: {
+                    [before ? '$gt' : '$lt']: 1,
+                  },
+                },
+                order: [['id']],
+              }).then(user => !!user);
+            },
+          },
+        };
+      });
+    },
     user(_, args) {
       return User.findOne({
         where: args,
