@@ -1,6 +1,6 @@
 import GraphQLDate from 'graphql-date';
 import {
-  Group, Message, User, Photo, Lifestyle, Activity, Search,
+  Group, Message, User, Photo, Lifestyle, Activity, Search, Notification
 } from './connectors';
 
 export const resolvers = {
@@ -29,7 +29,7 @@ export const resolvers = {
         order: [['createdAt', 'DESC']],
       });
     },
-    usersPage(_,args,{userConnection={}}) {
+    usersPage(_, args, { userConnection = {} }) {
       const {
         first, last, before, after,
       } = userConnection;
@@ -117,6 +117,12 @@ export const resolvers = {
         where: args,
       });
     },
+    notifications(_, args) {
+      return Notification.findAll({
+        where: args,
+        order: [['createdAt', 'DESC']],
+      });
+    },
   },
   Mutation: {
     createMessage(
@@ -192,6 +198,20 @@ export const resolvers = {
       });
       return search;
     },
+    createNotification(
+      _,
+      {
+        notification: { type, text, firstUser, secondUser, },
+      },
+    ) {
+      return Message.create({
+        type,
+        text,
+        firstUser,
+        secondUser,
+        createAt,
+      });
+    },
     async deleteGroup(_, { id }) {
       const group = await Group.findOne({ where: id });
       const users = await group.getUsers();
@@ -255,7 +275,6 @@ export const resolvers = {
     async editMiscreated(_, { id, userId }) {
       const craco = await User.findOne({ where: { id: userId } });
       const user = await User.findOne({ where: { id } });
-      const friends = await user.friends;
       await user.addMiscreated(craco);
       await user.removeFriend(craco);
       // }
@@ -419,6 +438,14 @@ export const resolvers = {
   Search: {
     userId(search) {
       return search.getUser();
+    },
+  },
+  Notification: {
+    firstUser(notification) {
+      return notification.getUser();
+    },
+    secondUser(notification) {
+      return notification.getUser();
     },
   },
   /* To: {

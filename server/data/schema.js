@@ -35,6 +35,13 @@ export const typeDefs = gql`
     children: String
   }
 
+  input CreateNotificationInput {
+    type: String
+    text: String
+    firstUser: Int
+    secondUser: Int
+  }
+
   input UpdateGroupInput {
     id: Int!
     name: String
@@ -126,6 +133,7 @@ export const typeDefs = gql`
     activities: [Activity]
     miscreated: [User]
     searches: [Search]
+    notifications: [Notification]
   }
 
   #union To = User | Group
@@ -174,6 +182,15 @@ export const typeDefs = gql`
     children: String
   }
 
+  type Notification {
+    id: Int!
+    type: String
+    text: String
+    firstUser: User
+    secondUser: User
+    createAt: Date!
+  }
+
   # query for types
   type Query {
     users(email: String, id: Int): [User]
@@ -192,6 +209,8 @@ export const typeDefs = gql`
     activities(id: Int, userId: Int): [Activity]
     # Return search
     searches(userId: Int): [Search]
+    # Return notifications
+    notifications(userId: Int): [Notification]
   }
 
   type Mutation {
@@ -200,6 +219,7 @@ export const typeDefs = gql`
     createConversation(group: CreateConversationInput!): Group
     createGroup(group: CreateGroupInput!): Group
     createSearch(search: CreateSearchInput!): Search
+    createNotification(notification: CreateNotificationInput): Notification
     deleteGroup(id: Int!): Group
     deleteSearch(id: Int!): Search
     leaveGroup(id: Int!, userId: Int!): Group

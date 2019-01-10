@@ -59,6 +59,10 @@ const SearchModel = db.define('search', {
   civilStatus: { type: Sequelize.STRING },
   children: { type: Sequelize.STRING },
 });
+const NotificationModel = db.define('notification', {
+  text: { type: Sequelize.STRING },
+  type: { type: Sequelize.STRING },
+});
 
 // users belong to multiple groups
 UserModel.belongsToMany(GroupModel, { through: 'GroupUser' });
@@ -78,6 +82,7 @@ LifestyleModel.belongsTo(UserModel);
 ActivityModel.belongsToMany(UserModel, { through: 'ActivityUser' });
 UserModel.belongsToMany(ActivityModel, { through: 'ActivityUser' });
 SearchModel.belongsTo(UserModel);
+NotificationModel.belongsTo(UserModel);
 
 const Group = db.models.group;
 const Message = db.models.message;
@@ -86,7 +91,8 @@ const Photo = db.models.photo;
 const Lifestyle = db.models.lifestyle;
 const Activity = db.models.activity;
 const Search = db.models.search;
+const Notification = db.models.notification;
 
 export {
-  db, Group, Message, User, Photo, Lifestyle, Activity, Search,
+  db, Group, Message, User, Photo, Lifestyle, Activity, Search, Notification
 };
