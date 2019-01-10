@@ -107,6 +107,15 @@ export const typeDefs = gql`
     gender: String
     civilStatus: String
     children: String
+    birthdate: String
+    height: Int
+    weight: Int
+    education: String
+    profession: String
+    religion: String
+    pets: String
+    smoker: String
+    description: String
     messages: [Message!]! # messages sent by user
     groups: [Group!]! # groups the user belongs to
     friends: [User] # user's friends/contacts

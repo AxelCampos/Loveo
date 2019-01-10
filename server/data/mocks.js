@@ -44,7 +44,7 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
             country: faker.address.country(),
             city: faker.address.city(),
             username: faker.internet.userName(),
-            age: faker.random.number({ min: 17, max: 90 }),
+            age: faker.random.number({ min: 18, max: 90 }),
             gender: faker.random.arrayElement(['no especificado', 'hombre', 'mujer', 'otro']),
             civilStatus: faker.random.arrayElement([
               'no especificado',
@@ -61,6 +61,40 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
             ]),
             likes: faker.random.number(20),
             password: faker.internet.password(),
+            birthdate: faker.random.number(11111111, 99999999),
+            height: faker.random.number(150, 210),
+            weight: faker.random.number(45, 100),
+            education: faker.random.arrayElement([
+              'no especificado',
+              'secundario o inferior',
+              'modulo profesional',
+              'superior',
+              'posgrado o master',
+            ]),
+            profession: faker.lorem.word(1),
+            religion: faker.random.arrayElement([
+              'no especificado',
+              'cristiano',
+              'musulmane',
+              'judaico',
+              'induísta',
+              'budista',
+              'espiritualista',
+              'ateo',
+              'otro',
+            ]),
+            pets: faker.random.arrayElement([
+              'no especificado',
+              'tengo',
+              'no tengo',
+            ]),
+            smoker: faker.random.arrayElement([
+              'no especificado',
+              'fumo',
+              'no fumo pero no me molesta',
+              'no fumo y me molesta',
+            ]),
+            description: faker.lorem.paragraph(1),
           });
           await Promise.all(
             R.times(

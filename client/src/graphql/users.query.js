@@ -13,6 +13,15 @@ export const USERS_QUERY = gql`
       city
       country
       likes
+      birthdate
+      height
+      weight
+      education
+      profession
+      religion
+      pets
+      smoker
+      description
       photoprofile {
         id
         url
