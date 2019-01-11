@@ -47,9 +47,9 @@ export const resolvers = {
       if (after) {
         where.id = { $lt: Buffer.from(after, 'base64').toString() };
       }
-     
+
       return User.findAll({
-        
+
         where,
         order: [['id', 'DESC']],
         limit: first || last,
@@ -67,12 +67,12 @@ export const resolvers = {
               if (users.length < (last || first)) {
                 return Promise.resolve(false);
               }
-              
+
               return User.findOne({
-                
+
                 where: {
                   id: {
-                    
+
                     [before ? '$gt' : '$lt']: users[users.length - 1].id,
                   },
                 },
@@ -258,7 +258,7 @@ export const resolvers = {
       _,
       {
         user: {
-          id, username, country, city, email, age, gender, civilStatus, children, likes,
+          id, username, country, city, email, age, gender, civilStatus, children, street, streetNumber, zipcode, birthdate, height, weight, education, profession, religion, pets, smoker, description,
         },
       },
     ) {
@@ -271,7 +271,18 @@ export const resolvers = {
         gender,
         civilStatus,
         children,
-        likes,
+        street,
+        streetNumber,
+        zipcode,
+        birthdate,
+        height,
+        weight,
+        education,
+        profession,
+        religion,
+        pets,
+        smoker,
+        description,
       }));
     },
     async editMiscreated(_, { id, userId }) {

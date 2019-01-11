@@ -13,6 +13,9 @@ export const USER_QUERY = gql`
       city
       country
       likes
+      street
+      streetNumber
+      zipcode
       birthdate
       height
       weight

@@ -63,7 +63,18 @@ export const typeDefs = gql`
     gender: String
     civilStatus: String
     children: String
-    likes: Int
+    street: String
+    streetNumber: String
+    zipcode: String
+    birthdate: String
+    height: Int
+    weight: Int
+    education: String
+    profession: String
+    religion: String
+    pets: String
+    smoker: String
+    description: String
   }
   #input for relay cursor connections
   input ConnectionInput {
@@ -114,6 +125,9 @@ export const typeDefs = gql`
     gender: String
     civilStatus: String
     children: String
+    street: String
+    streetNumber: String
+    zipcode: String
     birthdate: String
     height: Int
     weight: Int
