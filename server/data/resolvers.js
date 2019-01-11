@@ -29,7 +29,7 @@ export const resolvers = {
         order: [['createdAt', 'DESC']],
       });
     },
-    usersPage(_, args, { userConnection = {} }) {
+    usersPage(_, { userConnection = {} }) {
       const {
         first, last, before, after,
       } = userConnection;
@@ -44,17 +44,17 @@ export const resolvers = {
         // convert base-64 to utf8 id
         where.id = { $gt: Buffer.from(before, 'base64').toString() };
       }
-
       if (after) {
         where.id = { $lt: Buffer.from(after, 'base64').toString() };
       }
+     
       return User.findAll({
-        where: {
-          id: where.id, // FIXME: aaaaaaa
-        },
+        
+        where,
         order: [['id', 'DESC']],
         limit: first || last,
       }).then((users) => {
+        console.log('kadjiohf', userConnection);
         const edges = users.map(user => ({
           cursor: Buffer.from(user.id.toString()).toString('base64'), // convert id to cursor
           node: user, // the node is the user itself
@@ -67,10 +67,12 @@ export const resolvers = {
               if (users.length < (last || first)) {
                 return Promise.resolve(false);
               }
-
+              
               return User.findOne({
+                
                 where: {
                   id: {
+                    
                     [before ? '$gt' : '$lt']: users[users.length - 1].id,
                   },
                 },
