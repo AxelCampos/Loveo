@@ -92,7 +92,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 20,
     padding: 10,
-    width: 350,
+    //width: 350,
+  },
+  inputDescription: {
+    textAlign: 'justify',
+    marginBottom: 15,
+    marginTop: 0,
+    marginLeft: 15,
+    marginRight: 15,
+    height: 160,
+    borderColor: '#c7d6db',
+    borderWidth: 1,
+    borderRadius: 20,
+    padding: 10,
+    //width: 350,
   },
   submitButton: {
     backgroundColor: '#9cb1b7',
@@ -111,6 +124,17 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginRight: 15,
     height: 40,
+    padding: 10,
+    backgroundColor: '#c7d6db',
+    borderRadius: 20,
+    // color: '#7a42f4',
+  },
+  labelDescription: {
+    marginBottom: 0,
+    marginTop: 0,
+    marginLeft: 15,
+    marginRight: 15,
+    height: 160,
     padding: 10,
     backgroundColor: '#c7d6db',
     borderRadius: 20,
@@ -404,11 +428,13 @@ class EditProfile extends Component {
               <Picker.Item label='no especificado' value='no especificado' />
             </Picker>
 
-            <Text style={styles.label}>Descripción: {description}</Text>
-            <TextInput style={styles.input}
+            <Text style={styles.labelDescription}>Descripción: {description}</Text>
+            <TextInput style={styles.inputDescription}
               underlineColorAndroid="transparent"
               autoCapitalize="none"
               placeholder='Un breve texto describiendo quién eres y quíen quieres conocer'
+              multiline={true}
+              maxLength={400}
               onChangeText={(description) => this.setState({ description })}
             />
 
