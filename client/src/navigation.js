@@ -200,13 +200,13 @@ const AppNavigator = createStackNavigator(
       screen: LifestyleResult,
       navigationOptions: {
         title: 'Resultado de la Búsqueda',
-      }
+      },
     },
     Searches: {
       screen: Searches,
       navigationOptions: {
         title: 'Búsquedas',
-      }
+      },
     },
     Notifications: {
       screen: Notifications,
