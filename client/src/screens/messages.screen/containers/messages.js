@@ -1,7 +1,10 @@
 import R from 'ramda';
 import { graphql, compose } from 'react-apollo';
+import { Buffer } from 'buffer';
+import { isBefore } from 'date-fns';
 import GROUP_QUERY from '../../../graphql/group.query';
 import CREATE_MESSAGE_MUTATION from '../../../graphql/create-message.mutation';
+import USER_QUERY from '../../../graphql/user.query';
 import { withLoading } from '../../../components/withLoading';
 import Messages from '../components/messages';
 
@@ -79,18 +82,50 @@ const createMessageMutation = graphql(CREATE_MESSAGE_MUTATION, {
           query: GROUP_QUERY,
           variables: {
             groupId: message.groupId,
+            messageConnection: { first: ITEMS_PER_PAGE },
           },
         });
-        // Add our message from the mutation to the end
-        groupData.group.messages.unshift(createMessage);
+          // Add our message from the mutation to the end
+        groupData.group.messages.edges.unshift({
+          __typename: 'MessageEdge',
+          node: createMessage,
+          cursor: Buffer.from(createMessage.id.toString()).toString('base64'),
+        });
         // Write our data back to the cache.
         store.writeQuery({
           query: GROUP_QUERY,
           variables: {
             groupId: message.groupId,
+            messageConnection: { first: ITEMS_PER_PAGE },
           },
           data: groupData,
         });
+
+        const userData = store.readQuery({
+          query: USER_QUERY,
+          variables: {
+            id: 1,
+          },
+        });
+
+        const updateGroup = userData.user.groups.find(({ id }) => id === message.groupId);
+        if (
+          !updateGroup.messages.edges.length
+            || isBefore(updateGroup.messages.edges[0].node.createdAt, createMessage.createdAt)
+        ) {
+          updateGroup.messages.edges[0] = {
+            __typename: 'MessageEdge',
+            node: createMessage,
+            cursor: Buffer.from(createMessage.id.toString()).toString('base64'),
+          };
+          store.writeQuery({
+            query: USER_QUERY,
+            variables: {
+              id: 1,
+            },
+            data: userData,
+          });
+        }
       },
     }),
   }),
