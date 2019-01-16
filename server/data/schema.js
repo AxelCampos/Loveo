@@ -48,6 +48,12 @@ export const typeDefs = gql`
     photo: String
   }
 
+  input CreateUserInput {
+    username: String!
+    email: String!
+    password: String!
+  }
+
   input UpdateUserInput {
     id: Int!
     likes: Int!
@@ -239,6 +245,7 @@ export const typeDefs = gql`
     leaveGroup(id: Int!, userId: Int!): Group
     updateGroup(group: UpdateGroupInput!): Group
     updateUser(user: UpdateUserInput!): User
+    createUser(user: CreateUserInput!): User
     editUser(user: EditUserInput!): User
     editMiscreated(id: Int, userId: Int): User
     editFriend(id: Int, userId: Int): User

@@ -254,6 +254,20 @@ export const resolvers = {
     ) {
       return Group.findOne({ where: { id } }).then(group => group.update({ name, photo }));
     },
+
+    createUser(
+      _,
+      {
+        user: { username, email, password },
+      },
+    ) {
+      return User.create({
+        username,
+        email,
+        password,
+      });
+    },
+
     editUser(
       _,
       {

@@ -5,6 +5,7 @@ import {
   createStackNavigator,
   createMaterialTopTabNavigator,
   createBottomTabNavigator,
+  StackNavigator,
 } from 'react-navigation';
 
 import {
@@ -29,6 +30,8 @@ import FinalizeGroup from './screens/finalize-group.screen';
 import GroupDetails from './screens/group-details.screen';
 import Settings from './screens/setting.screen';
 import EditProfile from './screens/edit-profile.screen';
+import Login from './screens/login.screen';
+import Register from './screens/register.screen';
 import GroupImage from './screens/group-image.screen';
 import LifestyleResult from './screens/lifestyle-result.screen';
 import Searches from './screens/searches.screen';
@@ -73,7 +76,7 @@ const Search = createMaterialTopTabNavigator(
   },
 );
 
-const MyProfile = createMaterialTopTabNavigator(
+const MyUser = createMaterialTopTabNavigator(
   {
     User: {
       screen: User,
@@ -107,65 +110,101 @@ const MyProfile = createMaterialTopTabNavigator(
 );
 
 // tabs in main screen
-const MainScreenNavigator = createBottomTabNavigator(
+const MainScreenNavigator = StackNavigator(
   {
-    Search: {
-      screen: Search,
-      navigationOptions: {
-        tabBarLabel: 'Search',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="search" color={tintColor} />,
-        tabBarColor: 'blue',
-      },
+    loginComp: {
+      screen: createBottomTabNavigator({
+        register: {
+          screen: Register,
+          navigationOptions: {
+            tabBarLabel: 'Register',
+            tabBarIcon: ({ tintColor }) => <Icon size={20} name="user-circle" color={tintColor} />,
+            tabBarColor: 'violet',
+          },
+        },
+        login: {
+          screen: Login,
+          navigationOptions: {
+            tabBarLabel: 'Login',
+            tabBarIcon: ({ tintColor }) => <Icon size={20} name="lock" color={tintColor} />,
+            tabBarColor: 'orange',
+          },
+        },
+      }),
     },
+    mainComp: {
+      screen: StackNavigator({
+        main: {
+          screen: createBottomTabNavigator({
+            Search: {
+              screen: Search,
+              navigationOptions: {
+                tabBarLabel: 'Search',
+                tabBarIcon: ({ tintColor }) => <Icon size={20} name="search" color={tintColor} />,
+                tabBarColor: 'blue',
+              },
+            },
 
-    Match: {
-      screen: Match,
-      navigationOptions: {
-        tabBarLabel: 'Match',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="burn" color={tintColor} />,
-        tabBarColor: 'pink',
-      },
-    },
+            Match: {
+              screen: Match,
+              navigationOptions: {
+                tabBarLabel: 'Match',
+                tabBarIcon: ({ tintColor }) => <Icon size={20} name="burn" color={tintColor} />,
+                tabBarColor: 'pink',
+              },
+            },
 
-    Chats: {
-      screen: Groups,
-      navigationOptions: {
-        tabBarLabel: 'Chats',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="rocketchat" color={tintColor} />,
-        tabBarColor: 'green',
-      },
-    },
+            Chats: {
+              screen: Groups,
+              navigationOptions: {
+                tabBarLabel: 'Chats',
+                tabBarIcon: ({ tintColor }) => (
+                  <Icon size={20} name="rocketchat" color={tintColor} />
+                ),
+                tabBarColor: 'green',
+              },
+            },
 
-    MyProfile: {
-      screen: MyProfile,
-      navigationOptions: {
-        tabBarLabel: 'Profile',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />,
-        tabBarColor: 'orange',
-      },
-    },
+            MyUser: {
+              screen: MyUser,
+              navigationOptions: {
+                tabBarLabel: 'Profile',
+                tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />,
+                tabBarColor: 'orange',
+              },
+            },
 
-    Settings: {
-      screen: Settings,
-      navigationOptions: {
-        tabBarLabel: 'Settings',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="cog" color={tintColor} />,
-        tabBarColor: 'violet',
-      },
+            Settings: {
+              screen: Settings,
+              navigationOptions: {
+                tabBarLabel: 'Settings',
+                tabBarIcon: ({ tintColor }) => <Icon size={20} name="cog" color={tintColor} />,
+                tabBarColor: 'violet',
+              },
+            },
+          }),
+          navigationOptions: {
+            title: 'Loveo',
+          },
+          headerMode: 'screen',
+        },
+      }),
     },
   },
+
   {
-    initialRouteName: 'Search',
+    initialRouteName: 'loginComp',
     navigationOptions: {
       tabBarVisible: true,
+      header: null,
     },
     tabBarOptions: {
-      activeTintColor: 'black',
-      activeBackgroundColor: '#A5DFF1',
-      inactiveBackgroundColor: '#52ABD8',
+      activeTintColor: '#251d26',
+      activeBackgroundColor: '#ba1ba7',
+      inactiveBackgroundColor: '#760d82',
       inactiveTintColor: '#D3BCDD',
       tabStyle: {
-        borderTopColor: 'grey',
+        borderTopColor: 'purple',
         borderTopWidth: 0.4,
       },
     },
@@ -178,6 +217,22 @@ const AppNavigator = createStackNavigator(
       screen: MainScreenNavigator,
       navigationOptions: {
         header: null,
+      },
+    },
+    User: {
+      screen: User,
+      navigationOptions: {
+        tabBarLabel: 'Profile',
+        tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />,
+        tabBarColor: 'orange',
+      },
+    },
+    Match: {
+      screen: Match,
+      navigationOptions: {
+        tabBarLabel: 'Match',
+        tabBarIcon: ({ tintColor }) => <Icon size={20} name="burn" color={tintColor} />,
+        tabBarColor: 'pink',
       },
     },
     Messages: { screen: Messages },
@@ -200,13 +255,13 @@ const AppNavigator = createStackNavigator(
       screen: LifestyleResult,
       navigationOptions: {
         title: 'Resultado de la Búsqueda',
-      }
+      },
     },
     Searches: {
       screen: Searches,
       navigationOptions: {
         title: 'Búsquedas',
-      }
+      },
     },
     Notifications: {
       screen: Notifications,
