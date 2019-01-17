@@ -46,7 +46,6 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
             street: faker.address.streetName(),
             streetNumber: faker.address.streetSuffix(),
             zipcode: faker.address.zipCode(),
-            city: faker.address.city(),
             username: faker.internet.userName(),
             age: faker.random.number({ min: 18, max: 90 }),
             gender: faker.random.arrayElement(['no especificado', 'hombre', 'mujer', 'otro']),
