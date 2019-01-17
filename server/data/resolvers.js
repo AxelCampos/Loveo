@@ -1,4 +1,5 @@
 import GraphQLDate from 'graphql-date';
+import Sequelize from 'sequelize';
 import {
   Group, Message, User, Photo, Lifestyle, Activity, Search, Notification
 } from './connectors';
@@ -32,31 +33,23 @@ export const resolvers = {
     usersPage(_, { userConnection = {} }) {
       const {
         first, last, before, after,
-      } = userConnection;
+      } = userConnection || { first: 8 };
 
-      const where = {};
 
-      // because we return messages from newest -> oldest
-      // before actually means newer (id > cursor)
-      // after actually means older (id < cursor)
-
+      let whereSQL = '';
       if (before) {
         // convert base-64 to utf8 id
-        where.id = { $gt: Buffer.from(before, 'base64').toString() };
+        whereSQL = `CAST(likes AS integer) > ${Buffer.from(before || '', 'base64').toString()}`; // { $gt: Buffer.from(before, 'base64').toString() };
+      } else if (after) {
+        whereSQL = `CAST(likes AS integer) < ${Buffer.from(after || '', 'base64').toString()}`; // { $lt: Buffer.from(after, 'base64').toString() };
       }
-      if (after) {
-        where.id = { $lt: Buffer.from(after, 'base64').toString() };
-      }
-
       return User.findAll({
-
-        where,
-        order: [['id', 'DESC']],
+        where: Sequelize.literal(whereSQL),
+        order: Sequelize.literal('CAST(likes AS integer) DESC, id'),
         limit: first || last,
       }).then((users) => {
-        console.log('kadjiohf', userConnection);
         const edges = users.map(user => ({
-          cursor: Buffer.from(user.id.toString()).toString('base64'), // convert id to cursor
+          cursor: Buffer.from(user.likes.toString()).toString('base64'), // FIXME: hace falta que el cursor incluya en un String id Y likes, porque hacen falta ambos pal orden
           node: user, // the node is the user itself
         }));
 
