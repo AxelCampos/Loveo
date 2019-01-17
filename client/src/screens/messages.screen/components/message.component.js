@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View } from 'react-native';
@@ -49,7 +48,7 @@ class Message extends PureComponent {
         <View style={[styles.message, isCurrentUser && styles.myMessage]}>
           <Text style={[styles.messageUsername, { color }]}>{message.from.username}</Text>
           <Text>{message.text}</Text>
-          <Text style={styles.messageTime}>{format(message.createdAt, 'h:mm A')}</Text>
+          <Text style={styles.messageTime}>{message.createdAt}</Text>
         </View>
         {!isCurrentUser ? <View style={styles.messageSpacer} /> : undefined}
       </View>
