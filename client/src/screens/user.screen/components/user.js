@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   Text, View, Image, ScrollView,
 } from 'react-native';
-
+import ImagePicker from 'react-native-image-picker';
 import Menu from '../../../components/navigator-menu-component';
 import styles from './styles';
 import Header from './header';
@@ -16,7 +16,7 @@ class User extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { enableScrollViewScroll: true };
+    this.state = { image: undefined, enableScrollViewScroll: true };
   }
 
   goTosettings = () => {
@@ -26,6 +26,32 @@ class User extends Component {
     } = this.props;
     navigate('EditProfile', {
       userId: user.id,
+    });
+  };
+
+  openImagepicker = () => {
+    const options = {
+      title: 'Select Avatar',
+      customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        this.setState({
+          image: response.uri,
+        });
+      }
     });
   };
 
@@ -50,7 +76,7 @@ class User extends Component {
 
     return (
       <View style={styles.container}>
-        <Header onPress={this.goTosettings} />
+        <Header onPress={this.goTosettings} picker={this.openImagepicker} />
         <View
           onStartShouldSetResponderCapture={() => {
             this.setState({ enableScrollViewScroll: true });
@@ -78,6 +104,7 @@ class User extends Component {
               <View style={styles.conexionStyle}>
                 <Icon size={10} name="circle" color="green" />
                 <Text style={styles.textStyle}>Ultima conexión: 13h</Text>
+                
               </View>
             </View>
             {this.renderMenu()}

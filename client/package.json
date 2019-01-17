@@ -31,6 +31,7 @@
     "react-native-camera": "^1.8.0",
     "react-native-config": "^0.11.5",
     "react-native-deck-swiper": "^1.5.22",
+    "react-native-image-picker": "^0.28.0",
     "react-native-linear-gradient": "^2.4.3",
     "react-native-navigation": "^2.1.2",
     "react-native-paper": "^2.1.3",
