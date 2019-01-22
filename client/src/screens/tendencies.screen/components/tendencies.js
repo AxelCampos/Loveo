@@ -82,7 +82,7 @@ class Tendencies extends Component {
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
           ListEmptyComponent={<View />}
-          onEndReachedThreshold={1}
+          onEndReachedThreshold={2}
           onEndReached={this.onEndReached}
         />
       </View>
