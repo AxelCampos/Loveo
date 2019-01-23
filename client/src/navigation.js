@@ -184,9 +184,8 @@ const MainScreenNavigator = StackNavigator(
             },
           }),
           navigationOptions: {
-            title: 'Loveo',
+            header: null,
           },
-          headerMode: 'screen',
         },
       }),
     },
@@ -225,6 +224,7 @@ const AppNavigator = createStackNavigator(
         tabBarLabel: 'Profile',
         tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />,
         tabBarColor: 'orange',
+        header: null,
       },
     },
     Match: {

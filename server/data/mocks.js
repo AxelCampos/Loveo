@@ -1,6 +1,7 @@
 import R from 'ramda';
 import faker from 'faker';
 import { db } from './connectors';
+import bcrypt from 'bcrypt';
 
 // create fake starter data
 const GROUPS = 4;
@@ -39,13 +40,16 @@ const mockDB = async ({ populating = true, force = true } = {}) => {
     R.map(async (group) => {
       const users = await Promise.all(
         R.times(async () => {
+          const email = faker.internet.email();
+          const hash = await bcrypt.hash(email, 10);
           const user = await group.createUser({
-            email: faker.internet.email(),
+            email,
             country: faker.address.country(),
             city: faker.address.city(),
             street: faker.address.streetName(),
             streetNumber: faker.address.streetSuffix(),
             zipcode: faker.address.zipCode(),
+            password: hash,
             username: faker.internet.userName(),
             age: faker.random.number({ min: 18, max: 90 }),
             gender: faker.random.arrayElement(['no especificado', 'hombre', 'mujer', 'otro']),

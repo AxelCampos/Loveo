@@ -3,6 +3,12 @@ import Sequelize from 'sequelize';
 import {
   Group, Message, User, Photo, Lifestyle, Activity, Search, Notification,
 } from './connectors';
+import { withFilter, ForbiddenError } from 'apollo-server';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import configurationManager from '../configurationManager';
+const JWT_SECRET = configurationManager.jwt.secret;
+
 
 export const resolvers = {
   Date: GraphQLDate,
@@ -127,13 +133,22 @@ export const resolvers = {
     createMessage(
       _,
       {
-        message: { text, userId, groupId },
+        message: { text, groupId },
       },
+      ctx,
     ) {
-      return Message.create({
-        userId,
-        text,
-        groupId,
+      if (!ctx.user) {
+        throw new ForbiddenError('Unauthorized');
+      }
+      return ctx.user.then((user) => {
+        if (!user) {
+          throw new ForbiddenError('Unauthorized');
+        }
+        return Message.create({
+          userId: user.id,
+          text,
+          groupId,
+        });
       });
     },
     async createConversation(
@@ -341,6 +356,54 @@ export const resolvers = {
       const user = await User.findOne({ where: { id } });
       await user.removeFriend(friend);
       return user;
+    },
+    login(_, { email, password }, ctx) {
+      // find user by email
+      return User.findOne({ where: { email } }).then((user) => {
+        if (user) {
+          // validate password
+          return bcrypt.compare(password, user.password).then((res) => {
+            if (res) {
+              // create jwt
+              const token = jwt.sign(
+                {
+                  id: user.id,
+                  email: user.email,
+                },
+                JWT_SECRET,
+              );
+              ctx.user = Promise.resolve(user);
+              user.jwt = token; // eslint-disable-line no-param-reassign
+              return user;
+            }
+            return Promise.reject(new Error('password incorrect'));
+          });
+        }
+        return Promise.reject(new Error('email not found'));
+      });
+    },
+    signup(_, { email, password, username }, ctx) {
+      // find user by email
+      return User.findOne({ where: { email } }).then((existing) => {
+        if (!existing) {
+          // hash password and create user
+          return bcrypt
+            .hash(password, 10)
+            .then(hash => User.create({
+              email,
+              password: hash,
+              username: username || email,
+            }))
+            .then((user) => {
+              const { id } = user;
+              const token = jwt.sign({ id, email }, JWT_SECRET);
+              ctx.user = Promise.resolve(user);
+              user.jwt = token; // eslint-disable-line no-param-reassign
+              return user;
+            });
+        }
+        return Promise.reject(new Error('email already exists')); // email already exists
+      });
     },
   },
 

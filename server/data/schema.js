@@ -9,7 +9,6 @@ export const typeDefs = gql`
   # userId is the id of the user sending the message
   # groupId is the id of the group receiving the message
   input CreateMessageInput {
-    userId: Int!
     groupId: Int!
     text: String!
   }
@@ -162,6 +161,7 @@ export const typeDefs = gql`
     miscreated: [User]
     searches: [Search]
     notifications: [Notification]
+    jwt: String
   }
 
   #union To = User | Group
@@ -261,6 +261,8 @@ export const typeDefs = gql`
     editPhotoprofile(photo: PhotoInput!): Photo
     deleteMiscreated(id: Int, userId: Int): User
     deleteFriend(id: Int, userId: Int): User
+    login(email: String!, password: String!): User
+    signup(email: String!, password: String!, username: String): User
   }
   schema {
     query: Query
