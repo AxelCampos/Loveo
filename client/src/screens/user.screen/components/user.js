@@ -104,7 +104,6 @@ class User extends Component {
               <View style={styles.conexionStyle}>
                 <Icon size={10} name="circle" color="green" />
                 <Text style={styles.textStyle}>Ultima conexión: 13h</Text>
-                
               </View>
             </View>
             {this.renderMenu()}

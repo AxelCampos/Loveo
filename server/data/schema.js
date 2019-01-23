@@ -59,9 +59,16 @@ export const typeDefs = gql`
     likes: Int!
   }
 
+  input PhotoInput {
+    userId: Int!
+    url: String!
+    comment: String
+  }
+
   input EditUserInput {
     id: Int!
     username: String
+    photoprofile: PhotoInput
     country: String!
     city: String!
     email: String!
@@ -82,6 +89,7 @@ export const typeDefs = gql`
     smoker: String
     description: String
   }
+
   #input for relay cursor connections
   input ConnectionInput {
     first: Int
@@ -167,6 +175,7 @@ export const typeDefs = gql`
     from: User!
     to: Group!
     comment: String
+    profile: Boolean!
   }
 
   # a message sent from a user to a group
@@ -249,6 +258,7 @@ export const typeDefs = gql`
     editUser(user: EditUserInput!): User
     editMiscreated(id: Int, userId: Int): User
     editFriend(id: Int, userId: Int): User
+    editPhotoprofile(photo: PhotoInput!): Photo
     deleteMiscreated(id: Int, userId: Int): User
     deleteFriend(id: Int, userId: Int): User
   }

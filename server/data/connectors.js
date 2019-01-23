@@ -3,7 +3,7 @@ import Sequelize from 'sequelize';
 const db = new Sequelize('chatty', null, null, {
   dialect: 'sqlite',
   storage: './chatty.sqlite',
-  logging: false, // mark this true if you want to see logs
+  logging: true, // mark this true if you want to see logs
 });
 // define groups
 const GroupModel = db.define('group', {
@@ -97,5 +97,5 @@ const Search = db.models.search;
 const Notification = db.models.notification;
 
 export {
-  db, Group, Message, User, Photo, Lifestyle, Activity, Search, Notification
+  db, Group, Message, User, Photo, Lifestyle, Activity, Search, Notification,
 };

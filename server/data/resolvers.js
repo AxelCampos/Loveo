@@ -1,7 +1,7 @@
 import GraphQLDate from 'graphql-date';
 import Sequelize from 'sequelize';
 import {
-  Group, Message, User, Photo, Lifestyle, Activity, Search, Notification
+  Group, Message, User, Photo, Lifestyle, Activity, Search, Notification,
 } from './connectors';
 
 export const resolvers = {
@@ -49,7 +49,7 @@ export const resolvers = {
         limit: first || last,
       }).then((users) => {
         const edges = users.map(user => ({
-          cursor: Buffer.from(user.likes.toString()).toString('base64'), // FIXME: hace falta que el cursor incluya en un String id Y likes, porque hacen falta ambos pal orden
+          cursor: Buffer.from(user.likes.toString()).toString('base64'),
           node: user, // the node is the user itself
         }));
 
@@ -196,7 +196,9 @@ export const resolvers = {
     createNotification(
       _,
       {
-        notification: { type, text, firstUser, secondUser, },
+        notification: {
+          type, text, firstUser, secondUser,
+        },
       },
     ) {
       return Message.create({
@@ -204,7 +206,6 @@ export const resolvers = {
         text,
         firstUser,
         secondUser,
-        createAt,
       });
     },
     async deleteGroup(_, { id }) {
@@ -236,7 +237,8 @@ export const resolvers = {
         user: { id, likes },
       },
     ) {
-      const user = await User.findOne({ where: { id } }).then(userFound => userFound.update({ likes }));
+      const user = await User.findOne({ where: { id } })
+        .then(userFound => userFound.update({ likes }));
       return user;
     },
     updateGroup(
@@ -245,7 +247,8 @@ export const resolvers = {
         group: { id, name, photo },
       },
     ) {
-      return Group.findOne({ where: { id } }).then(group => group.update({ name, photo }));
+      return Group.findOne({ where: { id } })
+        .then(group => group.update({ name, photo }));
     },
 
     createUser(
@@ -261,16 +264,33 @@ export const resolvers = {
       });
     },
 
+    editPhotoprofile(
+      _,
+      {
+        photo: { userId, url, comment },
+      },
+    ) {
+      Photo.findOne({ where: { userId, profile: true } })
+        .then(photo => photo.update({ profile: false }));
+      return Photo.create({
+        userId,
+        url,
+        profile: true,
+        comment,
+      });
+    },
+
     editUser(
       _,
       {
         user: {
-          id, username, country, city, email, age, gender, civilStatus, children, street, streetNumber, zipcode, birthdate, height, weight, education, profession, religion, pets, smoker, description,
+          id, username, photoprofile, country, city, email, age, gender, civilStatus, children, street, streetNumber, zipcode, birthdate, height, weight, education, profession, religion, pets, smoker, description,
         },
       },
     ) {
       return User.findOne({ where: { id } }).then(user => user.update({
         username,
+        photoprofile,
         country,
         city,
         email,
@@ -416,6 +436,7 @@ export const resolvers = {
       });
     },
     photoprofile(user) {
+      console.log('ahora sí que sí: PATATA SPLIT!!!!');
       return Photo.findOne({
         where: { userId: user.id },
       });
