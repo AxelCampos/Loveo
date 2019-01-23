@@ -37,11 +37,15 @@ export const resolvers = {
 
 
       let whereSQL = '';
+      const cursor = Buffer.from(before || after || '', 'base64').toString().split('patata');
+      const likes = cursor[0];
+      const id = cursor[1];
+
       if (before) {
         // convert base-64 to utf8 id
-        whereSQL = `CAST(likes AS integer) > ${Buffer.from(before || '', 'base64').toString()}`; // { $gt: Buffer.from(before, 'base64').toString() };
+        whereSQL = `CAST(likes AS integer) > ${likes} OR CAST(likes AS integer) = ${likes} AND id < ${id}`; // { $gt: Buffer.from(before, 'base64').toString() };
       } else if (after) {
-        whereSQL = `CAST(likes AS integer) < ${Buffer.from(after || '', 'base64').toString()}`; // { $lt: Buffer.from(after, 'base64').toString() };
+        whereSQL = `CAST(likes AS integer) < ${likes} OR CAST(likes AS integer) = ${likes} AND id > ${id}`; // { $lt: Buffer.from(after, 'base64').toString() };
       }
       return User.findAll({
         where: Sequelize.literal(whereSQL),
@@ -49,7 +53,7 @@ export const resolvers = {
         limit: first || last,
       }).then((users) => {
         const edges = users.map(user => ({
-          cursor: Buffer.from(user.likes.toString()).toString('base64'),
+          cursor: Buffer.from(`${user.likes.toString()}patata${user.id.toString()}`).toString('base64'), // FIXME: hace falta que el cursor incluya en un String id Y likes, porque hacen falta ambos pal orden
           node: user, // the node is the user itself
         }));
 
