@@ -11,10 +11,21 @@ import {
   onButtonPress,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { withNavigation } from 'react-navigation';
+import { withNavigation, StackActions, NavigationActions } from 'react-navigation';
 
 // create a component
 class LoginForm extends Component {
+
+  goToMain = () => {
+    const { navigation: { navigate, dispatch } } = this.props;
+    dispatch(StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'Main' }),
+      ],
+    }));
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     return (
@@ -43,7 +54,7 @@ class LoginForm extends Component {
             secureTextEntry
           />
         </View>
-        <TouchableHighlight style={styles.buttonContainer} onPress={() => navigate('User')}>
+        <TouchableHighlight style={styles.buttonContainer} onPress={this.goToMain}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableHighlight>
       </View>

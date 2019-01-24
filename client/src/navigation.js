@@ -109,8 +109,56 @@ const MyUser = createMaterialTopTabNavigator(
   },
 );
 
+const MainNavigation = createBottomTabNavigator({
+  Search: {
+    screen: Search,
+    navigationOptions: {
+      tabBarLabel: 'Search',
+      tabBarIcon: ({ tintColor }) => <Icon size={20} name="search" color={tintColor} />,
+      tabBarColor: 'blue',
+    },
+  },
+  Match: {
+    screen: Match,
+    navigationOptions: {
+      tabBarLabel: 'Match',
+      tabBarIcon: ({ tintColor }) => <Icon size={20} name="burn" color={tintColor} />,
+      tabBarColor: 'pink',
+    },
+  },
+  Chats: {
+    screen: Groups,
+    navigationOptions: {
+      tabBarLabel: 'Chats',
+      tabBarIcon: ({ tintColor }) => <Icon size={20} name="rocketchat" color={tintColor} />,
+      tabBarColor: 'green',
+    },
+  },
+  MyUser: {
+    screen: MyUser,
+    navigationOptions: {
+      tabBarLabel: 'Profile',
+      tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />,
+      tabBarColor: 'orange',
+    },
+  },
+  Settings: {
+    screen: Settings,
+    navigationOptions: {
+      tabBarLabel: 'Settings',
+      tabBarIcon: ({ tintColor }) => <Icon size={20} name="cog" color={tintColor} />,
+      tabBarColor: 'violet',
+    },
+  },
+},
+  {
+    initialRouteName: 'MyUser',
+    activeColor: 'black',
+  },
+);
+
 // tabs in main screen
-const MainScreenNavigator = StackNavigator(
+/*const MainScreenNavigator = StackNavigator(
   {
     loginComp: {
       screen: createBottomTabNavigator({
@@ -192,47 +240,65 @@ const MainScreenNavigator = StackNavigator(
   },
 
   {
-    initialRouteName: 'loginComp',
-    navigationOptions: {
-      tabBarVisible: true,
-      header: null,
-    },
-    tabBarOptions: {
-      activeTintColor: '#251d26',
-      activeBackgroundColor: '#ba1ba7',
-      inactiveBackgroundColor: '#760d82',
-      inactiveTintColor: '#D3BCDD',
-      tabStyle: {
-        borderTopColor: 'purple',
-        borderTopWidth: 0.4,
-      },
+  initialRouteName: 'loginComp',
+  navigationOptions: {
+    tabBarVisible: true,
+    header: null,
+  },
+  tabBarOptions: {
+    activeTintColor: '#251d26',
+    activeBackgroundColor: '#ba1ba7',
+    inactiveBackgroundColor: '#760d82',
+    inactiveTintColor: '#D3BCDD',
+    tabStyle: {
+      borderTopColor: 'purple',
+      borderTopWidth: 0.4,
     },
   },
-);
+},
+);*/
 
-const AppNavigator = createStackNavigator(
+const AppNavigator = StackNavigator(
   {
+    loginComp: {
+      screen: createBottomTabNavigator({
+        register: {
+          screen: Register,
+          navigationOptions: {
+            tabBarLabel: 'Register',
+            tabBarIcon: ({ tintColor }) => <Icon size={20} name="user-circle" color={tintColor} />,
+            tabBarColor: 'violet',
+          },
+        },
+        login: {
+          screen: Login,
+          navigationOptions: {
+            tabBarLabel: 'Login',
+            tabBarIcon: ({ tintColor }) => <Icon size={20} name="lock" color={tintColor} />,
+            tabBarColor: 'orange',
+          },
+        },
+      }),
+      initialRouteName: 'loginComp',
+      navigationOptions: {
+        tabBarVisible: true,
+        header: null,
+      },
+      tabBarOptions: {
+        activeTintColor: '#251d26',
+        activeBackgroundColor: '#ba1ba7',
+        inactiveBackgroundColor: '#760d82',
+        inactiveTintColor: '#D3BCDD',
+        tabStyle: {
+          borderTopColor: 'purple',
+          borderTopWidth: 0.4,
+        },
+      },
+    },
     Main: {
-      screen: MainScreenNavigator,
+      screen: MainNavigation,
       navigationOptions: {
         header: null,
-      },
-    },
-    User: {
-      screen: User,
-      navigationOptions: {
-        tabBarLabel: 'Profile',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />,
-        tabBarColor: 'orange',
-        header: null,
-      },
-    },
-    Match: {
-      screen: Match,
-      navigationOptions: {
-        tabBarLabel: 'Match',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="burn" color={tintColor} />,
-        tabBarColor: 'pink',
       },
     },
     Messages: { screen: Messages },
