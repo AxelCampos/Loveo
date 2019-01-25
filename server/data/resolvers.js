@@ -133,7 +133,7 @@ export const resolvers = {
     createMessage(
       _,
       {
-        message: { text, groupId },
+        message: { text, groupId, userId },
       },
       ctx,
     ) {
@@ -145,7 +145,7 @@ export const resolvers = {
           throw new ForbiddenError('Unauthorized');
         }
         return Message.create({
-          userId: user.id,
+          userId, //Cambiar esto por "userId: user.id" cuando tengamos autenticacion en cliente
           text,
           groupId,
         });

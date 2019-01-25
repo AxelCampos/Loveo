@@ -42,13 +42,14 @@ const styles = StyleSheet.create({
 class Message extends PureComponent {
   render() {
     const { color, message, isCurrentUser } = this.props;
+    const date = message.createdAt.split('.')[0].split('T');
     return (
       <View key={message.id} style={styles.container}>
         {isCurrentUser ? <View style={styles.messageSpacer} /> : undefined}
         <View style={[styles.message, isCurrentUser && styles.myMessage]}>
           <Text style={[styles.messageUsername, { color }]}>{message.from.username}</Text>
           <Text>{message.text}</Text>
-          <Text style={styles.messageTime}>{message.createdAt}</Text>
+          <Text style={styles.messageTime}>{`${date[0]} ${date[1]}`}</Text>
         </View>
         {!isCurrentUser ? <View style={styles.messageSpacer} /> : undefined}
       </View>

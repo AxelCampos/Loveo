@@ -10,6 +10,7 @@ export const typeDefs = gql`
   # groupId is the id of the group receiving the message
   input CreateMessageInput {
     groupId: Int!
+    userId: Int!
     text: String!
   }
   input CreateConversationInput {

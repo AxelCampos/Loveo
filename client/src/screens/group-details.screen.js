@@ -92,8 +92,8 @@ class GroupDetails extends Component {
           <Button title="Edit" onPress={state.params.edit} />
         </View>
       ) : (
-        undefined
-      ),
+          undefined
+        ),
     };
   };
 
@@ -218,24 +218,24 @@ class GroupDetails extends Component {
                   }}
                 />
               ) : (
-                <Image style={styles.groupImage} source={{ uri: group.photo }} />
-              )}
+                  <Image style={styles.groupImage} source={{ uri: group.photo }} />
+                )}
               <Text>edit</Text>
             </TouchableOpacity>
           ) : (
-            <View style={styles.groupImageContainer}>
-              {group.photo === undefined ? (
-                <Image
-                  style={styles.groupImage}
-                  source={{
-                    uri: 'http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg',
-                  }}
-                />
-              ) : (
-                <Image style={styles.groupImage} source={{ uri: group.photo }} />
-              )}
-            </View>
-          )}
+              <View style={styles.groupImageContainer}>
+                {group.photo === undefined ? (
+                  <Image
+                    style={styles.groupImage}
+                    source={{
+                      uri: 'http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg',
+                    }}
+                  />
+                ) : (
+                    <Image style={styles.groupImage} source={{ uri: group.photo }} />
+                  )}
+              </View>
+            )}
           {group.users.length > 2 ? (
             <View style={styles.groupNameBorder}>
               <TextInput
@@ -246,10 +246,10 @@ class GroupDetails extends Component {
               />
             </View>
           ) : (
-            <View style={styles.groupNameBorder}>
-              <Text style={styles.groupName}>{groupName}</Text>
-            </View>
-          )}
+              <View style={styles.groupNameBorder}>
+                <Text style={styles.groupName}>{groupName}</Text>
+              </View>
+            )}
         </View>
         <FlatList
           data={group.users}

@@ -2,11 +2,13 @@ import R from 'ramda';
 import { graphql, compose } from 'react-apollo';
 import { Buffer } from 'buffer';
 import { isBefore } from 'date-fns';
+import { parseISO } from 'date-fns/esm';
 import GROUP_QUERY from '../../../graphql/group.query';
 import CREATE_MESSAGE_MUTATION from '../../../graphql/create-message.mutation';
 import USER_QUERY from '../../../graphql/user.query';
 import { withLoading } from '../../../components/withLoading';
 import Messages from '../components/messages';
+
 
 const ITEMS_PER_PAGE = 10;
 
@@ -85,7 +87,7 @@ const createMessageMutation = graphql(CREATE_MESSAGE_MUTATION, {
             messageConnection: { first: ITEMS_PER_PAGE },
           },
         });
-          // Add our message from the mutation to the end
+        // Add our message from the mutation to the end
         groupData.group.messages.edges.unshift({
           __typename: 'MessageEdge',
           node: createMessage,
@@ -111,7 +113,7 @@ const createMessageMutation = graphql(CREATE_MESSAGE_MUTATION, {
         const updateGroup = userData.user.groups.find(({ id }) => id === message.groupId);
         if (
           !updateGroup.messages.edges.length
-            || isBefore(updateGroup.messages.edges[0].node.createdAt, createMessage.createdAt)
+          || isBefore(parseISO(updateGroup.messages.edges[0].node.createdAt), parseISO(createMessage.createdAt))
         ) {
           updateGroup.messages.edges[0] = {
             __typename: 'MessageEdge',
