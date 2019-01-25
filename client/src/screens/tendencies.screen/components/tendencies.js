@@ -71,13 +71,15 @@ class Tendencies extends Component {
     return shortword;
   };
 
+  compare = (a, b) => b.node.likes - a.node.likes;
+
   render() {
     const { usersPage } = this.props;
-
+    const data = usersPage.edges ? usersPage.edges.slice(0).sort(this.compare) : undefined;
     return (
       <View style={styles.container}>
         <FlatList
-          data={usersPage.edges}
+          data={data}
           numColumns={2}
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
