@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   StackActions,
   NavigationActions,
-  createStackNavigator,
   createMaterialTopTabNavigator,
   createBottomTabNavigator,
   StackNavigator,
@@ -13,9 +12,7 @@ import {
   createReactNavigationReduxMiddleware,
 } from 'react-navigation-redux-helpers';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {
-  Text, View, StyleSheet, BackHandler,
-} from 'react-native';
+import { BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import Groups from './screens/groups.screen';
 import Messages from './screens/messages.screen';
@@ -40,23 +37,6 @@ import WhoLikesMe from './screens/who-likes-me.screen';
 import MatchList from './screens/match-list.screen';
 import Notifications from './screens/notifications.screen';
 import Blacklist from './screens/blacklist.screen';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  tabText: {
-    color: '#777',
-    fontSize: 10,
-    justifyContent: 'center',
-  },
-  selected: {
-    color: 'blue',
-  },
-});
 
 const Search = createMaterialTopTabNavigator(
   {
@@ -146,6 +126,55 @@ const LoginScreenNavigator = createBottomTabNavigator(
   },
 );
 
+const MainNavigation = createBottomTabNavigator(
+  {
+    Search: {
+      screen: Search,
+      navigationOptions: {
+        tabBarLabel: 'Search',
+        tabBarIcon: ({ tintColor }) => <Icon size={20} name="search" color={tintColor} />,
+        tabBarColor: 'blue',
+      },
+    },
+    Match: {
+      screen: Match,
+      navigationOptions: {
+        tabBarLabel: 'Match',
+        tabBarIcon: ({ tintColor }) => <Icon size={20} name="burn" color={tintColor} />,
+        tabBarColor: 'pink',
+      },
+    },
+    Chats: {
+      screen: Groups,
+      navigationOptions: {
+        tabBarLabel: 'Chats',
+        tabBarIcon: ({ tintColor }) => <Icon size={20} name="rocketchat" color={tintColor} />,
+        tabBarColor: 'green',
+      },
+    },
+    MyUser: {
+      screen: MyUser,
+      navigationOptions: {
+        tabBarLabel: 'Profile',
+        tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />,
+        tabBarColor: 'orange',
+      },
+    },
+    Settings: {
+      screen: Settings,
+      navigationOptions: {
+        tabBarLabel: 'Settings',
+        tabBarIcon: ({ tintColor }) => <Icon size={20} name="cog" color={tintColor} />,
+        tabBarColor: 'violet',
+      },
+    },
+  },
+  {
+    initialRouteName: 'MyUser',
+    activeColor: 'black',
+  },
+);
+
 // tabs in main screen
 const MainScreenNavigator = createBottomTabNavigator(
   {
@@ -212,7 +241,7 @@ const MainScreenNavigator = createBottomTabNavigator(
   },
 );
 
-const AppNavigator = createStackNavigator(
+const AppNavigator = StackNavigator(
   {
     Logout: {
       screen: LoginScreenNavigator,
@@ -223,6 +252,7 @@ const AppNavigator = createStackNavigator(
     Main: {
       screen: MainScreenNavigator,
       navigationOptions: {
+        tabBarVisible: true,
         header: null,
       },
     },
@@ -235,14 +265,7 @@ const AppNavigator = createStackNavigator(
         header: null,
       },
     },
-    Match: {
-      screen: Match,
-      navigationOptions: {
-        tabBarLabel: 'Match',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="burn" color={tintColor} />,
-        tabBarColor: 'pink',
-      },
-    },
+
     Messages: { screen: Messages },
     Profile: {
       screen: Profile,

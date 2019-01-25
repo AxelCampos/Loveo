@@ -1,18 +1,9 @@
 import React, { Component } from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableHighlight,
-  Alert,
-  Button,
-  StyleSheet,
-  StatusBar,
-  onButtonPress,
+  View, Text, TextInput, TouchableHighlight, StyleSheet,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { withNavigation } from 'react-navigation';
-import { StackActions, NavigationActions } from 'react-navigation';
+import { withNavigation, StackActions, NavigationActions } from 'react-navigation';
 
 const goToMain = StackActions.reset({
   index: 0,
@@ -20,8 +11,20 @@ const goToMain = StackActions.reset({
 });
 // create a component
 class LoginForm extends Component {
+  goToMain = () => {
+    const {
+      navigation: { navigate, dispatch },
+    } = this.props;
+    dispatch(
+      StackActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: 'Main' })],
+      }),
+    );
+  };
+
   render() {
-    const { dispatch, navigate } = this.props.navigation;
+    const { dispatch } = this.props.navigation;
     return (
       <View style={StyleSheet.container}>
         <View style={styles.textIcon}>
