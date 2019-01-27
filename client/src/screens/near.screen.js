@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import { graphql, compose } from 'react-apollo';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import Geocoder from 'react-native-geocoder';
 import { USERS_QUERY } from '../graphql/users.query';
 import withLoading from '../components/withLoading';
 
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   map: {
-    height: 550,
+    height: 500,
     width: 400,
   }
 });
@@ -61,23 +62,28 @@ class Nearer extends Component {
       },
     };
   }
-
-  onPress = () => {
-    const { users } = this.props;
-    //console.log(this.state.markers);
-    return users.filter(a => (a.id !== a.id));
-  };
+  getPosition = () => {
+    Geocoder.geocodeAddress('London').then(res => {
+      console.log(res);
+      // res is an Array of geocoding object (see below)
+    })
+      .catch(err => console.log(err))
+  }
 
   render() {
     const { users } = this.props;
     return (
       <View style={styles.container}>
+        <Button
+          title="test"
+          onPress={this.getPosition}
+        />
         <MapView
           provider={PROVIDER_GOOGLE}
           style={styles.map}
           initialRegion={this.state.region}
           zoomEnabled={true}
-          onPress={this.onPress}
+        //onPress={this.onPress}
         >
           {users.map((user, index) => (
             <SingleMarker key={index} user={user} properties={this.props} />
