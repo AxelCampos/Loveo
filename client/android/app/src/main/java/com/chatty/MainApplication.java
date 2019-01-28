@@ -3,6 +3,7 @@ package com.chatty;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.maps.MapsPackage;
 import fr.snapp.imagebase64.RNImgToBase64Package;
 import com.imagepicker.ImagePickerPackage;
 import org.reactnative.camera.RNCameraPackage;
@@ -31,6 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+         
           new RNImgToBase64Package(),
           new ImagePickerPackage(),
           new RNCameraPackage(),
