@@ -31,6 +31,7 @@
     "react-native-alpha-listview": "^0.2.1",
     "react-native-camera": "^1.8.0",
     "react-native-config": "^0.11.5",
+    "react-native-datepicker": "^1.7.2",
     "react-native-deck-swiper": "^1.5.22",
     "react-native-geocoder": "^0.5.0",
     "react-native-image-base64": "^0.1.3",

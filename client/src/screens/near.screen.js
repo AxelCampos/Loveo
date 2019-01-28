@@ -5,6 +5,7 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import Geocoder from 'react-native-geocoder';
 import { USERS_QUERY } from '../graphql/users.query';
 import withLoading from '../components/withLoading';
+import DatePicker from 'react-native-datepicker';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,6 +37,7 @@ class SingleMarker extends Component {
     const aleatLat = Math.random() / 50;
     const aleatLong = Math.random() / 50;
     return (
+
       <Marker
         coordinate={{
           latitude: 40.416700 + aleatLat,
@@ -60,10 +62,11 @@ class Nearer extends Component {
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
       },
+      date: "2000-01-01",
     };
   }
   getPosition = () => {
-    Geocoder.geocodeAddress('London').then(res => {
+    Geocoder.geocodeAddress('28231, Spain').then(res => {
       console.log(res);
       // res is an Array of geocoding object (see below)
     })
@@ -74,6 +77,30 @@ class Nearer extends Component {
     const { users } = this.props;
     return (
       <View style={styles.container}>
+        <DatePicker
+          style={{ width: 200 }}
+          date={this.state.date}
+          mode="date"
+          placeholder="select date"
+          format="YYYY-MM-DD"
+          minDate="1920-01-01"
+          maxDate="2005-01-01"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              position: 'absolute',
+              left: 0,
+              top: 4,
+              marginLeft: 0
+            },
+            dateInput: {
+              marginLeft: 36
+            }
+            // ... You can check the source to find the other keys.
+          }}
+          onDateChange={(date) => { this.setState({ date: date }) }}
+        />
         <Button
           title="test"
           onPress={this.getPosition}
