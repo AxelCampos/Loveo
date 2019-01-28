@@ -37,6 +37,7 @@ import WhoLikesMe from './screens/who-likes-me.screen';
 import MatchList from './screens/match-list.screen';
 import Notifications from './screens/notifications.screen';
 import Blacklist from './screens/blacklist.screen';
+import Button from './components/button.screen';
 
 const Search = createMaterialTopTabNavigator(
   {
@@ -62,6 +63,12 @@ const MyUser = createMaterialTopTabNavigator(
       screen: User,
       navigationOptions: {
         title: 'Profile',
+      },
+    },
+    Button: {
+      screen: Button,
+      navigationOptions: {
+        title: 'Button',
       },
     },
     MyLikes: {
