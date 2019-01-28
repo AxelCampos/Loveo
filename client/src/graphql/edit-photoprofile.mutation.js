@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 const EDIT_PHOTOPROFILE_MUTATION = gql`
-  mutation editPhoto($photo: PhotoInput!) {
-    editPhoto(photo: $photo) {
+  mutation editPhotoprofile($photo: PhotoInput!) {
+    editPhotoprofile(photo: $photo) {
       id
     }
   }
