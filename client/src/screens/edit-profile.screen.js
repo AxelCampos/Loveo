@@ -194,7 +194,7 @@ class EditProfile extends Component {
         path: 'images',
       },
     };
-    const { editPhoto, user } = this.props;
+    const { editPhotoprofile, user } = this.props;
 
     ImagePicker.showImagePicker(options, async (response) => {
       console.log('Response = ', response);
@@ -205,14 +205,14 @@ class EditProfile extends Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       }
-      console.log('AAAAAAAAAAAAAAAAAAAAaa', ImgToBase64);
+
       await ImgToBase64.getBase64String(`${response.uri}`)
         .then(res => this.setState({
           image: res,
         }))
-        .then(() => editPhoto({ userId: user.id, url: this.state.image }))
+        .then(() => editPhotoprofile({ userId: user.id, url: this.state.image }))
         .catch(err => console.log('error!!!', err));
-        alert('Foto actualizada');
+      alert('Foto actualizada');
     });
   };
 
@@ -258,7 +258,7 @@ class EditProfile extends Component {
         <ScrollView style={styles.scroll}>
           <View style={styles.viewImage}>
             <TouchableHighlight onPress={this.openImagepicker}>
-              <Image style={styles.image} source={{ uri: `${photoprofile.url}` }} />
+              <Image style={styles.image} source={{ uri: `data:image/png;base64, ${photoprofile.url}` }} />
             </TouchableHighlight>
             <Text>Cambiar foto</Text>
           </View>
@@ -612,7 +612,7 @@ const editUserMutation = graphql(EDIT_USER_MUTATION, {
 
 const editPhotoprofileMutation = graphql(EDIT_PHOTOPROFILE_MUTATION, {
   props: ({ mutate }) => ({
-    editPhoto: photo => mutate({
+    editPhotoprofile: photo => mutate({
       variables: { photo },
       refetchQueries: [{ query: USER_QUERY }],
     }),

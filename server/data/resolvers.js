@@ -283,20 +283,18 @@ export const resolvers = {
       });
     },
 
-    editPhotoprofile(
+    async editPhotoprofile(
       _,
       {
         photo: { userId, url, comment },
       },
     ) {
-      Photo.findOne({ where: { userId, profile: true } })
-        .then(photo => photo.update({ profile: false }));
-      return Photo.create({
-        userId,
-        url,
-        profile: true,
-        comment,
-      });
+      const userPhoto = await Photo.findOne({ where: { userId } }); // add profile: true to where, when photos profile work correctly
+      console.log('>>>>>>>>>>>>', userPhoto);
+      await userPhoto.update({ profile: true, url });
+      console.log('<<<<<<<<<<', userPhoto);
+
+      return userPhoto;
     },
 
     editUser(
@@ -503,7 +501,6 @@ export const resolvers = {
       });
     },
     photoprofile(user) {
-      console.log('ahora sí que sí: PATATA SPLIT!!!!');
       return Photo.findOne({
         where: { userId: user.id },
       });

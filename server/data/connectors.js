@@ -44,6 +44,7 @@ const PhotoModel = db.define('photo', {
   url: { type: Sequelize.STRING },
   name: { type: Sequelize.STRING },
   comment: { type: Sequelize.STRING },
+  profile: { type: Sequelize.BOOLEAN },
 });
 // define lifestyle
 const LifestyleModel = db.define('lifestyle', {
