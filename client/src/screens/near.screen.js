@@ -9,7 +9,7 @@ import { USERS_QUERY } from '../graphql/users.query';
 import { USER_QUERY } from '../graphql/user.query';
 import withLoading from '../components/withLoading';
 
-const styles = StyleSheet.create({
+/*const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
@@ -165,55 +165,64 @@ class Nearer extends Component {
             })
             .catch(err => console.log(err));
     };*/
-    render() {
-        const { user, users } = this.props;
-        return (
-            <View style={styles.container}>
-                <MapView
-                    provider={PROVIDER_GOOGLE}
-                    style={styles.map}
-                    initialRegion={{
-                        latitude: this.state.latitude,
-                        longitude: this.state.longitude,
-                        latitudeDelta: this.state.latitudeDelta,
-                        longitudeDelta: this.state.longitudeDelta,
-                    }}
-                    zoomEnabled
-                //onPress={this.getPosition}
-                >
-                    <UserMarker user={user} lng={this.state.userLongitude} lat={this.state.userLatitude} />
-                    {
-                        users.filter(item => item.id !== user.id).map((item, index) => (
-                            <SingleMarker key={index} item={item} properties={this.props} />
-                        ))
-                    }
-                </MapView>
-            </View>
-        );
-    }
+/*render() {
+    const { user, users } = this.props;
+    return (
+        <View style={styles.container}>
+            <MapView
+                provider={PROVIDER_GOOGLE}
+                style={styles.map}
+                initialRegion={{
+                    latitude: this.state.latitude,
+                    longitude: this.state.longitude,
+                    latitudeDelta: this.state.latitudeDelta,
+                    longitudeDelta: this.state.longitudeDelta,
+                }}
+                zoomEnabled
+            //onPress={this.getPosition}
+            >
+                <UserMarker user={user} lng={this.state.userLongitude} lat={this.state.userLatitude} />
+                {
+                    users.filter(item => item.id !== user.id).map((item, index) => (
+                        <SingleMarker key={index} item={item} properties={this.props} />
+                    ))
+                }
+            </MapView>
+        </View>
+    );
+}
 }
 
 const userQuery = graphql(USER_QUERY, {
-    options: () => ({
-        variables: {
-            id: 1,
-        },
-    }),
-    props: ({ data: { loading, user } }) => ({
-        loading,
-        user,
-    }),
+options: () => ({
+    variables: {
+        id: 1,
+    },
+}),
+props: ({ data: { loading, user } }) => ({
+    loading,
+    user,
+}),
 });
 
 const usersQuery = graphql(USERS_QUERY, {
-    options: () => ({}), // fake the user for now
-    props: ({ data: { users } }) => ({
-        users: users || [],
-    }),
+options: () => ({}), // fake the user for now
+props: ({ data: { users } }) => ({
+    users: users || [],
+}),
 });
 
 export default compose(
-    userQuery,
-    usersQuery,
-    withLoading,
+userQuery,
+usersQuery,
+withLoading,
 )(Nearer);
+*/
+
+const Nearer = () => (
+    <View>
+        <Text>Fixing</Text>
+    </View>
+);
+
+export default Nearer;
