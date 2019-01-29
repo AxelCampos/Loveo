@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
 });
 
 const Group = ({ goToMessages, group: { id, name, photo } }) => (
+  
   <TouchableHighlight key={id} onPress={goToMessages}>
     <View>
       <View style={styles.groupContainer}>
