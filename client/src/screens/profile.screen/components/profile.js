@@ -6,6 +6,8 @@ import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StackActions, NavigationActions } from 'react-navigation';
 import styles from './styles';
+import OtherUserIcons from './otherUserIcons';
+import CurrentUserIcons from '../../user.screen/components/currentUserIcons';
 
 const goToNewGroup = group => StackActions.reset({
   index: 1,
@@ -51,9 +53,6 @@ class Profile extends Component {
 
   addLike() {
     const { updateUser, user, editFriend } = this.props;
-    this.setState({
-      switcher: true,
-    });
 
     updateUser({
       id: user.id,
@@ -93,7 +92,7 @@ class Profile extends Component {
 
   render() {
     const { user } = this.props;
-    const { switcher, enableScrollViewScroll, img = user.photoprofile } = this.state;
+    const { enableScrollViewScroll, img = user.photoprofile } = this.state;
 
     return (
       <View
@@ -110,42 +109,14 @@ class Profile extends Component {
             <Text style={styles.userName}>
               {user.username}
             </Text>
-            <View style={styles.icons}>
-              {switcher === false ? (
-                <Icon.Button
-                  underlayColor="transparent"
-                  style={styles.iconStyle}
-                  color="#F0625A"
-                  backgroundColor="white"
-                  size={30}
-                  borderRadius={30}
-                  name="cards-heart"
-                  onPress={this.addLike}
+            {user.id === 1
+              ? (
+                <CurrentUserIcons
+                  settings={this.goTosettings}
+                  setImage={image => this.setState({ image })}
                 />
               )
-                : (
-                  <Icon.Button
-                    underlayColor="transparent"
-                    style={styles.iconStyle}
-                    color="grey"
-                    backgroundColor="white"
-                    size={30}
-                    borderRadius={30}
-                    name="cards-heart"
-                  />
-                )}
-
-              <Icon.Button
-                underlayColor="transparent"
-                style={styles.iconStyle}
-                color="black"
-                backgroundColor="white"
-                size={30}
-                borderRadius={30}
-                name="email-outline"
-                onPress={this.create}
-              />
-            </View>
+              : <OtherUserIcons create={this.create} addLike={this.addLike} liked={false} />}
           </View>
           <View style={styles.containerImage}>
             <Image style={styles.userImage} source={{ uri: img.url }} />
@@ -167,7 +138,7 @@ class Profile extends Component {
               <Icon size={10} name="circle" color="green" />
               <Text style={styles.textStyle}>Ultima conexión: 13h</Text>
             </View>
-            <Text>Aquí iría una descripcion o lo que cohone queráis</Text>
+            <Text>Aquí iría una patata o lo que cohone queráis</Text>
           </View>
         </ScrollView>
       </View>
