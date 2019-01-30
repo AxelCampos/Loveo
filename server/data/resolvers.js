@@ -445,10 +445,12 @@ export const resolvers = {
           edges,
           pageInfo: {
             hasNextPage() {
+              if (!messages || !messages.length) {
+                return Promise.resolve(false);
+              }
               if (messages.length < (last || first)) {
                 return Promise.resolve(false);
               }
-
               return Message.findOne({
                 where: {
                   groupId: group.id,
