@@ -4,10 +4,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   Text, View, Image, ScrollView,
 } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
-import Menu from '../../../components/navigator-menu-component';
 import styles from './styles';
-import Header from './header';
+import CurrentUserIcons from './currentUserIcons';
 
 class User extends Component {
   static navigationOptions = () => ({
@@ -29,62 +27,23 @@ class User extends Component {
     });
   };
 
-  openImagepicker = () => {
-    const options = {
-      title: 'Select Avatar',
-      customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-
-    ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        this.setState({
-          image: response.uri,
-        });
-      }
-    });
-  };
-
-  renderMenu() {
-    return (
-      <View
-        onStartShouldSetResponderCapture={() => {
-          this.setState({ enableScrollViewScroll: false });
-          if (this._myScroll.contentOffset === 0 && this.state.enableScrollViewScroll === false) {
-            this.setState({ enableScrollViewScroll: true });
-          }
-        }}
-        style={styles.menu}
-      >
-        <Menu />
-      </View>
-    );
-  }
-
   render() {
-    const { user } = this.props;
-
+    const { user = {} } = this.props;
+    const { enableScrollViewScroll, image } = this.state;
     return (
       <View style={styles.container}>
-        <Header onPress={this.goTosettings} picker={this.openImagepicker} />
+        <CurrentUserIcons
+          settings={this.goTosettings}
+          setImage={img => this.setState({ image: img })}
+        />
         <View
           onStartShouldSetResponderCapture={() => {
             this.setState({ enableScrollViewScroll: true });
           }}
         >
           <ScrollView
-            scrollEnabled={this.state.enableScrollViewScroll}
-            ref={myScroll => (this._myScroll = myScroll)}
+            scrollEnabled={enableScrollViewScroll}
+            ref={(scroll) => { this.myScroll = scroll; }}
           >
             <View style={styles.containerImage}>
               <Image style={styles.userImage} source={{ uri: user.photoprofile.url }} />
@@ -106,7 +65,6 @@ class User extends Component {
                 <Text style={styles.textStyle}>Ultima conexión: 13h</Text>
               </View>
             </View>
-            {this.renderMenu()}
           </ScrollView>
         </View>
       </View>
