@@ -4,7 +4,8 @@ import {
   NavigationActions,
   createMaterialTopTabNavigator,
   createBottomTabNavigator,
-  StackNavigator,
+  createStackNavigator,
+  createSwitchNavigator,
 } from 'react-navigation';
 
 import {
@@ -27,8 +28,6 @@ import FinalizeGroup from './screens/finalize-group.screen';
 import GroupDetails from './screens/group-details.screen';
 import Settings from './screens/setting.screen';
 import EditProfile from './screens/edit-profile.screen';
-import Login from './screens/login.screen';
-import Register from './screens/register.screen';
 import GroupImage from './screens/group-image.screen';
 import LifestyleResult from './screens/lifestyle-result.screen';
 import Searches from './screens/searches.screen';
@@ -38,6 +37,7 @@ import MatchList from './screens/match-list.screen';
 import Notifications from './screens/notifications.screen';
 import Blacklist from './screens/blacklist.screen';
 import Button from './components/button.screen';
+import SigninScreen from './screens/signin.screen';
 
 const Search = createMaterialTopTabNavigator(
   {
@@ -95,93 +95,6 @@ const MyUser = createMaterialTopTabNavigator(
     activeColor: 'black',
   },
 );
-// tabs in login screen
-const LoginScreenNavigator = createBottomTabNavigator(
-  {
-    register: {
-      screen: Register,
-      navigationOptions: {
-        tabBarLabel: 'Register',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="user-circle" color={tintColor} />,
-        tabBarColor: 'violet',
-      },
-    },
-    login: {
-      screen: Login,
-      navigationOptions: {
-        tabBarLabel: 'Login',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="lock" color={tintColor} />,
-        tabBarColor: 'orange',
-      },
-    },
-  },
-  {
-    initialRouteName: 'login',
-    navigationOptions: {
-      tabBarVisible: true,
-    },
-    tabBarOptions: {
-      activeTintColor: '#251d26',
-      activeBackgroundColor: '#ba1ba7',
-      inactiveBackgroundColor: '#760d82',
-      inactiveTintColor: '#D3BCDD',
-      tabStyle: {
-        borderTopColor: 'purple',
-        borderTopWidth: 0.4,
-      },
-    },
-  },
-);
-
-const MainNavigation = createBottomTabNavigator(
-  {
-    Search: {
-      screen: Search,
-      navigationOptions: {
-        tabBarLabel: 'Search',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="search" color={tintColor} />,
-        tabBarColor: 'blue',
-      },
-    },
-    Match: {
-      screen: Match,
-      navigationOptions: {
-        tabBarLabel: 'Match',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="burn" color={tintColor} />,
-        tabBarColor: 'pink',
-      },
-    },
-    Chats: {
-      screen: Groups,
-      navigationOptions: {
-        tabBarLabel: 'Chats',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="rocketchat" color={tintColor} />,
-        tabBarColor: 'green',
-      },
-    },
-    MyUser: {
-      screen: MyUser,
-      navigationOptions: {
-        tabBarLabel: 'Profile',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />,
-        tabBarColor: 'orange',
-      },
-    },
-    Settings: {
-      screen: Settings,
-      navigationOptions: {
-        tabBarLabel: 'Settings',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="cog" color={tintColor} />,
-        tabBarColor: 'violet',
-      },
-    },
-  },
-  {
-    initialRouteName: 'MyUser',
-    activeColor: 'black',
-  },
-);
-
 // tabs in main screen
 const MainScreenNavigator = createBottomTabNavigator(
   {
@@ -248,14 +161,8 @@ const MainScreenNavigator = createBottomTabNavigator(
   },
 );
 
-const AppNavigator = StackNavigator(
+const StackNavigator = createStackNavigator(
   {
-    Logout: {
-      screen: LoginScreenNavigator,
-      navigationOptions: {
-        header: null,
-      },
-    },
     Main: {
       screen: MainScreenNavigator,
       navigationOptions: {
@@ -322,6 +229,15 @@ const AppNavigator = StackNavigator(
     headerMode: 'screen',
   },
 );
+const AppNavigator = createSwitchNavigator(
+  {
+    Auth: SigninScreen,
+    Main: StackNavigator,
+  },
+  {
+    initialRouteName: 'Auth',
+  },
+);
 
 // reducer initialization code
 const initialState = AppNavigator.router.getStateForAction(
@@ -334,7 +250,7 @@ const initialState = AppNavigator.router.getStateForAction(
     ],
   }),
 );
-export const navigationReducer = (state = initialState, action) => {
+export const navigationReducer = (state = null, action) => {
   const nextState = AppNavigator.router.getStateForAction(action, state);
   // Simply return the original `state` if `nextState` is null or undefined.
   return nextState || state;

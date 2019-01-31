@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+/* import React, { Component } from 'react';
 import {
   View, Text, StyleSheet, Image,
 } from 'react-native';
@@ -55,4 +55,4 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
 });
-export default Register;
+export default Register; */
