@@ -21,13 +21,6 @@ const goToNewGroup = group => StackActions.reset({
 });
 
 class Profile extends Component {
-  static navigationOptions = ({ navigation }) => {
-    const { state } = navigation;
-    return {
-      title: state.params.username,
-    };
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -89,11 +82,20 @@ class Profile extends Component {
       });
   }
 
+  goTosettings = () => {
+    const {
+      navigation: { navigate },
+      user,
+    } = this.props;
+    navigate('EditProfile', {
+      userId: user.id,
+    });
+  };
 
   render() {
     const { user } = this.props;
     const { enableScrollViewScroll, img = user.photoprofile } = this.state;
-
+    console.log('image: ', img);
     return (
       <View
         style={styles.container}
@@ -113,7 +115,7 @@ class Profile extends Component {
               ? (
                 <CurrentUserIcons
                   settings={this.goTosettings}
-                  setImage={image => this.setState({ image })}
+                  setImage={newImage => this.setState({ img: `data:image/jpeg;base64,${newImage}` })}
                 />
               )
               : <OtherUserIcons create={this.create} addLike={this.addLike} liked={false} />}
@@ -147,9 +149,9 @@ class Profile extends Component {
 }
 
 Profile.propTypes = {
-  updateUser: PropTypes.func.isRequired,
-  editFriend: PropTypes.func.isRequired,
-  createConversation: PropTypes.func.isRequired,
+  updateUser: PropTypes.func,
+  editFriend: PropTypes.func,
+  createConversation: PropTypes.func,
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
   }),
