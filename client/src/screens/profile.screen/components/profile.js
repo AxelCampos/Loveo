@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import {
-  View, Image, Text, Alert, ScrollView,
+  View, Image, Text, Alert, ScrollView, FlatList, TouchableHighlight,
 } from 'react-native';
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StackActions, NavigationActions } from 'react-navigation';
-import Menu from '../../../components/navigator-menu-component';
 import styles from './styles';
+import OtherUserIcons from './otherUserIcons';
+import CurrentUserIcons from '../../user.screen/components/currentUserIcons';
 
 const goToNewGroup = group => StackActions.reset({
   index: 1,
@@ -20,13 +21,6 @@ const goToNewGroup = group => StackActions.reset({
 });
 
 class Profile extends Component {
-  static navigationOptions = ({ navigation }) => {
-    const { state } = navigation;
-    return {
-      title: state.params.username,
-    };
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -37,11 +31,21 @@ class Profile extends Component {
     this.addLike = this.addLike.bind(this);
   }
 
+  keyExtractor = item => item.id.toString();
+
+  renderItem = ({ item }) => (
+    <TouchableHighlight onPress={() => this.setState({ img: item })} key={item.id} underlayColor="transparent">
+      <View style={styles.photoContainer}>
+        <Image
+          source={{ uri: item.url }}
+          style={styles.albumImage}
+        />
+      </View>
+    </TouchableHighlight>
+  );
+
   addLike() {
     const { updateUser, user, editFriend } = this.props;
-    this.setState({
-      switcher: true,
-    });
 
     updateUser({
       id: user.id,
@@ -51,9 +55,10 @@ class Profile extends Component {
     editFriend({
       id: 1,
       userId: user.id,
-    }).catch((error) => {
-      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => { } }]);
-    });
+    })
+      .catch((error) => {
+        Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => { } }]);
+      });
   }
 
   create() {
@@ -77,27 +82,20 @@ class Profile extends Component {
       });
   }
 
-  renderMenu() {
-    const { enableScrollViewScroll } = this.state;
-    return (
-      <View
-        onStartShouldSetResponderCapture={() => {
-          this.setState({ enableScrollViewScroll: false });
-          if (this.myScroll.contentOffset === 0 && enableScrollViewScroll === false) {
-            this.setState({ enableScrollViewScroll: true });
-          }
-        }}
-        style={styles.menu}
-      >
-        <Menu />
-      </View>
-    );
-  }
+  goTosettings = () => {
+    const {
+      navigation: { navigate },
+      user,
+    } = this.props;
+    navigate('EditProfile', {
+      userId: user.id,
+    });
+  };
 
   render() {
     const { user } = this.props;
-    const { switcher, enableScrollViewScroll } = this.state;
-
+    const { enableScrollViewScroll, img = user.photoprofile } = this.state;
+    console.log('image: ', img);
     return (
       <View
         style={styles.container}
@@ -109,17 +107,31 @@ class Profile extends Component {
           scrollEnabled={enableScrollViewScroll}
           ref={(myScroll) => { this.myScroll = myScroll; }}
         >
-          <View style={styles.containerImage}>
-            <Image style={styles.userImage} source={{ uri: user.photoprofile.url }} />
-          </View>
-          <View style={styles.userInformacion}>
+          <View style={styles.userNameContainer}>
             <Text style={styles.userName}>
               {user.username}
-              {' ('}
-              {user.age}
-              {')'}
-              {user.likes}
             </Text>
+            {user.id === 1
+              ? (
+                <CurrentUserIcons
+                  settings={this.goTosettings}
+                  setImage={newImage => this.setState({ img: `data:image/jpeg;base64,${newImage}` })}
+                />
+              )
+              : <OtherUserIcons create={this.create} addLike={this.addLike} liked={false} />}
+          </View>
+          <View style={styles.containerImage}>
+            <Image style={styles.userImage} source={{ uri: img.url }} />
+          </View>
+          <FlatList
+            styles={styles.album}
+            data={user.album}
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderItem}
+            ListEmptyComponent={<View />}
+            horizontal
+          />
+          <View style={styles.userInformacion}>
             <View style={styles.conexionStyle}>
               <Icon size={11.5} name="home-circle" />
               <Text style={[styles.locationUser, styles.textStyle]}>{user.city}</Text>
@@ -128,43 +140,8 @@ class Profile extends Component {
               <Icon size={10} name="circle" color="green" />
               <Text style={styles.textStyle}>Ultima conexión: 13h</Text>
             </View>
-            <View style={styles.icons}>
-              {switcher === false ? (
-                <Icon.Button
-                  underlayColor="transparent"
-                  style={styles.iconStyle}
-                  color="#F0625A"
-                  backgroundColor="white"
-                  size={30}
-                  borderRadius={30}
-                  name="cards-heart"
-                  onPress={this.addLike}
-                />
-              ) : (
-                <Icon.Button
-                  underlayColor="transparent"
-                  style={styles.iconStyle}
-                  color="grey"
-                  backgroundColor="white"
-                  size={30}
-                  borderRadius={30}
-                  name="cards-heart"
-                />
-              )}
-
-              <Icon.Button
-                underlayColor="transparent"
-                style={styles.iconStyle}
-                color="black"
-                backgroundColor="white"
-                size={30}
-                borderRadius={30}
-                name="email-outline"
-                onPress={this.create}
-              />
-            </View>
+            <Text>Aquí iría una patata o lo que cohone queráis</Text>
           </View>
-          {this.renderMenu()}
         </ScrollView>
       </View>
     );
@@ -172,9 +149,9 @@ class Profile extends Component {
 }
 
 Profile.propTypes = {
-  updateUser: PropTypes.func.isRequired,
-  editFriend: PropTypes.func.isRequired,
-  createConversation: PropTypes.func.isRequired,
+  updateUser: PropTypes.func,
+  editFriend: PropTypes.func,
+  createConversation: PropTypes.func,
   navigation: PropTypes.shape({
     dispatch: PropTypes.func,
   }),
