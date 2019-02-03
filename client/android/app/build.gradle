@@ -153,6 +153,7 @@ android {
 }
 
 dependencies {
+
     
     compile project(':react-native-image-base64')
     compile project(':react-native-image-picker')

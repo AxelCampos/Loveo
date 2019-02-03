@@ -5,6 +5,7 @@ import {
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StackActions, NavigationActions } from 'react-navigation';
+import ActionButton from 'react-native-circular-action-menu';
 import styles from './styles';
 import OtherUserIcons from './otherUserIcons';
 import CurrentUserIcons from '../../user.screen/components/currentUserIcons';
@@ -34,12 +35,13 @@ class Profile extends Component {
   keyExtractor = item => item.id.toString();
 
   renderItem = ({ item }) => (
-    <TouchableHighlight onPress={() => this.setState({ img: item })} key={item.id} underlayColor="transparent">
+    <TouchableHighlight
+      onPress={() => this.setState({ img: item })}
+      key={item.id}
+      underlayColor="transparent"
+    >
       <View style={styles.photoContainer}>
-        <Image
-          source={{ uri: item.url }}
-          style={styles.albumImage}
-        />
+        <Image source={{ uri: item.url }} style={styles.albumImage} />
       </View>
     </TouchableHighlight>
   );
@@ -55,10 +57,9 @@ class Profile extends Component {
     editFriend({
       id: 1,
       userId: user.id,
-    })
-      .catch((error) => {
-        Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => { } }]);
-      });
+    }).catch((error) => {
+      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => {} }]);
+    });
   }
 
   create() {
@@ -78,7 +79,7 @@ class Profile extends Component {
         navigation.dispatch(goToNewGroup(res.data.createConversation));
       })
       .catch((error) => {
-        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => { } }]);
+        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => {} }]);
       });
   }
 
@@ -93,7 +94,10 @@ class Profile extends Component {
   };
 
   render() {
-    const { user } = this.props;
+    const {
+      user,
+      navigation: { navigate },
+    } = this.props;
     const { enableScrollViewScroll, img = user.photoprofile } = this.state;
     console.log('image: ', img);
     return (
@@ -103,23 +107,23 @@ class Profile extends Component {
           this.setState({ enableScrollViewScroll: true });
         }}
       >
+        <View style={styles.userNameContainer}>
+          <Text style={styles.userName}>{user.username}</Text>
+          {user.id === 1 ? (
+            <CurrentUserIcons
+              settings={this.goTosettings}
+              setImage={newImage => this.setState({ img: `data:image/jpeg;base64,${newImage}` })}
+            />
+          ) : (
+            <OtherUserIcons create={this.create} addLike={this.addLike} liked={false} />
+          )}
+        </View>
         <ScrollView
           scrollEnabled={enableScrollViewScroll}
-          ref={(myScroll) => { this.myScroll = myScroll; }}
+          ref={(myScroll) => {
+            this.myScroll = myScroll;
+          }}
         >
-          <View style={styles.userNameContainer}>
-            <Text style={styles.userName}>
-              {user.username}
-            </Text>
-            {user.id === 1
-              ? (
-                <CurrentUserIcons
-                  settings={this.goTosettings}
-                  setImage={newImage => this.setState({ img: `data:image/jpeg;base64,${newImage}` })}
-                />
-              )
-              : <OtherUserIcons create={this.create} addLike={this.addLike} liked={false} />}
-          </View>
           <View style={styles.containerImage}>
             <Image style={styles.userImage} source={{ uri: img.url }} />
           </View>
@@ -143,6 +147,27 @@ class Profile extends Component {
             <Text>Aquí iría una patata o lo que cohone queráis</Text>
           </View>
         </ScrollView>
+        {user.id === 1 ? (
+          <ActionButton
+            btnOutRange="rgba(208, 170, 230,1)"
+            buttonColor="rgba(185, 104, 233,1)"
+            position="left"
+            degrees={360}
+            icon={<Icon name="menu" size={30} />}
+          >
+            <ActionButton.Item title="MyLikes" onPress={() => navigate('MyLikes')}>
+              <Icon name="heart" size={30} />
+            </ActionButton.Item>
+            <ActionButton.Item title="whoLikes" onPress={() => navigate('WhoLikesMe')}>
+              <Icon name="fire" size={30} />
+            </ActionButton.Item>
+            <ActionButton.Item title="Match" onPress={() => navigate('MatchList')}>
+              <Icon name="bullseye-arrow" size={30} />
+            </ActionButton.Item>
+          </ActionButton>
+        ) : (
+          undefined
+        )}
       </View>
     );
   }

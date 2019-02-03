@@ -7,7 +7,17 @@ import {
   createStackNavigator,
   createSwitchNavigator,
 } from 'react-navigation';
-
+import {
+  fromLeft,
+  fromTop,
+  fromRight,
+  fromBottom,
+  fadeIn,
+  zoomIn,
+  zoomOut,
+  flipY,
+  flipX,
+} from 'react-navigation-transitions';
 import {
   reduxifyNavigator,
   createReactNavigationReduxMiddleware,
@@ -57,44 +67,6 @@ const Search = createMaterialTopTabNavigator(
   },
 );
 
-const MyUser = createMaterialTopTabNavigator(
-  {
-    User: {
-      screen: User,
-      navigationOptions: {
-        title: 'Profile',
-      },
-    },
-    Button: {
-      screen: Button,
-      navigationOptions: {
-        title: 'Button',
-      },
-    },
-    MyLikes: {
-      screen: MyLikes,
-      navigationOptions: {
-        title: 'My Likes',
-      },
-    },
-    WhoLikesMe: {
-      screen: WhoLikesMe,
-      navigationOptions: {
-        title: 'Who Likes Me',
-      },
-    },
-    MatchList: {
-      screen: MatchList,
-      navigationOptions: {
-        title: 'Match List',
-      },
-    },
-  },
-  {
-    initialRouteName: 'User',
-    activeColor: 'black',
-  },
-);
 // tabs in main screen
 const MainScreenNavigator = createBottomTabNavigator(
   {
@@ -126,7 +98,7 @@ const MainScreenNavigator = createBottomTabNavigator(
     },
 
     MyUser: {
-      screen: MyUser,
+      screen: User,
       navigationOptions: {
         tabBarLabel: 'Profile',
         tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />,
@@ -167,15 +139,6 @@ const StackNavigator = createStackNavigator(
       screen: MainScreenNavigator,
       navigationOptions: {
         tabBarVisible: true,
-        header: null,
-      },
-    },
-    MyUser: {
-      screen: MyUser,
-      navigationOptions: {
-        tabBarLabel: 'Profile',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />,
-        tabBarColor: 'orange',
         header: null,
       },
     },
@@ -221,8 +184,29 @@ const StackNavigator = createStackNavigator(
       },
     },
     GroupImage: { screen: GroupImage },
+    MyLikes: {
+      screen: MyLikes,
+      navigationOptions: {
+        title: 'My Likes',
+      },
+    },
+    WhoLikesMe: {
+      screen: WhoLikesMe,
+
+      navigationOptions: {
+        title: 'Who Likes Me',
+      },
+    },
+    MatchList: {
+      screen: MatchList,
+      navigationOptions: {
+        title: 'Match List',
+      },
+    },
   },
+
   {
+    transitionConfig: () => fromLeft(),
     navigationOptions: {
       title: 'Loveo',
     },

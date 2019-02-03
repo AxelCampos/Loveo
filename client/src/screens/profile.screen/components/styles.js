@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   },
   userInformacion: {
     alignItems: 'flex-start',
-    height: 150,
+    height: 230,
     paddingVertical: 8,
     paddingHorizontal: 12,
   },
