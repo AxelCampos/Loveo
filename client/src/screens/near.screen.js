@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import {
     View, Text, StyleSheet, Button,
 } from 'react-native';
-import { graphql, compose } from 'react-apollo';
+/*import { graphql, compose } from 'react-apollo';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import Geocoder from 'react-native-geocoder';
 import { USERS_MAP_QUERY } from '../graphql/users-map.query';
 import { USER_MAP_QUERY } from '../graphql/user-map.query';
 import withLoading from '../components/withLoading';
 
-/*const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
@@ -256,7 +256,7 @@ export default compose(
 
 const Nearer = () => (
     <View>
-        <Text>Fixing</Text>
+        <Text>Fixed</Text>
     </View>
 );
 
