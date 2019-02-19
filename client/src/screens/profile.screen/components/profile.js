@@ -79,7 +79,7 @@ class Profile extends Component {
       id: auth.id,
       userId: user.id,
     }).catch((error) => {
-      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => {} }]);
+      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => { } }]);
     });
   }
 
@@ -88,7 +88,9 @@ class Profile extends Component {
       auth,
       createConversation,
       navigation,
-      user: { username, id, photoprofile },
+      user: {
+        username, id, photoprofile, auth,
+      },
     } = this.props;
 
     createConversation({
@@ -101,7 +103,7 @@ class Profile extends Component {
         navigation.dispatch(goToNewGroup(res.data.createConversation));
       })
       .catch((error) => {
-        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => {} }]);
+        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => { } }]);
       });
   }
 
@@ -183,8 +185,8 @@ class Profile extends Component {
             </ActionButton.Item>
           </ActionButton>
         ) : (
-          undefined
-        )}
+            undefined
+          )}
       </View>
     );
   }

@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { USER_QUERY } from '../graphql/user.query';
@@ -140,7 +141,7 @@ class FinalizeGroup extends Component {
     const { name, selected } = this.state;
     createGroup({
       name,
-      userId: auth.id, // fake user for now
+      userId: auth.id,
       userIds: R.map(R.prop('id'), selected),
       photo: 'http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg',
     })

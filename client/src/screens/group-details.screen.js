@@ -152,7 +152,7 @@ class GroupDetails extends Component {
     leaveGroup({
       id: navigation.state.params.id,
       userId: auth.id,
-    }) // fake user for now
+    })
       .then(() => {
         navigation.dispatch(resetAction);
       })
@@ -332,13 +332,13 @@ const deleteGroupMutation = graphql(DELETE_GROUP_MUTATION, {
       variables: { id },
       update: (store, { data: { deleteGroup } }) => {
         // Read the data from our cache for this query.
-        const data = store.readQuery({ query: USER_QUERY, variables: { id: ownProps.auth.id } }); // fake for now
+        const data = store.readQuery({ query: USER_QUERY, variables: { id: ownProps.auth.id } });
         // Add our message from the mutation to the end.
         data.user.groups = data.user.groups.filter(g => deleteGroup.id !== g.id);
         // Write our data back to the cache.
         store.writeQuery({
           query: USER_QUERY,
-          variables: { id: ownProps.auth.id }, // fake for now
+          variables: { id: ownProps.auth.id },
           data,
         });
       },
@@ -351,13 +351,13 @@ const leaveGroupMutation = graphql(LEAVE_GROUP_MUTATION, {
       variables: { id, userId },
       update: (store, { data: { leaveGroup } }) => {
         // Read the data from our cache for this query.
-        const data = store.readQuery({ query: USER_QUERY, variables: { id: ownProps.auth.id } }); // fake for now
+        const data = store.readQuery({ query: USER_QUERY, variables: { id: ownProps.auth.id } });
         // Add our message from the mutation to the end.
         data.user.groups = data.user.groups.filter(g => leaveGroup.id !== g.id);
         // Write our data back to the cache.
         store.writeQuery({
           query: USER_QUERY,
-          variables: { id: ownProps.auth.id }, // fake for now
+          variables: { id: ownProps.auth.id },
           data,
         });
       },
