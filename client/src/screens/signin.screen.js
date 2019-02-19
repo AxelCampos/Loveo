@@ -21,7 +21,6 @@ import { setCurrentUser } from '../actions/auth.actions';
 import LOGIN_MUTATION from '../graphql/login.mutation';
 import SIGNUP_MUTATION from '../graphql/signup.mutation';
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -87,6 +86,14 @@ class Signin extends Component {
     };
   }
 
+  componentDidMount() {
+    const {
+      auth: { jwt },
+      navigation: { navigate },
+    } = this.props;
+    if (jwt) navigate('Main');
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.jwt) {
       nextProps.navigation.goBack();
@@ -95,9 +102,7 @@ class Signin extends Component {
 
   login = () => {
     const { email, password, view } = this.state;
-    console.log(email, password, 'kjsadfbasjjALDHJ');
     const { login, dispatch } = this.props;
-    console.log(login, 'assssssssssssssss');
 
     this.setState({
       loading: true,
@@ -195,7 +200,7 @@ class Signin extends Component {
           onPress={this[view]}
           style={styles.submit}
           title={view === 'signup' ? 'Sign up' : 'Login'}
-          disabled={loading || !!jwt}
+          disabled={loading}
         />
         <View style={styles.switchContainer}>
           <Text>{view === 'signup' ? 'Already have an account?' : 'New to Chatty?'}</Text>
