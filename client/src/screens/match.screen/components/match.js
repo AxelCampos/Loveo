@@ -6,6 +6,8 @@ import {
 
 import { StackActions, NavigationActions } from 'react-navigation';
 import Swiper from 'react-native-deck-swiper';
+import R from 'ramda';
+import CheckedImage from '../../../components/checked-image';
 import Header from './header';
 
 const styles = StyleSheet.create({
@@ -90,11 +92,9 @@ class Match extends PureComponent {
 
   renderCard = user => (
     <View style={styles.card}>
-      <Image
+      <CheckedImage
         style={styles.image}
-        source={{
-          uri: user.photoprofile.url,
-        }}
+        url={R.path(['photoprofile', 'url'], user)}
       />
       <Text style={[styles.information, { fontFamily: 'Merienda-Regular' }]}>
         {user.username}
@@ -144,7 +144,7 @@ class Match extends PureComponent {
       id: auth.id,
       userId: user.id,
     }).catch((error) => {
-      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => {} }]);
+      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => { } }]);
     });
   };
 
@@ -182,7 +182,7 @@ class Match extends PureComponent {
         navigation.dispatch(goToNewGroup(res.data.createConversation));
       })
       .catch((error) => {
-        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => {} }]);
+        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => { } }]);
       });
   };
 
