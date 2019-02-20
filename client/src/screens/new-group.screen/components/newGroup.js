@@ -50,8 +50,8 @@ class NewGroup extends Component {
           <Button title="Next" onPress={state.params.finalizeGroup} />
         </View>
       ) : (
-        undefined
-      ),
+          undefined
+        ),
     };
   };
 
@@ -113,6 +113,7 @@ class NewGroup extends Component {
       navigation: { navigate, dispatch },
       user,
       createConversation,
+      auth,
     } = this.props;
     const { selected } = this.state;
 
@@ -126,7 +127,7 @@ class NewGroup extends Component {
       createConversation({
         name: selected[0].username,
         userIds: selected[0].id,
-        userId: 1,
+        userId: auth.id,
         photo: selected[0].photoprofile.url,
       })
         .then((res) => {
@@ -134,7 +135,7 @@ class NewGroup extends Component {
         })
         .catch((error) => {
           Alert.alert('Error Creating New Group', error.message, [
-            { text: 'OK', onPress: () => {} },
+            { text: 'OK', onPress: () => { } },
           ]);
         });
     }
@@ -172,8 +173,8 @@ class NewGroup extends Component {
             <SelectedUserList data={selected} remove={this.toggle} />
           </View>
         ) : (
-          undefined
-        )}
+            undefined
+          )}
         {R.keys(friends).length ? (
           <AlphabetListView
             style={{ flex: 1 }}
@@ -189,8 +190,8 @@ class NewGroup extends Component {
             sectionHeaderHeight={22.5}
           />
         ) : (
-          undefined
-        )}
+            undefined
+          )}
       </View>
     );
   }

@@ -127,7 +127,7 @@ class Signin extends Component {
         Alert.alert(`${capitalizeFirstLetter(view)} error`, error.message, [
           { text: 'OK', onPress: () => console.log('OK pressed') }, // eslint-disable-line no-console
           {
-            text: 'Joputa',
+            text: 'Forgot',
             onPress: () => console.log('Forgot Pressed'),
             style: 'cancel',
           }, // eslint-disable-line no-console
@@ -179,8 +179,8 @@ class Signin extends Component {
             <ActivityIndicator />
           </View>
         ) : (
-          undefined
-        )}
+            undefined
+          )}
         <View style={styles.inputContainer}>
           <TextInput
             defaultValue="kk@kk.es"

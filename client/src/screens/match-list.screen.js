@@ -77,28 +77,28 @@ const Tendency = ({
   goToProfiles,
   reduceString,
 }) => (
-  <TouchableHighlight key={id} onPress={goToProfiles} underlayColor="transparent">
-    <View style={styles.tendencyContainer}>
-      <Image style={styles.userImage} source={{ uri: photoprofile.url }} />
+    <TouchableHighlight key={id} onPress={goToProfiles} underlayColor="transparent">
+      <View style={styles.tendencyContainer}>
+        <Image style={styles.userImage} source={{ uri: photoprofile.url }} />
 
-      <Text style={styles.userName}>
-        {username}
+        <Text style={styles.userName}>
+          {username}
 
-        {', '}
-        {age}
-      </Text>
-      <Text style={styles.textLocation}>
-        {reduceString(city)}
-        {', '}
-        {reduceString(country)}
-      </Text>
-      <View style={styles.userLikes}>
-        <Icon size={12} name="heart" color="#F0625A" />
-        <Text style={styles.textLikes}>{likes}</Text>
+          {', '}
+          {age}
+        </Text>
+        <Text style={styles.textLocation}>
+          {reduceString(city)}
+          {', '}
+          {reduceString(country)}
+        </Text>
+        <View style={styles.userLikes}>
+          <Icon size={12} name="heart" color="#F0625A" />
+          <Text style={styles.textLikes}>{likes}</Text>
+        </View>
       </View>
-    </View>
-  </TouchableHighlight>
-);
+    </TouchableHighlight>
+  );
 
 class MatchList extends Component {
   keyExtractor = item => item.id.toString();
@@ -137,8 +137,6 @@ class MatchList extends Component {
 
   selectFriends = (item) => {
     const { user } = this.props;
-    // console.log('user', user);
-    // console.log('item', item);
     return user.friends.filter(dato => dato.id === item.id).length !== 0;
   };
 

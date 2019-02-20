@@ -56,7 +56,9 @@ class Profile extends Component {
   };
 
   addLike() {
-    const { updateUser, user, editFriend } = this.props;
+    const {
+      updateUser, user, editFriend, auth,
+    } = this.props;
 
     updateUser({
       id: user.id,
@@ -64,15 +66,16 @@ class Profile extends Component {
     });
 
     editFriend({
-      id: 1,
+      id: auth.id,
       userId: user.id,
     }).catch((error) => {
-      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => {} }]);
+      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => { } }]);
     });
   }
 
   create() {
     const {
+      auth,
       createConversation,
       navigation,
       user: { username, id, photoprofile },
@@ -81,14 +84,14 @@ class Profile extends Component {
     createConversation({
       name: username,
       userIds: id,
-      userId: 1,
+      userId: auth.id,
       photo: photoprofile ? photoprofile.url : undefined,
     })
       .then((res) => {
         navigation.dispatch(goToNewGroup(res.data.createConversation));
       })
       .catch((error) => {
-        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => {} }]);
+        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => { } }]);
       });
   }
 
@@ -115,8 +118,8 @@ class Profile extends Component {
               setImage={newImage => this.setState({ img: `data:image/jpeg;base64,${newImage}` })}
             />
           ) : (
-            <OtherUserIcons create={this.create} addLike={this.addLike} liked={false} />
-          )}
+              <OtherUserIcons create={this.create} addLike={this.addLike} liked={false} />
+            )}
         </View>
         <ScrollView
           scrollEnabled={enableScrollViewScroll}
@@ -166,8 +169,8 @@ class Profile extends Component {
             </ActionButton.Item>
           </ActionButton>
         ) : (
-          undefined
-        )}
+            undefined
+          )}
       </View>
     );
   }

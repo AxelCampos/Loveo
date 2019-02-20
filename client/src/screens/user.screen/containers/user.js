@@ -20,6 +20,7 @@ const userQuery = graphql(USER_QUERY, {
     loggedUser: true,
   }),
 });
+
 export default compose(
   connect(mapStateToProps),
   userQuery,

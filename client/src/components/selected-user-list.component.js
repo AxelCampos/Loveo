@@ -59,7 +59,6 @@ class SelectedUserList extends Component {
   keyExtractor = item => item.id.toString();
 
   renderItem = ({ item: user }) => {
-    console.log('-------', user);
     const { remove } = this.props;
     return <SelectedUserListItem user={user} remove={() => remove(user)} />;
   };

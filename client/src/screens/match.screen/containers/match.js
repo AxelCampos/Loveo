@@ -11,6 +11,7 @@ import { withLoading } from '../../../components/withLoading';
 
 import Match from '../components/match';
 import { connect } from 'react-redux';
+
 const mapStateToProps = ({ auth }) => ({
   auth,
 });
@@ -26,12 +27,14 @@ const userQuery = graphql(USER_QUERY, {
     user,
   }),
 });
+
 const usersQuery = graphql(USERS_QUERY, {
   options: () => ({}),
   props: ({ data: { users } }) => ({
     users: users || [],
   }),
 });
+
 const createConversationMutation = graphql(CREATE_CONVERSATION_MUTATION, {
   props: ({ mutate }) => ({
     createConversation: group => mutate({
@@ -40,28 +43,32 @@ const createConversationMutation = graphql(CREATE_CONVERSATION_MUTATION, {
     }),
   }),
 });
+
 const updateUserMutation = graphql(UPDATE_USER_MUTATION, {
-  props: ({ mutate }) => ({
+  props: ({ mutate, ownProps }) => ({
     updateUser: user => mutate({
       variables: { user },
+      refetchQueries: [{ query: USER_QUERY, variables: { id: ownProps.auth.id } }],
     }),
   }),
 });
+
 const editFriendMutation = graphql(EDIT_FRIEND_MUTATION, {
-  props: ({ mutate }) => ({
+  props: ({ mutate, ownProps }) => ({
     editFriend: (id, userId) => mutate({
       variables: id,
       userId,
-      refetchQueries: [{ query: USER_QUERY }],
+      refetchQueries: [{ query: USER_QUERY, variables: { id: ownProps.auth.id } }],
     }),
   }),
 });
 
 const editMiscreatedMutation = graphql(EDIT_MISCREATED_MUTATION, {
-  props: ({ mutate }) => ({
+  props: ({ mutate, ownProps }) => ({
     editMiscreated: (id, userId) => mutate({
       variables: id,
       userId,
+      refetchQueries: [{ query: USER_QUERY, variables: { id: ownProps.auth.id } }],
     }),
   }),
 });

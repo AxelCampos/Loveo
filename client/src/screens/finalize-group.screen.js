@@ -16,6 +16,7 @@ import { StackActions, NavigationActions } from 'react-navigation';
 import { USER_QUERY } from '../graphql/user.query';
 import CREATE_GROUP_MUTATION from '../graphql/create-group.mutation';
 import SelectedUserList from '../components/selected-user-list.component';
+import { connect } from 'react-redux';
 
 const goToNewGroup = group => StackActions.reset({
   index: 1,
@@ -135,11 +136,11 @@ class FinalizeGroup extends Component {
   };
 
   create = () => {
-    const { createGroup, navigation } = this.props;
+    const { createGroup, navigation, auth } = this.props;
     const { name, selected } = this.state;
     createGroup({
       name,
-      userId: 1, // fake user for now
+      userId: auth.id, // fake user for now
       userIds: R.map(R.prop('id'), selected),
       photo: 'http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg',
     })
@@ -241,7 +242,13 @@ const userQuery = graphql(USER_QUERY, {
     user,
   }),
 });
+
+const mapStateToProps = ({ auth }) => ({
+  auth,
+});
+
 export default compose(
+  connect(mapStateToProps),
   userQuery,
   createGroupMutation,
 )(FinalizeGroup);

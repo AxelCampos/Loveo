@@ -118,10 +118,10 @@ class Messages extends Component {
   };
 
   send = (text) => {
-    const { createMessage, navigation } = this.props;
+    const { createMessage, navigation, auth } = this.props;
     createMessage({
       groupId: navigation.state.params.groupId,
-      userId: 1,
+      userId: auth.id,
       text,
     }).then(() => {
       this.flatList.scrollToIndex({ index: 0, animated: true });
