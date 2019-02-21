@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
-  StyleSheet, Text, Alert, View, Image,
+  StyleSheet, Text, Alert, View,
 } from 'react-native';
 
 import { StackActions, NavigationActions } from 'react-navigation';

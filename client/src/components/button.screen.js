@@ -1,16 +1,7 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import {
-  Image,
   StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
   View,
-  ScrollView,
-  Picker,
-  ToastAndroid,
-  TouchableHighlight,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ActionButton from 'react-native-circular-action-menu';

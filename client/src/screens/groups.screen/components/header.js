@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
-  FlatList, StyleSheet, Text, TouchableHighlight, View, Button, Image,
+  StyleSheet, View, Button,
 } from 'react-native';
 
 const styles = StyleSheet.create({

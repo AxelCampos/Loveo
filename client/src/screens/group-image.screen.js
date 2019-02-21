@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
-  TouchableHighlight, View, StyleSheet, FlatList, Image,
+  TouchableHighlight, View, StyleSheet, FlatList,
 } from 'react-native';
 import { graphql, compose } from 'react-apollo';
 import { connect } from 'react-redux';
 import { USER_QUERY } from '../graphql/user.query';
 import EDIT_GROUP_MUTATION from '../graphql/edit-group.mutation';
 import GROUP_QUERY from '../graphql/group.query';
+import CheckedImage from '../components/checked-image';
 
 const mapStateToProps = ({ auth }) => ({
   auth,
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
 const Photo = ({ album: { id, url }, selected }) => (
   <TouchableHighlight key={id} underlayColor="transparent" onPress={() => selected(url)}>
     <View style={styles.photoContainer}>
-      <Image style={styles.userImage} source={{ uri: url }} />
+      <CheckedImage style={styles.userImage} url={url} />
     </View>
   </TouchableHighlight>
 );

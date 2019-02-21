@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {
   Alert,
   Button,
-  Image,
   StyleSheet,
   Text,
   TextInput,
@@ -17,6 +16,7 @@ import { StackActions, NavigationActions } from 'react-navigation';
 import { USER_QUERY } from '../graphql/user.query';
 import CREATE_GROUP_MUTATION from '../graphql/create-group.mutation';
 import SelectedUserList from '../components/selected-user-list.component';
+import CheckedImage from '../components/checked-image';
 import { connect } from 'react-redux';
 
 const goToNewGroup = group => StackActions.reset({
@@ -174,7 +174,7 @@ class FinalizeGroup extends Component {
       <View style={styles.container}>
         <View style={styles.detailsContainer}>
           <TouchableOpacity style={styles.imageContainer}>
-            <Image style={styles.groupImage} source={{ uri: 'http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg' }} />
+            <CheckedImage style={styles.groupImage} url="http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg" />
             <Text>edit</Text>
           </TouchableOpacity>
           <View style={styles.inputContainer}>

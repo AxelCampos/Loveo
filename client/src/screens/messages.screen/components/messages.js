@@ -1,11 +1,16 @@
 import PropTypes from 'prop-types';
 import {
-  FlatList, StyleSheet, View, Image, Text, TouchableOpacity,
+  FlatList,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
 } from 'react-native';
 import React, { Component } from 'react';
 import randomColor from 'randomcolor';
 import Message from './message.component';
 import MessageInput from './message-input.component';
+import CheckedImage from '../../../components/checked-image';
 
 const styles = StyleSheet.create({
   container: {
@@ -44,7 +49,7 @@ class Messages extends Component {
       headerTitle: (
         <TouchableOpacity style={styles.titleWrapper} onPress={goToGroupDetails}>
           <View style={styles.title}>
-            <Image style={styles.titleImage} source={{ uri: state.params.photo }} />
+            <CheckedImage style={styles.titleImage} url={navigation.state.params.photo} />
             <Text>{state.params.title}</Text>
           </View>
         </TouchableOpacity>

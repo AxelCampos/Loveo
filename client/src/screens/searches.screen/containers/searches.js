@@ -1,11 +1,3 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableHighlight,
-  Button,
-} from 'react-native';
 import { graphql, compose } from 'react-apollo';
 import Searches from '../components/searches';
 import withLoading from '../../../components/withLoading';

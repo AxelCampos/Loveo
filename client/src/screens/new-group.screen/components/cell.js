@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  StyleSheet, Image, Text, View,
+  StyleSheet, Text, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import CheckedImage from '../../../components/checked-image';
 
 const styles = StyleSheet.create({
   cellContainer: {
@@ -62,7 +63,7 @@ class Cell extends Component {
 
     return (
       <View style={styles.cellContainer}>
-        <Image style={styles.cellImage} source={{ uri: photoprofile.url }} />
+        <CheckedImage style={styles.cellImage} url={photoprofile.url} />
         <Text style={styles.cellLabel}>{username}</Text>
         <View style={styles.checkButtonContainer}>
           <Icon.Button

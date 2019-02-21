@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Image,
   StyleSheet,
   Text,
   TextInput,
@@ -20,6 +19,8 @@ import { connect } from 'react-redux';
 import { USER_QUERY } from '../graphql/user.query';
 import EDIT_USER_MUTATION from '../graphql/edit-user.mutation';
 import EDIT_PHOTOPROFILE_MUTATION from '../graphql/edit-photoprofile.mutation';
+
+import CheckedImage from '../components/checked-image';
 
 const styles = StyleSheet.create({
   container: {
@@ -258,7 +259,10 @@ class EditProfile extends Component {
         <ScrollView style={styles.scroll}>
           <View style={styles.viewImage}>
             <TouchableHighlight onPress={this.openImagepicker}>
-              <Image style={styles.image} source={{ uri: photoprofile ? photoprofile.url : '' }} />
+              <CheckedImage
+                style={styles.image}
+                url={photoprofile ? photoprofile.url : undefined}
+              />
             </TouchableHighlight>
             <Text>Cambiar foto</Text>
           </View>

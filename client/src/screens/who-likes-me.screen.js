@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {
-  FlatList, StyleSheet, Text, TouchableHighlight, View, Image,
+  FlatList, StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
 
 import { graphql, compose } from 'react-apollo';
@@ -77,9 +77,9 @@ const Tendency = ({
   goToProfiles,
   reduceString,
 }) => (
-    <TouchableHighlight key={id} onPress={goToProfiles} underlayColor="transparent">
-      <View style={styles.tendencyContainer}>
-        <Image style={styles.userImage} source={{ uri: photoprofile.url }} />
+  <TouchableHighlight key={id} onPress={goToProfiles} underlayColor="transparent">
+    <View style={styles.tendencyContainer}>
+      <CheckedImage style={styles.userImage} url={photoprofile.url} />
 
         <Text style={styles.userName}>
           {username}

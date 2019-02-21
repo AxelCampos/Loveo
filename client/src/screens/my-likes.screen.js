@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {
-  FlatList, StyleSheet, Text, TouchableHighlight, View, Image,
+  FlatList, StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
 
 import { graphql, compose } from 'react-apollo';
@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { USERS_QUERY } from '../graphql/users.query';
 import { USER_QUERY } from '../graphql/user.query';
 import withLoading from '../components/withLoading';
+import CheckedImage from '../components/checked-image';
 
 const mapStateToProps = ({ auth }) => ({
   auth,
@@ -77,28 +78,28 @@ const Tendency = ({
   goToProfiles,
   reduceString,
 }) => (
-  <TouchableHighlight key={id} onPress={goToProfiles} underlayColor="transparent">
-    <View style={styles.tendencyContainer}>
-      <Image style={styles.userImage} source={{ uri: photoprofile.url }} />
+    <TouchableHighlight key={id} onPress={goToProfiles} underlayColor="transparent">
+      <View style={styles.tendencyContainer}>
+        <CheckedImage style={styles.userImage} url={photoprofile.url} />
 
-      <Text style={styles.userName}>
-        {username}
+        <Text style={styles.userName}>
+          {username}
 
-        {', '}
-        {age}
-      </Text>
-      <Text style={styles.textLocation}>
-        {reduceString(city)}
-        {', '}
-        {reduceString(country)}
-      </Text>
-      <View style={styles.userLikes}>
-        <Icon size={12} name="heart" color="#F0625A" />
-        <Text style={styles.textLikes}>{likes}</Text>
+          {', '}
+          {age}
+        </Text>
+        <Text style={styles.textLocation}>
+          {reduceString(city)}
+          {', '}
+          {reduceString(country)}
+        </Text>
+        <View style={styles.userLikes}>
+          <Icon size={12} name="heart" color="#F0625A" />
+          <Text style={styles.textLikes}>{likes}</Text>
+        </View>
       </View>
-    </View>
-  </TouchableHighlight>
-);
+    </TouchableHighlight>
+  );
 /* Tendency.propTypes = {
     goToProfiles: PropTypes.func.isRequired,
     users: PropTypes.shape({
