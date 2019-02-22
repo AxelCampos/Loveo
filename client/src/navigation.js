@@ -54,17 +54,34 @@ const Search = createMaterialTopTabNavigator(
   {
     Tendencias: {
       screen: Tendencies,
+      navigationOptions: {
+        tabBarLabel: 'Tendencias',
+      },
     },
     Cerca: {
       screen: Nearer,
+      navigationOptions: {
+        tabBarLabel: 'Mapa',
+      },
     },
     Lifestyle: {
       screen: Lifestyle,
+      navigationOptions: {
+        tabBarLabel: 'Filtro',
+      },
     },
   },
   {
     initialRouteName: 'Tendencias',
     activeColor: 'black',
+    tabBarOptions: {
+      activeTintColor: '#251d26',
+      inactiveTintColor: '#D3BCDD',
+      tabStyle: {
+        borderTopWidth: 0.4,
+        backgroundColor: '#760d82',
+      },
+    },
   },
 );
 
@@ -223,7 +240,6 @@ const AppNavigator = createSwitchNavigator(
     initialRouteName: 'Auth',
   },
 );
-
 
 export const navigationReducer = (state = null, action) => {
   let nextState = AppNavigator.router.getStateForAction(action, state);

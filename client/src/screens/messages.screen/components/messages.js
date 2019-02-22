@@ -1,11 +1,6 @@
 import PropTypes from 'prop-types';
 import {
-  FlatList,
-  StyleSheet,
-  View,
-  Image,
-  Text,
-  TouchableOpacity,
+  FlatList, StyleSheet, View, Image, Text, TouchableOpacity,
 } from 'react-native';
 import React, { Component } from 'react';
 import randomColor from 'randomcolor';
@@ -55,6 +50,9 @@ class Messages extends Component {
           </View>
         </TouchableOpacity>
       ),
+      headerStyle: {
+        backgroundColor: '#760d82',
+      },
     };
   };
 
@@ -107,11 +105,13 @@ class Messages extends Component {
 
   renderItem = ({ item: edge }) => {
     const { usernameColors } = this.state;
+    const { auth } = this.props;
+    console.log(this.props, 'holamundo');
     const message = edge.node;
     return (
       <Message
         color={usernameColors[message.from.username]}
-        isCurrentUser={message.from.id === 1} // for now until we implement auth
+        isCurrentUser={message.from.id === auth.id} // for now until we implement auth
         message={message}
       />
     );

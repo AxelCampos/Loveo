@@ -3,95 +3,53 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
+  Button,
   Picker,
   ScrollView,
   Switch,
   ToastAndroid,
 } from 'react-native';
 import { graphql, compose } from 'react-apollo';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { USERS_QUERY } from '../graphql/users.query';
 import withLoading from '../components/withLoading';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    // justifyContent: 'flex-start',
-    // 'center', 'flex-start', 'flex-end', 'space-around', 'space-between'
-    // alignItems: "flex-start", // 'center', 'flex-start', 'flex-end', 'stretched'
-    paddingTop: 10,
+    backgroundColor: 'white',
   },
-  main: {
-    flex: 0.9,
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    marginTop: 5,
-  },
-  submit: {
+  header: {
     flex: 0.1,
-    flexDirection: 'column',
     alignItems: 'center',
-    marginTop: 5,
-    marginBottom: 15,
-  },
-  title: {
-    marginBottom: 10,
-    marginTop: 10,
-    marginLeft: 15,
-    marginRight: 15,
-    height: 40,
-    padding: 10,
-    // backgroundColor: '#c7d6db',
-    borderRadius: 10,
-    // color: '#7a42f4',
-    width: 200,
+    justifyContent: 'center',
+    padding: 8,
   },
   label: {
-    marginBottom: 0,
-    marginTop: 0,
-    marginLeft: 15,
-    marginRight: 15,
-    height: 30,
-    padding: 3,
-    paddingLeft: 10,
-    backgroundColor: '#c7d6db',
-    borderRadius: 10,
-    // color: '#7a42f4',
+    marginBottom: 20,
+    height: 40,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#F9F9F9',
+    marginVertical: 10,
+  },
+  picker: {
     width: 200,
+    marginHorizontal: 20,
   },
   viewSwitchPicker: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly', // space-around, space-between and space-evenly
-  },
-  picker: {
-    flex: 0.9,
-    marginBottom: 15,
-    marginTop: 0,
-    marginLeft: 15,
-    marginRight: 15,
-    borderColor: '#9cb1b7',
-    height: 30,
-    borderRadius: 10,
-    padding: 3,
-    paddingLeft: 10,
-    // color: '#7a42f4',
-    width: 200,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   switch: {
-    flex: 0.1,
+    marginHorizontal: 20,
   },
-  submitButton: {
-    backgroundColor: '#9cb1b7',
-    padding: 10,
-    margin: 15,
-    height: 40,
-    borderRadius: 20,
-    width: 200,
-  },
-  submitButtonText: {
-    textAlign: 'center',
+  moreFilters: {
+    flex: 0.2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 50,
   },
 });
 
@@ -99,6 +57,7 @@ class Lifestyle extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      bool: false,
       userId: 1,
       gender: 'todos',
       civilStatus: 'todos',
@@ -159,7 +118,7 @@ class Lifestyle extends Component {
         gender: 'todos',
       });
       ToastAndroid.showWithGravity(
-        'Busqueda por genero desativada.',
+        'Busqueda por genero desactivada.',
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
@@ -170,7 +129,7 @@ class Lifestyle extends Component {
         genderThumbcolor: 'blue',
       });
       ToastAndroid.showWithGravity(
-        'Busqueda por genero ativada.',
+        'Busqueda por genero activada.',
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
@@ -179,6 +138,7 @@ class Lifestyle extends Component {
 
   switchCivilStatus = () => {
     const { switchCivilStatusValue } = this.state;
+    console.log(switchCivilStatusValue);
     if (switchCivilStatusValue) {
       this.setState({
         switchCivilStatusValue: false,
@@ -187,7 +147,7 @@ class Lifestyle extends Component {
         civilStatus: 'todos',
       });
       ToastAndroid.showWithGravity(
-        'Busqueda por estado civil desativada.',
+        'Busqueda por estado civil desactivada.',
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
@@ -198,11 +158,19 @@ class Lifestyle extends Component {
         civilStatusThumbcolor: 'blue',
       });
       ToastAndroid.showWithGravity(
-        'Busqueda por estado civil ativada.',
+        'Busqueda por estado civil activada.',
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
     }
+  };
+
+  moreFilters = () => {
+    this.setState({
+      bool: true,
+    });
+    console.log('zurr', this.scroll);
+    setTimeout(this.scroll.scrollToEnd, 0);
   };
 
   switchChildren = () => {
@@ -215,7 +183,7 @@ class Lifestyle extends Component {
         children: 'todos',
       });
       ToastAndroid.showWithGravity(
-        'Busqueda por tener hijos desativada.',
+        'Busqueda para hijos desactivada.',
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
@@ -226,7 +194,7 @@ class Lifestyle extends Component {
         childrenThumbcolor: 'blue',
       });
       ToastAndroid.showWithGravity(
-        'Busqueda por tener hijos ativada.',
+        'Busqueda para hijos activada.',
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
@@ -234,86 +202,177 @@ class Lifestyle extends Component {
   };
 
   render() {
-    const { users } = this.props;
+    const {
+      bool, switchChildrenValue, switchCivilStatusValue, switchGenderValue,
+    } = this.state;
     return (
       <View style={styles.container}>
-        <View style={styles.main}>
-          <ScrollView>
-            <Text style={styles.title}>Preferencias de Búsqueda </Text>
-            <Text style={styles.label}>por Genero: </Text>
-
-            <View style={styles.viewSwitchPicker}>
-              <Picker
-                style={styles.picker}
-                selectedValue={this.state.gender}
-                onValueChange={gender => this.setState({ gender })}
-                enabled={this.state.enabledpickerGender}
-              >
-                <Picker.Item label="todos" value="todos" />
-                <Picker.Item label="hombre" value="hombre" />
-                <Picker.Item label="mujer" value="mujer" />
-                <Picker.Item label="otro" value="otro" />
-              </Picker>
-              <Switch
-                style={styles.switch}
-                onValueChange={this.switchGender}
-                value={this.state.switchGenderValue}
-                thumbColor={this.state.genderThumbcolor}
-              />
-            </View>
-
-            <Text style={styles.label}>Estado Civil: </Text>
-            <View style={styles.viewSwitchPicker}>
-              <Picker
-                style={styles.picker}
-                selectedValue={this.state.civilStatus}
-                onValueChange={civilStatus => this.setState({ civilStatus })}
-                enabled={this.state.enabledpickerCivilStatus}
-              >
-                <Picker.Item label="todos" value="todos" />
-                <Picker.Item label="soltero" value="soltero" />
-                <Picker.Item label="divorciado" value="divorciado" />
-                <Picker.Item label="separado" value="separado" />
-                <Picker.Item label="casado" value="casado" />
-                <Picker.Item label="viudo" value="viudo" />
-                <Picker.Item label="no especificado" value="no especificado" />
-              </Picker>
-              <Switch
-                style={styles.switch}
-                onValueChange={this.switchCivilStatus}
-                value={this.state.switchCivilStatusValue}
-                thumbColor={this.state.civilStatusThumbcolor}
-              />
-            </View>
-
-            <Text style={styles.label}>por Tener o no Tener Hijos: </Text>
-            <View style={styles.viewSwitchPicker}>
-              <Picker
-                style={styles.picker}
-                selectedValue={this.state.children}
-                onValueChange={children => this.setState({ children })}
-                enabled={this.state.enabledpickerChildren}
-              >
-                <Picker.Item label="todos" value="todos" />
-                <Picker.Item label="no tiene hijos" value="no tiene hijos" />
-                <Picker.Item label="tiene hijos" value="tiene hijos" />
-                <Picker.Item label="no especificado" value="no especificado" />
-              </Picker>
-              <Switch
-                style={styles.switch}
-                onValueChange={this.switchChildren}
-                value={this.state.switchChildrenValue}
-                thumbColor={this.state.childrenThumbcolor}
-              />
-            </View>
-          </ScrollView>
+        <View style={styles.header}>
+          <Text>FILTRO DE BÚSQUEDA</Text>
         </View>
+        <ScrollView
+          style={{ flex: 6 }}
+          ref={(scroll) => {
+            this.scroll = scroll;
+          }}
+        >
+          <Text style={styles.label}>POR GÉNERO: </Text>
 
-        <View style={styles.submit}>
-          <TouchableOpacity style={styles.submitButton} onPress={this.goToResult}>
-            <Text style={styles.submitButtonText}>Submit</Text>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.viewSwitchPicker}>
+            <Picker
+              style={styles.picker}
+              selectedValue={this.state.gender}
+              onValueChange={gender => this.setState({ gender })}
+              enabled={this.state.enabledpickerGender}
+            >
+              <Picker.Item label="todos" value="todos" />
+              <Picker.Item label="hombre" value="hombre" />
+              <Picker.Item label="mujer" value="mujer" />
+              <Picker.Item label="otro" value="otro" />
+            </Picker>
+            <Switch
+              style={styles.switch}
+              onValueChange={this.switchGender}
+              value={this.state.switchGenderValue}
+              thumbColor={this.state.genderThumbcolor}
+            />
+          </View>
+
+          <Text style={styles.label}> POR ESTADO CIVIL: </Text>
+          <View style={styles.viewSwitchPicker}>
+            <Picker
+              style={styles.picker}
+              selectedValue={this.state.civilStatus}
+              onValueChange={civilStatus => this.setState({ civilStatus })}
+              enabled={this.state.enabledpickerCivilStatus}
+            >
+              <Picker.Item label="todos" value="todos" />
+              <Picker.Item label="soltero" value="soltero" />
+              <Picker.Item label="divorciado" value="divorciado" />
+              <Picker.Item label="separado" value="separado" />
+              <Picker.Item label="casado" value="casado" />
+              <Picker.Item label="viudo" value="viudo" />
+              <Picker.Item label="no especificado" value="no especificado" />
+            </Picker>
+            <Switch
+              style={styles.switch}
+              onValueChange={this.switchCivilStatus}
+              value={this.state.switchCivilStatusValue}
+              thumbColor={this.state.civilStatusThumbcolor}
+            />
+          </View>
+
+          <Text style={styles.label}>POR HIJOS: </Text>
+          <View style={styles.viewSwitchPicker}>
+            <Picker
+              style={styles.picker}
+              selectedValue={this.state.children}
+              onValueChange={children => this.setState({ children })}
+              enabled={this.state.enabledpickerChildren}
+            >
+              <Picker.Item label="todos" value="todos" />
+              <Picker.Item label="no tiene hijos" value="no tiene hijos" />
+              <Picker.Item label="tiene hijos" value="tiene hijos" />
+              <Picker.Item label="no especificado" value="no especificado" />
+            </Picker>
+            <Switch
+              style={styles.switch}
+              onValueChange={this.switchChildren}
+              value={this.state.switchChildrenValue}
+              thumbColor={this.state.childrenThumbcolor}
+            />
+          </View>
+          {bool === false ? (
+            <View style={[styles.moreFilters, { backgroundColor: '#FAFAFA' }]}>
+              <Text>Más filtros...</Text>
+              <Icon.Button
+                name="chevron-double-down"
+                color="black"
+                backgroundColor="transparent"
+                onPress={this.moreFilters}
+              />
+            </View>
+          ) : (
+            <View>
+              <View style={[styles.moreFilters, { backgroundColor: '#FAFAFA' }]}>
+                <Icon.Button
+                  name="chevron-double-up"
+                  color="black"
+                  backgroundColor="transparent"
+                  onPress={() => this.setState({ bool: false })}
+                />
+              </View>
+
+              <Text style={styles.label}>POR EDAD: </Text>
+
+              <View style={styles.viewSwitchPicker}>
+                <Picker
+                  style={styles.picker}
+                  selectedValue={this.state.gender}
+                  enabled={this.state.enabledpickerGender}
+                >
+                  <Picker.Item label="18" value="18" />
+                  <Picker.Item label="20" value="20" />
+                  <Picker.Item label="30" value="30" />
+                  <Picker.Item label="40" value="40" />
+                </Picker>
+                <Switch
+                  style={styles.switch}
+                  onValueChange={this.switchGender}
+                  value={this.state.switchGenderValue}
+                  thumbColor={this.state.genderThumbcolor}
+                />
+              </View>
+              <Text style={styles.label}>POR HOBBIES: </Text>
+
+              <View style={styles.viewSwitchPicker}>
+                <Picker
+                  style={styles.picker}
+                  selectedValue={this.state.gender}
+                  enabled={this.state.enabledpickerGender}
+                >
+                  <Picker.Item label="18" value="18" />
+                  <Picker.Item label="20" value="20" />
+                  <Picker.Item label="30" value="30" />
+                  <Picker.Item label="40" value="40" />
+                </Picker>
+                <Switch
+                  style={styles.switch}
+                  onValueChange={this.switchGender}
+                  value={this.state.switchGenderValue}
+                  thumbColor={this.state.genderThumbcolor}
+                />
+              </View>
+              <Text style={styles.label}>POR RELIGION: </Text>
+
+              <View style={styles.viewSwitchPicker}>
+                <Picker
+                  style={styles.picker}
+                  selectedValue={this.state.gender}
+                  enabled={this.state.enabledpickerGender}
+                >
+                  <Picker.Item label="todas" value="todas" />
+                  <Picker.Item label="ateo" value="ateo" />
+                  <Picker.Item label="musulman" value="musulman" />
+                  <Picker.Item label="cristiano" value="cristiano" />
+                </Picker>
+                <Switch
+                  style={styles.switch}
+                  onValueChange={this.switchGender}
+                  value={this.state.switchGenderValue}
+                  thumbColor={this.state.genderThumbcolor}
+                />
+              </View>
+            </View>
+          )}
+        </ScrollView>
+        {switchChildrenValue === true
+        || switchCivilStatusValue === true
+        || switchGenderValue === true ? (
+          <Button title="Filtrar" onPress={this.goToResult} />
+          ) : (
+            undefined
+          )}
       </View>
     );
   }

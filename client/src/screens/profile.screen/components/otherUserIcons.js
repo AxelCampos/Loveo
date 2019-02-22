@@ -19,18 +19,17 @@ const OtherUserIcons = ({ create, addLike, liked }) => (
         name="cards-heart"
         onPress={addLike}
       />
-    )
-      : (
-        <Icon.Button
-          underlayColor="transparent"
-          style={styles.iconStyle}
-          color="grey"
-          backgroundColor="white"
-          size={30}
-          borderRadius={30}
-          name="cards-heart"
-        />
-      )}
+    ) : (
+      <Icon.Button
+        underlayColor="transparent"
+        style={styles.iconStyle}
+        color="grey"
+        backgroundColor="white"
+        size={30}
+        borderRadius={30}
+        name="cards-heart"
+      />
+    )}
 
     <Icon.Button
       underlayColor="transparent"

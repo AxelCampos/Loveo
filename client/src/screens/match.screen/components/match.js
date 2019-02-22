@@ -186,7 +186,7 @@ class Match extends PureComponent {
   };
 
   render = () => {
-    const { users } = this.props;
+    const { users, user } = this.props;
     const { swipedAllCards, cardIndex } = this.state;
 
     return (
@@ -203,7 +203,7 @@ class Match extends PureComponent {
             onSwipedRight={this.swipeRight}
             onSwipedLeft={this.swipeLeft}
             onTapCard={this.swipeLeft}
-            cards={users.sort(this.compareUsers)}
+            cards={users.filter(u => u.id !== user.id).filter(u => !user.friends.map(f => f.id).includes(u.id)).filter(u => !user.miscreated.map(f => f.id).includes(u.id)).sort(this.compareUsers)}
             stackSize={3}
             renderCard={this.renderCard}
             onSwipedAll={this.onSwipedAllCards}

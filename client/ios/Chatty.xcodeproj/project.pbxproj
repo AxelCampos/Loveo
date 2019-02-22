@@ -63,6 +63,8 @@
 		134FED713B344C2F8FF800AC /* libRNImgToBase64.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96ED9AEC674C4E3ABA0490C2 /* libRNImgToBase64.a */; };
 		4719D90E485F4E1AA20998C1 /* libRNGeocoder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB69E0B46D4D46C1B14B5B57 /* libRNGeocoder.a */; };
 		C1FBC5D5800644CD9575F8ED /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A054B3D23F444EDB56071AB /* libAirMaps.a */; };
+		F990A6CAC413416FB4FC57F0 /* KaushanScript-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F29F479E65F14CAA9D8BD9E3 /* KaushanScript-Regular.ttf */; };
+		C7139051B4FB4A28814AC20C /* Merienda-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 297BCA9EA6E147D7AFE1C6D9 /* Merienda-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -403,6 +405,8 @@
 		CB69E0B46D4D46C1B14B5B57 /* libRNGeocoder.a */ = {isa = PBXFileReference; name = "libRNGeocoder.a"; path = "libRNGeocoder.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		3FA7C5C3083240D6AC0AB55E /* AirMaps.xcodeproj */ = {isa = PBXFileReference; name = "AirMaps.xcodeproj"; path = "../node_modules/react-native-maps/lib/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		2A054B3D23F444EDB56071AB /* libAirMaps.a */ = {isa = PBXFileReference; name = "libAirMaps.a"; path = "libAirMaps.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		F29F479E65F14CAA9D8BD9E3 /* KaushanScript-Regular.ttf */ = {isa = PBXFileReference; name = "KaushanScript-Regular.ttf"; path = "../src/assets/fonts/KaushanScript-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		297BCA9EA6E147D7AFE1C6D9 /* Merienda-Regular.ttf */ = {isa = PBXFileReference; name = "Merienda-Regular.ttf"; path = "../src/assets/fonts/Merienda-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -702,6 +706,8 @@
 				E925651B70B84853A6488BCB /* Octicons.ttf */,
 				6806D20734E5409F94DE31CC /* SimpleLineIcons.ttf */,
 				1346BA5E10284BB09AA76200 /* Zocial.ttf */,
+				F29F479E65F14CAA9D8BD9E3 /* KaushanScript-Regular.ttf */,
+				297BCA9EA6E147D7AFE1C6D9 /* Merienda-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1168,6 +1174,8 @@
 				8A166507BED04979AA9DF244 /* Octicons.ttf in Resources */,
 				D639A024300B40038D8788F5 /* SimpleLineIcons.ttf in Resources */,
 				083F191099DC4E4F9C1ABDD5 /* Zocial.ttf in Resources */,
+				F990A6CAC413416FB4FC57F0 /* KaushanScript-Regular.ttf in Resources */,
+				C7139051B4FB4A28814AC20C /* Merienda-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

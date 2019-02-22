@@ -7,7 +7,7 @@ import { Formik } from 'formik';
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'flex-end',
-    backgroundColor: '#f5f1ee',
+    backgroundColor: '#760d82',
     borderColor: '#dbdbdb',
     borderTopWidth: 1,
     flexDirection: 'row',
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 });
 const sendButton = send => (
   <Icon.Button
-    backgroundColor="blue"
+    backgroundColor="#C04BCE"
     borderRadius={16}
     color="white"
     iconStyle={styles.iconStyle}

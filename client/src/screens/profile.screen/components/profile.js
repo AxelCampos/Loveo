@@ -69,7 +69,7 @@ class Profile extends Component {
       id: auth.id,
       userId: user.id,
     }).catch((error) => {
-      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => { } }]);
+      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => {} }]);
     });
   }
 
@@ -91,7 +91,7 @@ class Profile extends Component {
         navigation.dispatch(goToNewGroup(res.data.createConversation));
       })
       .catch((error) => {
-        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => { } }]);
+        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => {} }]);
       });
   }
 
@@ -99,6 +99,7 @@ class Profile extends Component {
     const {
       auth,
       user,
+      conectedUser,
       navigation: { navigate },
     } = this.props;
     const profileUser = user || auth || {};
@@ -118,8 +119,12 @@ class Profile extends Component {
               setImage={newImage => this.setState({ img: `data:image/jpeg;base64,${newImage}` })}
             />
           ) : (
-              <OtherUserIcons create={this.create} addLike={this.addLike} liked={false} />
-            )}
+            <OtherUserIcons
+              create={this.create}
+              addLike={this.addLike}
+              liked={conectedUser.friends.map(u => u.id).includes(user.id)}
+            />
+          )}
         </View>
         <ScrollView
           scrollEnabled={enableScrollViewScroll}
@@ -169,8 +174,8 @@ class Profile extends Component {
             </ActionButton.Item>
           </ActionButton>
         ) : (
-            undefined
-          )}
+          undefined
+        )}
       </View>
     );
   }

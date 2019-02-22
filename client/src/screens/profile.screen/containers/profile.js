@@ -1,11 +1,11 @@
 import { graphql, compose } from 'react-apollo';
+import { connect } from 'react-redux';
 import withLoading from '../../../components/withLoading';
 import CREATE_CONVERSATION_MUTATION from '../../../graphql/create-conversation.mutation';
 import UPDATE_USER_MUTATION from '../../../graphql/update-user.mutation';
 import USER_QUERY from '../../../graphql/user.query';
 import EDIT_FRIEND_MUTATION from '../../../graphql/edit-friend.mutation';
 import Profile from '../components/profile';
-import { connect } from 'react-redux';
 
 const mapStateToProps = ({ auth }) => ({
   auth,
@@ -55,6 +55,19 @@ const userQuery = graphql(USER_QUERY, {
     user,
   }),
 });
+
+const conectedUserQuery = graphql(USER_QUERY, {
+  options: ownProps => ({
+    variables: {
+      id: ownProps.auth.id,
+    },
+  }),
+  props: ({ data: { loading, user } }) => ({
+    loading,
+    conectedUser: user,
+  }),
+});
+
 const editFriendMutation = graphql(EDIT_FRIEND_MUTATION, {
   props: ({ mutate, ownProps }) => ({
     editFriend: (id, userId) => mutate({
@@ -67,6 +80,7 @@ const editFriendMutation = graphql(EDIT_FRIEND_MUTATION, {
 
 export default compose(
   connect(mapStateToProps),
+  conectedUserQuery,
   userQuery,
   withLoading,
   createConversationMutation,
