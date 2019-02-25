@@ -2,13 +2,11 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {
-  ActivityIndicator,
   FlatList,
   StyleSheet,
   Text,
   TouchableHighlight,
   View,
-  Image,
 } from 'react-native';
 
 import { graphql, compose } from 'react-apollo';
@@ -17,6 +15,8 @@ import { connect } from 'react-redux';
 import { USERS_QUERY } from '../graphql/users.query';
 import { USER_QUERY } from '../graphql/user.query';
 import withLoading from '../components/withLoading';
+
+import CheckedImage from '../components/checked-image';
 
 const mapStateToProps = ({ auth }) => ({
   auth,
@@ -85,7 +85,7 @@ const Tendency = ({
 }) => (
   <TouchableHighlight key={id} onPress={goToProfiles} underlayColor="transparent">
     <View style={styles.tendencyContainer}>
-      <Image style={styles.userImage} source={{ uri: photoprofile.url }} />
+      <CheckedImage style={styles.userImage} url={photoprofile.url} />
 
       <Text style={styles.userName}>
         {username}
@@ -179,7 +179,7 @@ const userQuery = graphql(USER_QUERY, {
 });
 
 const usersQuery = graphql(USERS_QUERY, {
-  options: () => ({}), // fake the user for now
+  options: () => ({}),
   props: ({ data: { users } }) => ({
     users: users || [],
   }),

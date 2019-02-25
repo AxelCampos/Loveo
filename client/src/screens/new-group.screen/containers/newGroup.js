@@ -9,7 +9,7 @@ const mapStateToProps = ({ auth }) => ({
 });
 
 const userQuery = graphql(USER_QUERY, {
-  options: ownProps => ({ variables: { id: ownProps.auth.id } }), // fake for now
+  options: ownProps => ({ variables: { id: ownProps.auth.id } }),
   props: ({ data: { loading, user } }) => ({
     loading,
     user,

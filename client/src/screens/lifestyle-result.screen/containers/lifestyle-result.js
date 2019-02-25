@@ -24,7 +24,7 @@ const userQuery = graphql(USER_QUERY, {
 });
 
 const usersQuery = graphql(USERS_QUERY, {
-  options: () => ({}), // fake the user for now
+  options: () => ({}),
   props: ({ data: { users } }) => ({
     users: users || [],
   }),

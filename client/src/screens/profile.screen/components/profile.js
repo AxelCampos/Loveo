@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import {
-  View, Image, Text, Alert, ScrollView, FlatList, TouchableHighlight,
+  View, Text, Alert, ScrollView, FlatList, TouchableHighlight,
 } from 'react-native';
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -9,6 +9,7 @@ import ActionButton from 'react-native-circular-action-menu';
 import styles from './styles';
 import OtherUserIcons from './otherUserIcons';
 import CurrentUserIcons from '../../user.screen/components/currentUserIcons';
+import CheckedImage from '../../../components/checked-image';
 
 const goToNewGroup = group => StackActions.reset({
   index: 1,
@@ -40,7 +41,7 @@ class Profile extends Component {
       underlayColor="transparent"
     >
       <View style={styles.photoContainer}>
-        <Image source={{ uri: item ? item.url : undefined }} style={styles.albumImage} />
+        <CheckedImage url={item ? item.url : undefined} style={styles.albumImage} />
       </View>
     </TouchableHighlight>
   );
@@ -79,7 +80,7 @@ class Profile extends Component {
       id: auth.id,
       userId: user.id,
     }).catch((error) => {
-      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => {} }]);
+      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => { } }]);
     });
   }
 
@@ -88,7 +89,9 @@ class Profile extends Component {
       auth,
       createConversation,
       navigation,
-      user: { username, id, photoprofile },
+      user: {
+        username, id, photoprofile,
+      },
     } = this.props;
 
     createConversation({
@@ -101,7 +104,7 @@ class Profile extends Component {
         navigation.dispatch(goToNewGroup(res.data.createConversation));
       })
       .catch((error) => {
-        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => {} }]);
+        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => { } }]);
       });
   }
 
@@ -142,7 +145,7 @@ class Profile extends Component {
           }}
         >
           <View style={styles.containerImage}>
-            <Image style={styles.userImage} source={{ uri: img ? img.url : undefined }} />
+            <CheckedImage style={styles.userImage} url={img ? img.url : undefined} />
           </View>
           <FlatList
             styles={styles.album}
@@ -183,8 +186,8 @@ class Profile extends Component {
             </ActionButton.Item>
           </ActionButton>
         ) : (
-          undefined
-        )}
+            undefined
+          )}
       </View>
     );
   }

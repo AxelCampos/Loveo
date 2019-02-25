@@ -4,19 +4,19 @@ import PropTypes from 'prop-types';
 import {
   Alert,
   Button,
-  Image,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { USER_QUERY } from '../graphql/user.query';
 import CREATE_GROUP_MUTATION from '../graphql/create-group.mutation';
 import SelectedUserList from '../components/selected-user-list.component';
-import { connect } from 'react-redux';
+import CheckedImage from '../components/checked-image';
 
 const goToNewGroup = group => StackActions.reset({
   index: 1,
@@ -140,7 +140,7 @@ class FinalizeGroup extends Component {
     const { name, selected } = this.state;
     createGroup({
       name,
-      userId: auth.id, // fake user for now
+      userId: auth.id,
       userIds: R.map(R.prop('id'), selected),
       photo: 'http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg',
     })
@@ -173,7 +173,7 @@ class FinalizeGroup extends Component {
       <View style={styles.container}>
         <View style={styles.detailsContainer}>
           <TouchableOpacity style={styles.imageContainer}>
-            <Image style={styles.groupImage} source={{ uri: 'http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg' }} />
+            <CheckedImage style={styles.groupImage} url="http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg" />
             <Text>edit</Text>
           </TouchableOpacity>
           <View style={styles.inputContainer}>

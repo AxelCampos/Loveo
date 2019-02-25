@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
   ActivityIndicator,
   Button,
-  Image,
   FlatList,
   StyleSheet,
   Text,
@@ -19,6 +18,7 @@ import { USER_QUERY } from '../graphql/user.query';
 import DELETE_GROUP_MUTATION from '../graphql/delete-group.mutation';
 import LEAVE_GROUP_MUTATION from '../graphql/leave-group.mutation';
 import EDIT_GROUP_MUTATION from '../graphql/edit-group.mutation';
+import CheckedImage from '../components/checked-image';
 
 const mapStateToProps = ({ auth }) => ({
   auth,
@@ -96,7 +96,8 @@ class GroupDetails extends Component {
         <View style={{ paddingRight: 10 }}>
           <Button title="Edit" onPress={state.params.edit} />
         </View>
-      ) : (
+      )
+        : (
           undefined
         ),
     };
@@ -130,7 +131,7 @@ class GroupDetails extends Component {
     const photo = user.photoprofile || {};
     return (
       <View style={styles.user}>
-        <Image style={styles.avatar} source={{ uri: photo.url }} />
+        <CheckedImage style={styles.avatar} url={photo.url} />
         <Text style={styles.username}>{user.username}</Text>
       </View>
     );
@@ -152,7 +153,7 @@ class GroupDetails extends Component {
     leaveGroup({
       id: navigation.state.params.id,
       userId: auth.id,
-    }) // fake user for now
+    })
       .then(() => {
         navigation.dispatch(resetAction);
       })
@@ -218,30 +219,13 @@ class GroupDetails extends Component {
         <View style={styles.detailsContainer}>
           {group.users.length > 2 ? (
             <TouchableOpacity style={styles.groupImageContainer} onPress={this.pickGroupImage}>
-              {!group.photo ? (
-                <Image
-                  style={styles.groupImage}
-                  source={{
-                    uri: 'http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg',
-                  }}
-                />
-              ) : (
-                  <Image style={styles.groupImage} source={{ uri: group.photo }} />
-                )}
+              <CheckedImage style={styles.groupImage} url={group.photo} />
               <Text>edit</Text>
             </TouchableOpacity>
-          ) : (
+          )
+            : (
               <View style={styles.groupImageContainer}>
-                {group.photo === undefined ? (
-                  <Image
-                    style={styles.groupImage}
-                    source={{
-                      uri: 'http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg',
-                    }}
-                  />
-                ) : (
-                    <Image style={styles.groupImage} source={{ uri: group.photo }} />
-                  )}
+                <CheckedImage style={styles.groupImage} url={group.photo} />
               </View>
             )}
           {group.users.length > 2 ? (
@@ -253,7 +237,8 @@ class GroupDetails extends Component {
                 onChangeText={text => this.onNameChange(text)}
               />
             </View>
-          ) : (
+          )
+            : (
               <View style={styles.groupNameBorder}>
                 <Text style={styles.groupName}>{groupName}</Text>
               </View>
@@ -332,13 +317,13 @@ const deleteGroupMutation = graphql(DELETE_GROUP_MUTATION, {
       variables: { id },
       update: (store, { data: { deleteGroup } }) => {
         // Read the data from our cache for this query.
-        const data = store.readQuery({ query: USER_QUERY, variables: { id: ownProps.auth.id } }); // fake for now
+        const data = store.readQuery({ query: USER_QUERY, variables: { id: ownProps.auth.id } });
         // Add our message from the mutation to the end.
         data.user.groups = data.user.groups.filter(g => deleteGroup.id !== g.id);
         // Write our data back to the cache.
         store.writeQuery({
           query: USER_QUERY,
-          variables: { id: ownProps.auth.id }, // fake for now
+          variables: { id: ownProps.auth.id },
           data,
         });
       },
@@ -351,13 +336,13 @@ const leaveGroupMutation = graphql(LEAVE_GROUP_MUTATION, {
       variables: { id, userId },
       update: (store, { data: { leaveGroup } }) => {
         // Read the data from our cache for this query.
-        const data = store.readQuery({ query: USER_QUERY, variables: { id: ownProps.auth.id } }); // fake for now
+        const data = store.readQuery({ query: USER_QUERY, variables: { id: ownProps.auth.id } });
         // Add our message from the mutation to the end.
         data.user.groups = data.user.groups.filter(g => leaveGroup.id !== g.id);
         // Write our data back to the cache.
         store.writeQuery({
           query: USER_QUERY,
-          variables: { id: ownProps.auth.id }, // fake for now
+          variables: { id: ownProps.auth.id },
           data,
         });
       },

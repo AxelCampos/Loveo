@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  FlatList, Image, StyleSheet, Text, TouchableOpacity, View,
+  FlatList, StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+import CheckedImage from './checked-image';
 
 const styles = StyleSheet.create({
   list: {
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
 export const SelectedUserListItem = ({ user: { username, photoprofile }, remove }) => (
   <View style={styles.itemContainer}>
     <View>
-      <Image style={styles.itemImage} source={{ uri: photoprofile.url }} />
+      <CheckedImage style={styles.itemImage} url={photoprofile.url} />
       <TouchableOpacity onPress={remove} style={styles.itemIcon}>
         <Icon color="white" name="times" size={12} />
       </TouchableOpacity>

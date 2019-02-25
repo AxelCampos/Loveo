@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
-  StyleSheet, Text, TouchableHighlight, View, Image,
+  StyleSheet, Text, TouchableHighlight, View,
 } from 'react-native';
+
+import CheckedImage from '../../../components/checked-image';
 
 const styles = StyleSheet.create({
   groupContainer: {
@@ -38,14 +40,7 @@ const Group = ({ goToMessages, group: { id, name, photo } }) => (
   <TouchableHighlight key={id} onPress={goToMessages}>
     <View>
       <View style={styles.groupContainer}>
-        {photo ? (
-          <Image style={styles.image} source={{ uri: photo }} />
-        ) : (
-          <Image
-            style={styles.image}
-            source={{ uri: 'http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg' }}
-          />
-        )}
+        <CheckedImage style={styles.image} url={photo} />
       </View>
       <Text style={styles.groupName}>{name}</Text>
     </View>

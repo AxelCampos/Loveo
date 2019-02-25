@@ -228,10 +228,10 @@ const userQuery = graphql(USER_MAP_QUERY, {
 });
 
 const usersQuery = graphql(USERS_MAP_QUERY, {
-  options: () => ({}), // fake the user for now
-  props: ({ data: { users } }) => ({
-    users: users || [],
-  }),
+    options: () => ({}),
+    props: ({ data: { users } }) => ({
+        users: users || [],
+    }),
 });
 const mapStateToProps = ({ auth }) => ({
   auth,

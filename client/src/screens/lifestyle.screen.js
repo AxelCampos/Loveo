@@ -58,8 +58,7 @@ class Lifestyle extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bool: false,
-      userId: 1,
+      userId: 1, // TODO: esto parece un user fake, ver que cohone pasa aquí
       gender: 'todos',
       civilStatus: 'todos',
       children: 'todos',
@@ -379,7 +378,7 @@ class Lifestyle extends Component {
 }
 
 const usersQuery = graphql(USERS_QUERY, {
-  options: () => ({}), //  fake the user for now
+  options: () => ({}),
   props: ({ data: { users } }) => ({
     users: users || [],
   }),

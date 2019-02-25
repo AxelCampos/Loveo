@@ -9,7 +9,7 @@ const initialUserConnection = { first: ITEMS_PER_PAGE };
 
 // FIXME: la variable pasa como null por algún motivo
 const usersPageQuery = graphql(USERS_PAGE_QUERY, {
-  options: () => ({}), // fake the user for now
+  options: () => ({}),
   variables: {
     userConnection: initialUserConnection,
   },

@@ -3,15 +3,15 @@ import {
   Text,
   View,
   TouchableHighlight,
-  Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import styles from './styles';
+import CheckedImage from '../../../components/checked-image';
 
 const UserChosen = ({ item, goToProfile }) => (
   <TouchableHighlight key={item.id} onPress={goToProfile}>
     <View style={styles.tendencyContainer}>
-      <Image style={styles.userImage} source={{ uri: item.photoprofile.url }} />
+      <CheckedImage style={styles.userImage} url={item.photoprofile.url} />
       <View style={styles.userLikes}>
         <Icon size={12} name="heart" color="#F0625A" />
         <Text style={styles.textLikes}>{item.likes}</Text>
