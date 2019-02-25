@@ -35,9 +35,10 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     borderRadius: 4,
-    marginVertical: 6,
+    marginVertical: 13,
     padding: 6,
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    borderBottomWidth: 1,
+    borderBottomColor: 'grey',
   },
   loadingContainer: {
     left: 0,
@@ -69,7 +70,7 @@ function capitalizeFirstLetter(string) {
 
 class Signin extends Component {
   static navigationOptions = {
-    title: 'Chatty',
+    title: 'Loveo',
     headerLeft: null,
   };
 
@@ -81,7 +82,9 @@ class Signin extends Component {
     }
 
     this.state = {
+      signup: false,
       view: 'login',
+      username: 'Axel',
       email: 'kk@kk.es',
       password: '123',
     };
@@ -144,8 +147,8 @@ class Signin extends Component {
     this.setState({
       loading: true,
     });
-    const { email, password } = this.state;
-    signup({ email, password })
+    const { username, email, password } = this.state;
+    signup({ username, email, password })
       .then(({ data: { signup: user } }) => {
         dispatch(setCurrentUser(user));
         this.setState({
@@ -158,6 +161,7 @@ class Signin extends Component {
           },
         });
       })
+      .then(this.setState({ view: 'login', signup: true }))
       .catch((error) => {
         this.setState({
           loading: false,
@@ -178,46 +182,95 @@ class Signin extends Component {
   };
 
   render() {
-    const { view, loading } = this.state;
+    const {
+      view, loading, signup, username, email, password,
+    } = this.state;
     const jwt = R.path(['auth', 'jwt'], this.props);
 
     return (
-      <KeyboardAvoidingView style={styles.container}>
-        {loading ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator />
-          </View>
-        ) : (
+      
+        <KeyboardAvoidingView style={styles.container}>
+          {loading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator />
+            </View>
+          ) : (
             undefined
           )}
-        <View style={styles.inputContainer}>
-          <TextInput
-            defaultValue="kk@kk.es"
-            onChangeText={email => this.setState({ email })}
-            placeholder="Email"
-            style={styles.input}
-          />
-          <TextInput
-            defaultValue="123"
-            onChangeText={password => this.setState({ password })}
-            placeholder="Password"
-            secureTextEntry
-            style={styles.input}
-          />
-        </View>
-        <Button
-          onPress={this[view]}
-          style={styles.submit}
-          title={view === 'signup' ? 'Sign up' : 'Login'}
-          disabled={loading}
-        />
-        <View style={styles.switchContainer}>
-          <Text>{view === 'signup' ? 'Already have an account?' : 'New to Chatty?'}</Text>
-          <TouchableOpacity onPress={this.switchView}>
-            <Text style={styles.switchAction}>{view === 'login' ? 'Sign up' : 'Login'}</Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
+
+          {view === 'login' ? (
+            <View style={styles.inputContainer}>
+              <TextInput
+                defaultValue="kk@kk.es"
+                onChangeText={email => this.setState({ email })}
+                placeholder="Email"
+                style={styles.input}
+              />
+              {signup === false ? (
+                <TextInput
+                  defaultValue="123"
+                  onChangeText={password => this.setState({ password })}
+                  placeholder="Password"
+                  secureTextEntry
+                  style={styles.input}
+                />
+              ) : (
+                <TextInput
+                  onChangeText={password => this.setState({ password })}
+                  placeholder="Password"
+                  secureTextEntry
+                  style={styles.input}
+                />
+              )}
+            </View>
+          ) : (
+            <View style={styles.inputContainer}>
+              <TextInput
+                defaultValue="Axel"
+                onChangeText={username => this.setState({ username })}
+                placeholder="Username"
+                style={styles.input}
+              />
+              <TextInput
+                defaultValue="kk@kk.es"
+                onChangeText={email => this.setState({ email })}
+                placeholder="Email"
+                style={styles.input}
+              />
+              <TextInput
+                defaultValue="123"
+                onChangeText={password => this.setState({ password })}
+                placeholder="Password"
+                secureTextEntry
+                style={styles.input}
+              />
+            </View>
+          )}
+          {username.trim() === '' || email.trim() === '' || password.trim() === '' ? (
+            <Button
+              onPress={this[view]}
+              style={styles.submit}
+              title={view === 'signup' ? 'Sign up' : 'Login'}
+              disabled
+              color="rgba(255, 27, 151, 0.5)"
+            />
+          ) : (
+            <Button
+              onPress={this[view]}
+              style={styles.submit}
+              title={view === 'signup' ? 'Sign up' : 'Login'}
+              disabled={loading}
+              color="rgba(255, 27, 151, 0.5)"
+            />
+          )}
+
+          <View style={styles.switchContainer}>
+            <Text>{view === 'signup' ? 'Already have an account?' : 'Still have no account?'}</Text>
+            <TouchableOpacity onPress={this.switchView}>
+              <Text style={styles.switchAction}>{view === 'login' ? 'Sign up' : 'Login'}</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
     );
   }
 }
@@ -244,8 +297,8 @@ const login = graphql(LOGIN_MUTATION, {
 
 const signup = graphql(SIGNUP_MUTATION, {
   props: ({ mutate }) => ({
-    signup: ({ email, password }) => mutate({
-      variables: { email, password },
+    signup: ({ username, email, password }) => mutate({
+      variables: { username, email, password },
     }),
   }),
 });

@@ -3,8 +3,10 @@ import {
   FlatList,
   StyleSheet,
   View,
+  Image,
   Text,
   TouchableOpacity,
+  ImageBackground,
 } from 'react-native';
 import React, { Component } from 'react';
 import randomColor from 'randomcolor';
@@ -15,7 +17,6 @@ import CheckedImage from '../../../components/checked-image';
 const styles = StyleSheet.create({
   container: {
     alignItems: 'stretch',
-    backgroundColor: '#e5ddd5',
     flex: 1,
     flexDirection: 'column',
   },
@@ -139,21 +140,29 @@ class Messages extends Component {
     }
 
     return (
-      <View style={styles.container}>
-        <FlatList
-          ref={(ref) => {
-            this.flatList = ref;
-          }}
-          inverted
-          data={group.messages.edges}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-          ListEmptyComponent={<View />}
-          onEndReachedThreshold={0.1}
-          onEndReached={this.onEndReached}
-        />
-        <MessageInput send={this.send} />
-      </View>
+      <ImageBackground
+        source={{
+          uri:
+            'https://4.bp.blogspot.com/-8ix1ty-wOPI/WYtLU0-rHrI/AAAAAAAA3sg/q5Qb8BAD_n0WPaBJAjpG_83g3oCs8vTqwCLcBGAs/s1600/ESTAMPADODEMANDALAS1.jpg',
+        }}
+        style={{ width: '100%', height: '100%' }}
+      >
+        <View style={styles.container}>
+          <FlatList
+            ref={(ref) => {
+              this.flatList = ref;
+            }}
+            inverted
+            data={group.messages.edges}
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderItem}
+            ListEmptyComponent={<View />}
+            onEndReachedThreshold={0.1}
+            onEndReached={this.onEndReached}
+          />
+          <MessageInput send={this.send} />
+        </View>
+      </ImageBackground>
     );
   }
 }

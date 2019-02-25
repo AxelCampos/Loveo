@@ -4,12 +4,18 @@ import { withFilter, ForbiddenError } from 'apollo-server';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {
-  Group, Message, User, Photo, Lifestyle, Activity, Search, Notification,
+  Group,
+  Message,
+  User,
+  Photo,
+  Lifestyle,
+  Activity,
+  Search,
+  Notification,
 } from './connectors';
 import configurationManager from '../configurationManager';
 
 const JWT_SECRET = configurationManager.jwt.secret;
-
 
 export const resolvers = {
   Date: GraphQLDate,
@@ -42,9 +48,10 @@ export const resolvers = {
         first, last, before, after,
       } = userConnection || { first: 8 };
 
-
       let whereSQL = '';
-      const cursor = Buffer.from(before || after || '', 'base64').toString().split('patata');
+      const cursor = Buffer.from(before || after || '', 'base64')
+        .toString()
+        .split('patata');
       const likes = cursor[0];
       const id = cursor[1];
 
@@ -60,7 +67,9 @@ export const resolvers = {
         limit: first || last,
       }).then((users) => {
         const edges = users.map(user => ({
-          cursor: Buffer.from(`${user.likes.toString()}patata${user.id.toString()}`).toString('base64'), // FIXME: hace falta que el cursor incluya en un String id Y likes, porque hacen falta ambos pal orden
+          cursor: Buffer.from(`${user.likes.toString()}patata${user.id.toString()}`).toString(
+            'base64',
+          ), // FIXME: hace falta que el cursor incluya en un String id Y likes, porque hacen falta ambos pal orden
           node: user, // the node is the user itself
         }));
 
@@ -73,10 +82,8 @@ export const resolvers = {
               }
 
               return User.findOne({
-
                 where: {
                   id: {
-
                     [before ? '$gt' : '$lt']: users[users.length - 1].id,
                   },
                 },
@@ -260,8 +267,7 @@ export const resolvers = {
         user: { id, likes },
       },
     ) {
-      const user = await User.findOne({ where: { id } })
-        .then(userFound => userFound.update({ likes }));
+      const user = await User.findOne({ where: { id } }).then(userFound => userFound.update({ likes }));
       return user;
     },
     updateGroup(
@@ -270,8 +276,7 @@ export const resolvers = {
         group: { id, name, photo },
       },
     ) {
-      return Group.findOne({ where: { id } })
-        .then(group => group.update({ name, photo }));
+      return Group.findOne({ where: { id } }).then(group => group.update({ name, photo }));
     },
 
     createUser(
@@ -285,7 +290,10 @@ export const resolvers = {
         email,
         password,
       });
-      user.createPhoto({ url: 'http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg', profile: true });
+      user.createPhoto({
+        url: 'http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg',
+        profile: true,
+      });
       return user;
     },
 
@@ -317,7 +325,28 @@ export const resolvers = {
       _,
       {
         user: {
-          id, username, photoprofile, country, city, email, age, gender, civilStatus, children, street, streetNumber, zipcode, birthdate, height, weight, education, profession, religion, pets, smoker, description,
+          id,
+          username,
+          photoprofile,
+          country,
+          city,
+          email,
+          age,
+          gender,
+          civilStatus,
+          children,
+          street,
+          streetNumber,
+          zipcode,
+          birthdate,
+          height,
+          weight,
+          education,
+          profession,
+          religion,
+          pets,
+          smoker,
+          description,
         },
       },
     ) {
@@ -396,7 +425,7 @@ export const resolvers = {
         return Promise.reject(new Error('email not found'));
       });
     },
-    signup(_, { email, password, username }, ctx) {
+    signup(_, { username, email, password }, ctx) {
       // find user by email
       return User.findOne({ where: { email } }).then((existing) => {
         if (!existing) {
@@ -406,7 +435,7 @@ export const resolvers = {
             .then(hash => User.create({
               email,
               password: hash,
-              username: username || email,
+              username: username,
             }))
             .then((user) => {
               const { id } = user;
