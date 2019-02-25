@@ -44,18 +44,6 @@ const updateUserMutation = graphql(UPDATE_USER_MUTATION, {
     }),
   }),
 });
-const userQuery = graphql(USER_QUERY, {
-  options: ownProps => ({
-    variables: {
-      id: ownProps.navigation.state.params.userId,
-    },
-  }),
-  props: ({ data: { loading, user } }) => ({
-    loading,
-    user,
-  }),
-});
-
 const conectedUserQuery = graphql(USER_QUERY, {
   options: ownProps => ({
     variables: {
@@ -65,6 +53,18 @@ const conectedUserQuery = graphql(USER_QUERY, {
   props: ({ data: { loading, user } }) => ({
     loading,
     conectedUser: user,
+  }),
+});
+
+const userQuery = graphql(USER_QUERY, {
+  options: ownProps => ({
+    variables: {
+      id: ownProps.navigation.state.params.userId,
+    },
+  }),
+  props: ({ data: { loading, user } }) => ({
+    loading,
+    user,
   }),
 });
 

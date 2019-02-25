@@ -55,6 +55,16 @@ class Profile extends Component {
     });
   };
 
+  createPicture = (res) => {
+    const { auth, createPhoto } = this.props;
+    createPhoto({
+      photo: {
+        userId: auth.id,
+        url: `data:image/png;base64, ${res}`,
+      },
+    });
+  };
+
   addLike() {
     const {
       updateUser, user, editFriend, auth,
@@ -69,7 +79,7 @@ class Profile extends Component {
       id: auth.id,
       userId: user.id,
     }).catch((error) => {
-      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => { } }]);
+      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => {} }]);
     });
   }
 
@@ -91,7 +101,7 @@ class Profile extends Component {
         navigation.dispatch(goToNewGroup(res.data.createConversation));
       })
       .catch((error) => {
-        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => { } }]);
+        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => {} }]);
       });
   }
 
@@ -114,21 +124,16 @@ class Profile extends Component {
         <View style={styles.userNameContainer}>
           <Text style={styles.userName}>{profileUser.username}</Text>
           {auth && profileUser.id === auth.id ? (
-            <CurrentUserIcons
-              settings={this.goTosettings}
-              setImage={newImage => this.setState({ img: `data:image/jpeg;base64,${newImage}` })}
-            />
-          )
-            : (
-              conectedUser
-              && (
-                <OtherUserIcons
-                  create={this.create}
-                  addLike={this.addLike}
-                  liked={conectedUser.friends.map(u => u.id).includes(user.id)}
-                />
-              )
-            )}
+            <CurrentUserIcons createPicture={this.createPicture} settings={this.goTosettings} />
+          ) : (
+            conectedUser && (
+              <OtherUserIcons
+                create={this.create}
+                addLike={this.addLike}
+                liked={conectedUser.friends.map(u => u.id).includes(user.id)}
+              />
+            )
+          )}
         </View>
         <ScrollView
           scrollEnabled={enableScrollViewScroll}
@@ -178,8 +183,8 @@ class Profile extends Component {
             </ActionButton.Item>
           </ActionButton>
         ) : (
-            undefined
-          )}
+          undefined
+        )}
       </View>
     );
   }

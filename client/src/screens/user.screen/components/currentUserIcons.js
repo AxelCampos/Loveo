@@ -3,9 +3,10 @@ import React from 'react';
 import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ImagePicker from 'react-native-image-picker';
+import ImgToBase64 from 'react-native-image-base64';
 import styles from './styles';
 
-const openImagepicker = (setImage) => {
+const openImagepicker = (createPicture) => {
   const options = {
     title: 'Select Avatar',
     customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
@@ -14,22 +15,24 @@ const openImagepicker = (setImage) => {
       path: 'images',
     },
   };
-
-  ImagePicker.showImagePicker(options, (response) => {
+  ImagePicker.showImagePicker(options, async (response) => {
     if (response.didCancel) {
       console.log('User cancelled image picker');
     } else if (response.error) {
       console.log('ImagePicker Error: ', response.error);
     } else if (response.customButton) {
       console.log('User tapped custom button: ', response.customButton);
-    } else {
-      console.log(typeof setImage);
-      setImage(response.uri);
     }
+    await ImgToBase64.getBase64String(`${response.uri}`)
+      .then((res) => {
+        createPicture(res);
+      })
+      .catch(err => console.log('error!!!', err));
+    alert('Foto guardada en el album');
   });
 };
 
-const CurrentUserIcons = ({ settings, setImage }) => (
+const CurrentUserIcons = ({ settings, createPicture }) => (
   <View style={styles.currentUserIcons}>
     <Icon.Button
       underlayColor="transparent"
@@ -38,7 +41,7 @@ const CurrentUserIcons = ({ settings, setImage }) => (
       size={20}
       borderRadius={30}
       name="camera"
-      onPress={() => openImagepicker(setImage)}
+      onPress={() => openImagepicker(createPicture)}
     />
     <Icon.Button
       underlayColor="transparent"
@@ -52,7 +55,6 @@ const CurrentUserIcons = ({ settings, setImage }) => (
   </View>
 );
 CurrentUserIcons.propTypes = {
-  setImage: PropTypes.func,
   settings: PropTypes.func.isRequired,
 };
 export default CurrentUserIcons;

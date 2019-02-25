@@ -81,6 +81,10 @@ const Search = createMaterialTopTabNavigator(
         borderTopWidth: 0.4,
         backgroundColor: '#760d82',
       },
+      labelStyle: {
+        fontSize: 20,
+        fontFamily: 'AmaticSC-Bold',
+      },
     },
   },
 );
@@ -92,7 +96,7 @@ const MainScreenNavigator = createBottomTabNavigator(
       screen: Search,
       navigationOptions: {
         tabBarLabel: 'Search',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="search" color={tintColor} />,
+        tabBarIcon: ({ tintColor }) => <Icon size={15} name="search" color={tintColor} />,
         tabBarColor: 'blue',
       },
     },
@@ -101,7 +105,7 @@ const MainScreenNavigator = createBottomTabNavigator(
       screen: Match,
       navigationOptions: {
         tabBarLabel: 'Match',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="burn" color={tintColor} />,
+        tabBarIcon: ({ tintColor }) => <Icon size={15} name="burn" color={tintColor} />,
         tabBarColor: 'pink',
       },
     },
@@ -110,7 +114,7 @@ const MainScreenNavigator = createBottomTabNavigator(
       screen: Groups,
       navigationOptions: {
         tabBarLabel: 'Chats',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="rocketchat" color={tintColor} />,
+        tabBarIcon: ({ tintColor }) => <Icon size={15} name="rocketchat" color={tintColor} />,
         tabBarColor: 'green',
       },
     },
@@ -119,7 +123,7 @@ const MainScreenNavigator = createBottomTabNavigator(
       screen: User,
       navigationOptions: {
         tabBarLabel: 'Profile',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="user" color={tintColor} />,
+        tabBarIcon: ({ tintColor }) => <Icon size={15} name="user" color={tintColor} />,
         tabBarColor: 'orange',
       },
     },
@@ -128,7 +132,7 @@ const MainScreenNavigator = createBottomTabNavigator(
       screen: Settings,
       navigationOptions: {
         tabBarLabel: 'Settings',
-        tabBarIcon: ({ tintColor }) => <Icon size={20} name="cog" color={tintColor} />,
+        tabBarIcon: ({ tintColor }) => <Icon size={15} name="cog" color={tintColor} />,
         tabBarColor: 'violet',
       },
     },
@@ -146,6 +150,10 @@ const MainScreenNavigator = createBottomTabNavigator(
       tabStyle: {
         borderTopColor: 'purple',
         borderTopWidth: 0.4,
+      },
+      labelStyle: {
+        fontSize: 15,
+        fontFamily: 'AmaticSC-Bold',
       },
     },
   },
@@ -165,7 +173,12 @@ const StackNavigator = createStackNavigator(
     Profile: {
       screen: Profile,
       navigationOptions: {
-        title: 'Profile',
+        title: 'Perfil',
+        headerTitleStyle: {
+          fontSize: 40,
+          fontWeight: '200',
+          fontFamily: 'AmaticSC-Bold',
+        },
       },
     },
     GroupDetails: { screen: GroupDetails },
@@ -175,18 +188,33 @@ const StackNavigator = createStackNavigator(
       screen: EditProfile,
       navigationOptions: {
         title: 'Editar Perfil',
+        headerTitleStyle: {
+          fontSize: 40,
+          fontWeight: '200',
+          fontFamily: 'AmaticSC-Bold',
+        },
       },
     },
     LifestyleResult: {
       screen: LifestyleResult,
       navigationOptions: {
         title: 'Resultado de la Búsqueda',
+        headerTitleStyle: {
+          fontSize: 40,
+          fontWeight: '200',
+          fontFamily: 'AmaticSC-Bold',
+        },
       },
     },
     Searches: {
       screen: Searches,
       navigationOptions: {
         title: 'Búsquedas',
+        headerTitleStyle: {
+          fontSize: 40,
+          fontWeight: '200',
+          fontFamily: 'AmaticSC-Bold',
+        },
       },
     },
     Notifications: {
@@ -206,6 +234,11 @@ const StackNavigator = createStackNavigator(
       screen: MyLikes,
       navigationOptions: {
         title: 'My Likes',
+        headerTitleStyle: {
+          fontSize: 40,
+          fontWeight: '200',
+          fontFamily: 'AmaticSC-Bold',
+        },
       },
     },
     WhoLikesMe: {
@@ -213,12 +246,22 @@ const StackNavigator = createStackNavigator(
 
       navigationOptions: {
         title: 'Who Likes Me',
+        headerTitleStyle: {
+          fontSize: 40,
+          fontWeight: '200',
+          fontFamily: 'AmaticSC-Bold',
+        },
       },
     },
     MatchList: {
       screen: MatchList,
       navigationOptions: {
         title: 'Match List',
+        headerTitleStyle: {
+          fontSize: 40,
+          fontWeight: '200',
+          fontFamily: 'AmaticSC-Bold',
+        },
       },
     },
   },

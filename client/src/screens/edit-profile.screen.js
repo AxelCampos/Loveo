@@ -16,10 +16,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { graphql, compose } from 'react-apollo';
 import ImagePicker from 'react-native-image-picker';
 import ImgToBase64 from 'react-native-image-base64';
+import { connect } from 'react-redux';
 import { USER_QUERY } from '../graphql/user.query';
 import EDIT_USER_MUTATION from '../graphql/edit-user.mutation';
 import EDIT_PHOTOPROFILE_MUTATION from '../graphql/edit-photoprofile.mutation';
-import { connect } from 'react-redux';
 
 const styles = StyleSheet.create({
   container: {
@@ -258,10 +258,7 @@ class EditProfile extends Component {
         <ScrollView style={styles.scroll}>
           <View style={styles.viewImage}>
             <TouchableHighlight onPress={this.openImagepicker}>
-              <Image
-                style={styles.image}
-                source={{ uri: photoprofile ? photoprofile.url : '' }}
-              />
+              <Image style={styles.image} source={{ uri: photoprofile ? photoprofile.url : '' }} />
             </TouchableHighlight>
             <Text>Cambiar foto</Text>
           </View>
@@ -620,7 +617,6 @@ const editPhotoprofileMutation = graphql(EDIT_PHOTOPROFILE_MUTATION, {
       refetchQueries: [{ query: USER_QUERY, variables: { id: ownProps.auth.id } }],
     }),
   }),
-
 });
 
 const userQuery = graphql(USER_QUERY, {

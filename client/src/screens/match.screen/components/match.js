@@ -6,6 +6,7 @@ import {
 
 import { StackActions, NavigationActions } from 'react-navigation';
 import Swiper from 'react-native-deck-swiper';
+import Header from './header';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,11 +15,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   card: {
-    flex: 0.8,
+    flex: 0.9,
     borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: 'white',
+    marginVertical: 5,
   },
   text: {
     textAlign: 'center',
@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   image: {
-    width: 370,
-    height: 448,
+    width: '100%',
+    height: '100%',
     borderRadius: 10,
   },
   textStyle: {
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   icons: {
     color: 'black',
-    borderColor: 'black',
+    borderColor: 'white',
     borderWidth: 3,
     borderRadius: 40,
     alignItems: 'center',
@@ -59,10 +59,10 @@ const styles = StyleSheet.create({
   },
   information: {
     position: 'absolute',
-    bottom: 100,
+    bottom: 150,
     color: 'white',
     fontSize: 20,
-    fontWeight: 'bold',
+    marginHorizontal: 8,
   },
 });
 
@@ -95,7 +95,11 @@ class Match extends PureComponent {
           uri: user.photoprofile.url,
         }}
       />
-      <Text style={styles.information}>{user.username}</Text>
+      <Text style={[styles.information, { fontFamily: 'Merienda-Regular' }]}>
+        {user.username}
+        {', '}
+        {user.age}
+      </Text>
     </View>
   );
 
@@ -126,9 +130,7 @@ class Match extends PureComponent {
   };
 
   swipeRight = (index) => {
-    const {
-      updateUser, editFriend, auth,
-    } = this.props;
+    const { updateUser, editFriend, auth } = this.props;
 
     const user = this.usersToShow()[index];
 
@@ -141,7 +143,7 @@ class Match extends PureComponent {
       id: auth.id,
       userId: user.id,
     }).catch((error) => {
-      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => { } }]);
+      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => {} }]);
     });
   };
 
@@ -166,9 +168,7 @@ class Match extends PureComponent {
   compareUsers = (a, b) => a.id - b.id;
 
   create = (index) => {
-    const {
-      createConversation, navigation, auth,
-    } = this.props;
+    const { createConversation, navigation, auth } = this.props;
     const user = this.usersToShow()[index];
 
     createConversation({
@@ -181,13 +181,14 @@ class Match extends PureComponent {
         navigation.dispatch(goToNewGroup(res.data.createConversation));
       })
       .catch((error) => {
-        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => { } }]);
+        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => {} }]);
       });
   };
 
   usersToShow() {
     const { users, user } = this.props;
-    return users.sort(this.compareUsers)
+    return users
+      .sort(this.compareUsers)
       .filter(u => u.id !== user.id)
       .filter(u => !user.friends.map(f => f.id).includes(u.id))
       .filter(u => !user.miscreated.map(f => f.id).includes(u.id));
@@ -222,7 +223,7 @@ class Match extends PureComponent {
                 style: {
                   wrapper: {
                     backgroundColor: 'red',
-                    height: 448,
+                    height: '90%',
                     borderRadius: 10,
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -235,7 +236,7 @@ class Match extends PureComponent {
                 title: 'LOVEO',
                 style: {
                   wrapper: {
-                    height: 448,
+                    height: '90%',
                     borderRadius: 10,
                     backgroundColor: 'green',
                     flexDirection: 'row',
@@ -249,12 +250,13 @@ class Match extends PureComponent {
             animateCardOpacity
           />
         )}
+        {!swipedAllCards && <Header />}
         {!swipedAllCards && !!this.usersToShow().length ? (
           <View style={styles.iconsView}>
             <Icon.Button
               underlayColor="transparent"
               size={50}
-              color="black"
+              color="white"
               backgroundColor="transparent"
               style={styles.icons}
               name="close"
@@ -264,7 +266,7 @@ class Match extends PureComponent {
             <Icon.Button
               underlayColor="transparent"
               style={styles.icons}
-              color="black"
+              color="white"
               backgroundColor="transparent"
               size={60}
               width={85}
@@ -275,15 +277,18 @@ class Match extends PureComponent {
             <Icon.Button
               underlayColor="transparent"
               style={styles.icons}
-              color="black"
+              color="white"
               backgroundColor="transparent"
               size={50}
               name="cards-heart"
               onPress={() => this.swiper.swipeRight()}
             />
           </View>
-        )
-          : <View />}
+        ) : (
+          <Text style={{ fontFamily: 'Merienda-Regular' }}>
+            Vuelva más tarde, habrá más para ti
+          </Text>
+        )}
       </View>
     );
   };

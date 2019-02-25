@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#F9F9F9',
     marginVertical: 10,
+    fontFamily: 'KaushanScript-Regular',
   },
   picker: {
     width: 200,
@@ -165,14 +166,6 @@ class Lifestyle extends Component {
     }
   };
 
-  moreFilters = () => {
-    this.setState({
-      bool: true,
-    });
-    
-    setTimeout(this.scroll.scrollToEnd, 0);
-  };
-
   switchChildren = () => {
     const { switchChildrenValue } = this.state;
     if (switchChildrenValue) {
@@ -208,7 +201,9 @@ class Lifestyle extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text>FILTRO DE BÚSQUEDA</Text>
+          <Text style={{ fontFamily: 'KaushanScript-Regular', fontSize: 20 }}>
+            FILTRO DE BÚSQUEDA
+          </Text>
         </View>
         <ScrollView
           style={{ flex: 6 }}
@@ -284,12 +279,17 @@ class Lifestyle extends Component {
           </View>
           {bool === false ? (
             <View style={[styles.moreFilters, { backgroundColor: '#FAFAFA' }]}>
-              <Text>Más filtros...</Text>
+              <Text style={{ fontFamily: 'Merienda-Regular' }}>Más filtros...</Text>
               <Icon.Button
                 name="chevron-double-down"
                 color="black"
                 backgroundColor="transparent"
-                onPress={this.moreFilters}
+                onPress={() => {
+                  this.setState({
+                    bool: true,
+                  });
+                  setTimeout(this.scroll.scrollToEnd, 0);
+                }}
               />
             </View>
           ) : (
@@ -331,10 +331,10 @@ class Lifestyle extends Component {
                   selectedValue={this.state.gender}
                   enabled={this.state.enabledpickerGender}
                 >
-                  <Picker.Item label="18" value="18" />
-                  <Picker.Item label="20" value="20" />
-                  <Picker.Item label="30" value="30" />
-                  <Picker.Item label="40" value="40" />
+                  <Picker.Item label="todos" value="todos" />
+                  <Picker.Item label="ninguno" value="ninguno" />
+                  <Picker.Item label="Baloncesto" value="Baloncesto" />
+                  <Picker.Item label="Futbol" value="Futbol" />
                 </Picker>
                 <Switch
                   style={styles.switch}

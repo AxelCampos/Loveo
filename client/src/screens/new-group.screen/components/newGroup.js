@@ -45,13 +45,18 @@ class NewGroup extends Component {
     const isReady = state.params && state.params.mode === 'ready';
     return {
       title: 'New Group',
+      headerTitleStyle: {
+        fontSize: 40,
+        fontWeight: '200',
+        fontFamily: 'AmaticSC-Bold',
+      },
       headerRight: isReady ? (
         <View style={{ paddingRight: 10 }}>
           <Button title="Next" onPress={state.params.finalizeGroup} />
         </View>
       ) : (
-          undefined
-        ),
+        undefined
+      ),
     };
   };
 
@@ -135,7 +140,7 @@ class NewGroup extends Component {
         })
         .catch((error) => {
           Alert.alert('Error Creating New Group', error.message, [
-            { text: 'OK', onPress: () => { } },
+            { text: 'OK', onPress: () => {} },
           ]);
         });
     }
@@ -173,8 +178,8 @@ class NewGroup extends Component {
             <SelectedUserList data={selected} remove={this.toggle} />
           </View>
         ) : (
-            undefined
-          )}
+          undefined
+        )}
         {R.keys(friends).length ? (
           <AlphabetListView
             style={{ flex: 1 }}
@@ -190,8 +195,8 @@ class NewGroup extends Component {
             sectionHeaderHeight={22.5}
           />
         ) : (
-            undefined
-          )}
+          undefined
+        )}
       </View>
     );
   }

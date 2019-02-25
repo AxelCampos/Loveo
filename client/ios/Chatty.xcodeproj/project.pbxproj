@@ -65,6 +65,7 @@
 		C1FBC5D5800644CD9575F8ED /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A054B3D23F444EDB56071AB /* libAirMaps.a */; };
 		F990A6CAC413416FB4FC57F0 /* KaushanScript-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F29F479E65F14CAA9D8BD9E3 /* KaushanScript-Regular.ttf */; };
 		C7139051B4FB4A28814AC20C /* Merienda-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 297BCA9EA6E147D7AFE1C6D9 /* Merienda-Regular.ttf */; };
+		5D50C4AC698B4CC0BAD9567B /* AmaticSC-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2ED2F2E48A0444C9B4A52665 /* AmaticSC-Bold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -407,6 +408,7 @@
 		2A054B3D23F444EDB56071AB /* libAirMaps.a */ = {isa = PBXFileReference; name = "libAirMaps.a"; path = "libAirMaps.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		F29F479E65F14CAA9D8BD9E3 /* KaushanScript-Regular.ttf */ = {isa = PBXFileReference; name = "KaushanScript-Regular.ttf"; path = "../src/assets/fonts/KaushanScript-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		297BCA9EA6E147D7AFE1C6D9 /* Merienda-Regular.ttf */ = {isa = PBXFileReference; name = "Merienda-Regular.ttf"; path = "../src/assets/fonts/Merienda-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		2ED2F2E48A0444C9B4A52665 /* AmaticSC-Bold.ttf */ = {isa = PBXFileReference; name = "AmaticSC-Bold.ttf"; path = "../src/assets/fonts/AmaticSC-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -708,6 +710,7 @@
 				1346BA5E10284BB09AA76200 /* Zocial.ttf */,
 				F29F479E65F14CAA9D8BD9E3 /* KaushanScript-Regular.ttf */,
 				297BCA9EA6E147D7AFE1C6D9 /* Merienda-Regular.ttf */,
+				2ED2F2E48A0444C9B4A52665 /* AmaticSC-Bold.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1176,6 +1179,7 @@
 				083F191099DC4E4F9C1ABDD5 /* Zocial.ttf in Resources */,
 				F990A6CAC413416FB4FC57F0 /* KaushanScript-Regular.ttf in Resources */,
 				C7139051B4FB4A28814AC20C /* Merienda-Regular.ttf in Resources */,
+				5D50C4AC698B4CC0BAD9567B /* AmaticSC-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
