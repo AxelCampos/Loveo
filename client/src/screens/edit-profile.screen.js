@@ -331,26 +331,26 @@ class EditProfile extends Component {
               onChangeText={newCity => this.setState({ newCity })}
             />
             <Text style={styles.label}>
-              Logradouro:
+              Dirección:
               {street}
             </Text>
             <TextInput
               style={styles.input}
               underlineColorAndroid="transparent"
               autoCapitalize="none"
-              placeholder="nuevo logradouro (nombre de la calle/avenida)"
+              placeholder="nueva dirección (nombre de la calle/avenida)"
               onChangeText={street => this.setState({ street })}
             />
 
             <Text style={styles.label}>
-              Número del Logradouro, Piso, Puerta:
+              Número de la dirección, Piso, Puerta:
               {streetNumber}
             </Text>
             <TextInput
               style={styles.input}
               underlineColorAndroid="transparent"
               autoCapitalize="none"
-              placeholder="número del logradouro, piso, puerta"
+              placeholder="número de la dirección, piso, puerta"
               onChangeText={streetNumber => this.setState({ streetNumber })}
             />
 

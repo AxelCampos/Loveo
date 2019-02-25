@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   card: {
     flex: 0.9,

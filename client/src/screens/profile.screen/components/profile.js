@@ -16,7 +16,7 @@ const goToNewGroup = group => StackActions.reset({
     NavigationActions.navigate({ routeName: 'Main' }),
     NavigationActions.navigate({
       routeName: 'Messages',
-      params: { groupId: group.id, title: group.name },
+      params: { groupId: group.id, title: group.name, photo: group.photo },
     }),
   ],
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text } from 'react-native';
 
-const SectionItem = ({ title }) => <Text style={{ color: 'blue' }}>{title}</Text>;
+const SectionItem = ({ title }) => <Text style={{ color: 'blue' }} />;
 SectionItem.propTypes = {
   title: PropTypes.string,
 };

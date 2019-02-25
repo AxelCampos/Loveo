@@ -4,20 +4,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    // justifyContent: 'flex-start',
-    // 'center', 'flex-start', 'flex-end', 'space-around', 'space-between', 'space-evenly', baseline
-    // alignItems: "flex-start", // 'center', 'flex-start', 'flex-end', 'stretch', baseline,
     paddingTop: 10,
   },
   header: {
-    flex: 0.35,
     flexDirection: 'column',
     alignItems: 'stretch',
     justifyContent: 'flex-start',
     marginTop: 5,
   },
   main: {
-    flex: 0.65,
+    flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'flex-end',
