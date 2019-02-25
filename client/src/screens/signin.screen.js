@@ -11,6 +11,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Image,
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#eeeeee',
+    backgroundColor: 'white',
     paddingHorizontal: 50,
   },
   inputContainer: {
@@ -61,6 +62,12 @@ const styles = StyleSheet.create({
   },
   submit: {
     marginVertical: 6,
+  },
+  image: {
+    width: '100%',
+    height: '130%',
+    position: 'absolute',
+    top: -190,
   },
 });
 
@@ -141,9 +148,7 @@ class Signin extends Component {
 
   signup = () => {
     const { view } = this.state;
-    const {
-      signup, dispatch, createPhoto,
-    } = this.props;
+    const { signup, dispatch, createPhoto } = this.props;
     this.setState({
       loading: true,
     });
@@ -188,55 +193,30 @@ class Signin extends Component {
     const jwt = R.path(['auth', 'jwt'], this.props);
 
     return (
-      
-        <KeyboardAvoidingView style={styles.container}>
-          {loading ? (
-            <View style={styles.loadingContainer}>
-              <ActivityIndicator />
-            </View>
-          ) : (
-            undefined
-          )}
+      <KeyboardAvoidingView style={styles.container}>
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator />
+          </View>
+        ) : (
+          undefined
+        )}
 
-          {view === 'login' ? (
-            <View style={styles.inputContainer}>
-              <TextInput
-                defaultValue="kk@kk.es"
-                onChangeText={email => this.setState({ email })}
-                placeholder="Email"
-                style={styles.input}
-              />
-              {signup === false ? (
-                <TextInput
-                  defaultValue="123"
-                  onChangeText={password => this.setState({ password })}
-                  placeholder="Password"
-                  secureTextEntry
-                  style={styles.input}
-                />
-              ) : (
-                <TextInput
-                  onChangeText={password => this.setState({ password })}
-                  placeholder="Password"
-                  secureTextEntry
-                  style={styles.input}
-                />
-              )}
-            </View>
-          ) : (
-            <View style={styles.inputContainer}>
-              <TextInput
-                defaultValue="Axel"
-                onChangeText={username => this.setState({ username })}
-                placeholder="Username"
-                style={styles.input}
-              />
-              <TextInput
-                defaultValue="kk@kk.es"
-                onChangeText={email => this.setState({ email })}
-                placeholder="Email"
-                style={styles.input}
-              />
+        {view === 'login' ? (
+          <View style={styles.inputContainer}>
+            <Image
+              style={styles.image}
+              source={{
+                uri: 'https://pbs.twimg.com/profile_images/786502800763187201/ac8dsrMa_400x400.jpg',
+              }}
+            />
+            <TextInput
+              defaultValue="kk@kk.es"
+              onChangeText={email => this.setState({ email })}
+              placeholder="Email"
+              style={styles.input}
+            />
+            {signup === false ? (
               <TextInput
                 defaultValue="123"
                 onChangeText={password => this.setState({ password })}
@@ -244,33 +224,63 @@ class Signin extends Component {
                 secureTextEntry
                 style={styles.input}
               />
-            </View>
-          )}
-          {username.trim() === '' || email.trim() === '' || password.trim() === '' ? (
-            <Button
-              onPress={this[view]}
-              style={styles.submit}
-              title={view === 'signup' ? 'Sign up' : 'Login'}
-              disabled
-              color="rgba(255, 27, 151, 0.5)"
-            />
-          ) : (
-            <Button
-              onPress={this[view]}
-              style={styles.submit}
-              title={view === 'signup' ? 'Sign up' : 'Login'}
-              disabled={loading}
-              color="rgba(255, 27, 151, 0.5)"
-            />
-          )}
-
-          <View style={styles.switchContainer}>
-            <Text>{view === 'signup' ? 'Already have an account?' : 'Still have no account?'}</Text>
-            <TouchableOpacity onPress={this.switchView}>
-              <Text style={styles.switchAction}>{view === 'login' ? 'Sign up' : 'Login'}</Text>
-            </TouchableOpacity>
+            ) : (
+              <TextInput
+                onChangeText={password => this.setState({ password })}
+                placeholder="Password"
+                secureTextEntry
+                style={styles.input}
+              />
+            )}
           </View>
-        </KeyboardAvoidingView>
+        ) : (
+          <View style={styles.inputContainer}>
+            <TextInput
+              defaultValue="Axel"
+              onChangeText={username => this.setState({ username })}
+              placeholder="Username"
+              style={styles.input}
+            />
+            <TextInput
+              defaultValue="kk@kk.es"
+              onChangeText={email => this.setState({ email })}
+              placeholder="Email"
+              style={styles.input}
+            />
+            <TextInput
+              defaultValue="123"
+              onChangeText={password => this.setState({ password })}
+              placeholder="Password"
+              secureTextEntry
+              style={styles.input}
+            />
+          </View>
+        )}
+        {username.trim() === '' || email.trim() === '' || password.trim() === '' ? (
+          <Button
+            onPress={this[view]}
+            style={styles.submit}
+            title={view === 'signup' ? 'Sign up' : 'Login'}
+            disabled
+            color="rgba(255, 27, 151, 0.5)"
+          />
+        ) : (
+          <Button
+            onPress={this[view]}
+            style={styles.submit}
+            title={view === 'signup' ? 'Sign up' : 'Login'}
+            disabled={loading}
+            color="rgba(255, 27, 151, 0.5)"
+          />
+        )}
+
+        <View style={styles.switchContainer}>
+          <Text>{view === 'signup' ? 'Already have an account?' : 'Still have no account?'}</Text>
+          <TouchableOpacity onPress={this.switchView}>
+            <Text style={styles.switchAction}>{view === 'login' ? 'Sign up' : 'Login'}</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
     );
   }
 }

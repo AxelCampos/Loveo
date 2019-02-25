@@ -18,9 +18,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   map: {
-    // flex: 1,
-    height: 550,
-    width: 400,
+    height: '100%',
+    width: '100%',
   },
 });
 

@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   iconsView: {
     flexDirection: 'row',
     position: 'absolute',
-    bottom: 50,
+    bottom: 70,
     alignItems: 'center',
   },
   icons: {
