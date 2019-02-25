@@ -19,6 +19,7 @@ import ImgToBase64 from 'react-native-image-base64';
 import { USER_QUERY } from '../graphql/user.query';
 import EDIT_USER_MUTATION from '../graphql/edit-user.mutation';
 import EDIT_PHOTOPROFILE_MUTATION from '../graphql/edit-photoprofile.mutation';
+import { connect } from 'react-redux';
 
 const styles = StyleSheet.create({
   container: {
@@ -194,7 +195,7 @@ class EditProfile extends Component {
         path: 'images',
       },
     };
-    const { editPhotoprofile, user } = this.props;
+    const { editPhotoprofile, auth } = this.props;
 
     ImagePicker.showImagePicker(options, async (response) => {
       console.log('Response = ', response);
@@ -210,7 +211,7 @@ class EditProfile extends Component {
         .then(res => this.setState({
           image: res,
         }))
-        .then(() => editPhotoprofile({ userId: user.id, url: `data:image/png;base64, ${this.state.image}` }))
+        .then(() => editPhotoprofile({ userId: auth.id, url: `data:image/png;base64, ${this.state.image}` }))
         .catch(err => console.log('error!!!', err));
       alert('Foto actualizada');
     });
@@ -614,10 +615,10 @@ const editUserMutation = graphql(EDIT_USER_MUTATION, {
 });
 
 const editPhotoprofileMutation = graphql(EDIT_PHOTOPROFILE_MUTATION, {
-  props: ({ mutate }) => ({
+  props: ({ mutate, ownProps }) => ({
     editPhotoprofile: photo => mutate({
       variables: { photo },
-      refetchQueries: [{ query: USER_QUERY }],
+      refetchQueries: [{ query: USER_QUERY, variables: { id: ownProps.auth.id } }],
     }),
   }),
 
@@ -633,7 +634,13 @@ const userQuery = graphql(USER_QUERY, {
     user: user || null,
   }),
 });
+
+const mapStateToProps = ({ auth }) => ({
+  auth,
+});
+
 export default compose(
+  connect(mapStateToProps),
   userQuery,
   editUserMutation,
   editPhotoprofileMutation,

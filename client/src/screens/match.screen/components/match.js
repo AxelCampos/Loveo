@@ -83,7 +83,7 @@ class Match extends PureComponent {
     this.state = {
       swipedAllCards: false,
       isSwipingBack: false,
-      cardIndex: 1,
+      cardIndex: 0,
     };
   }
 
@@ -127,10 +127,10 @@ class Match extends PureComponent {
 
   swipeRight = (index) => {
     const {
-      updateUser, editFriend, users, auth,
+      updateUser, editFriend, auth,
     } = this.props;
 
-    const user = users.sort(this.compareUsers)[index];
+    const user = this.usersToShow()[index];
 
     updateUser({
       id: user.id,
@@ -141,14 +141,14 @@ class Match extends PureComponent {
       id: auth.id,
       userId: user.id,
     }).catch((error) => {
-      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => {} }]);
+      Alert.alert('Error Creating New Friend', error.message, [{ text: 'OK', onPress: () => { } }]);
     });
   };
 
   swipeLeft = (index) => {
-    const { editMiscreated, users, auth } = this.props;
+    const { editMiscreated, auth } = this.props;
 
-    const user = users.sort(this.compareUsers)[index];
+    const user = this.usersToShow()[index];
 
     editMiscreated({
       id: auth.id,
@@ -167,9 +167,9 @@ class Match extends PureComponent {
 
   create = (index) => {
     const {
-      createConversation, navigation, users, auth,
+      createConversation, navigation, auth,
     } = this.props;
-    const user = users.sort(this.compareUsers)[index];
+    const user = this.usersToShow()[index];
 
     createConversation({
       name: user.username,
@@ -181,12 +181,19 @@ class Match extends PureComponent {
         navigation.dispatch(goToNewGroup(res.data.createConversation));
       })
       .catch((error) => {
-        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => {} }]);
+        Alert.alert('Error Creating New Group', error.message, [{ text: 'OK', onPress: () => { } }]);
       });
   };
 
-  render = () => {
+  usersToShow() {
     const { users, user } = this.props;
+    return users.sort(this.compareUsers)
+      .filter(u => u.id !== user.id)
+      .filter(u => !user.friends.map(f => f.id).includes(u.id))
+      .filter(u => !user.miscreated.map(f => f.id).includes(u.id));
+  }
+
+  render = () => {
     const { swipedAllCards, cardIndex } = this.state;
 
     return (
@@ -203,7 +210,7 @@ class Match extends PureComponent {
             onSwipedRight={this.swipeRight}
             onSwipedLeft={this.swipeLeft}
             onTapCard={this.swipeLeft}
-            cards={users.filter(u => u.id !== user.id).filter(u => !user.friends.map(f => f.id).includes(u.id)).filter(u => !user.miscreated.map(f => f.id).includes(u.id)).sort(this.compareUsers)}
+            cards={this.usersToShow()}
             stackSize={3}
             renderCard={this.renderCard}
             onSwipedAll={this.onSwipedAllCards}
@@ -242,7 +249,7 @@ class Match extends PureComponent {
             animateCardOpacity
           />
         )}
-        {!swipedAllCards && (
+        {!swipedAllCards && !!this.usersToShow().length ? (
           <View style={styles.iconsView}>
             <Icon.Button
               underlayColor="transparent"
@@ -275,7 +282,8 @@ class Match extends PureComponent {
               onPress={() => this.swiper.swipeRight()}
             />
           </View>
-        )}
+        )
+          : <View />}
       </View>
     );
   };

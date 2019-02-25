@@ -106,7 +106,6 @@ class Messages extends Component {
   renderItem = ({ item: edge }) => {
     const { usernameColors } = this.state;
     const { auth } = this.props;
-    console.log(this.props, 'holamundo');
     const message = edge.node;
     return (
       <Message

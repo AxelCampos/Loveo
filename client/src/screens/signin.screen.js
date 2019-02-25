@@ -20,6 +20,7 @@ import { connect } from 'react-redux';
 import { setCurrentUser } from '../actions/auth.actions';
 import LOGIN_MUTATION from '../graphql/login.mutation';
 import SIGNUP_MUTATION from '../graphql/signup.mutation';
+import CREATE_PHOTO_MUTATION from '../graphql/create-photo.mutation';
 
 const styles = StyleSheet.create({
   container: {
@@ -137,7 +138,9 @@ class Signin extends Component {
 
   signup = () => {
     const { view } = this.state;
-    const { signup, dispatch } = this.props;
+    const {
+      signup, dispatch, createPhoto,
+    } = this.props;
     this.setState({
       loading: true,
     });
@@ -147,6 +150,12 @@ class Signin extends Component {
         dispatch(setCurrentUser(user));
         this.setState({
           loading: false,
+        });
+        createPhoto({
+          photo: {
+            userId: user.id,
+            url: 'http://blogs.grupojoly.com/la-sastreria/files/Manolo-Garc%C3%ADa.jpg',
+          },
         });
       })
       .catch((error) => {
@@ -240,6 +249,15 @@ const signup = graphql(SIGNUP_MUTATION, {
     }),
   }),
 });
+
+const createPhoto = graphql(CREATE_PHOTO_MUTATION, {
+  props: ({ mutate }) => ({
+    createPhoto: photo => mutate({
+      variables: photo,
+    }),
+  }),
+});
+
 const mapStateToProps = ({ auth }) => ({
   auth,
 });
@@ -248,4 +266,5 @@ export default compose(
   login,
   signup,
   connect(mapStateToProps),
+  createPhoto,
 )(Signin);

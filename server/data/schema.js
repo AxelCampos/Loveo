@@ -54,6 +54,11 @@ export const typeDefs = gql`
     password: String!
   }
 
+  input CreatePhotoInput {
+    userId: Int
+    url: String
+  }
+
   input UpdateUserInput {
     id: Int!
     likes: Int!
@@ -250,6 +255,7 @@ export const typeDefs = gql`
     createGroup(group: CreateGroupInput!): Group
     createSearch(search: CreateSearchInput!): Search
     createNotification(notification: CreateNotificationInput): Notification
+    createPhoto(photo: CreatePhotoInput): Photo
     deleteGroup(id: Int!): Group
     deleteSearch(id: Int!): Search
     leaveGroup(id: Int!, userId: Int!): Group

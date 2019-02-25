@@ -289,6 +289,19 @@ export const resolvers = {
       return user;
     },
 
+    createPhoto(
+      _,
+      {
+        photo: { userId, url },
+      },
+    ) {
+      const photo = Photo.create({
+        userId,
+        url,
+      });
+      return photo;
+    },
+
     async editPhotoprofile(
       _,
       {
