@@ -90,7 +90,7 @@ class Profile extends Component {
       createConversation,
       navigation,
       user: {
-        username, id, photoprofile, auth,
+        username, id, photoprofile,
       },
     } = this.props;
 

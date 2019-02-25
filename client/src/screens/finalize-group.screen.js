@@ -17,7 +17,6 @@ import { USER_QUERY } from '../graphql/user.query';
 import CREATE_GROUP_MUTATION from '../graphql/create-group.mutation';
 import SelectedUserList from '../components/selected-user-list.component';
 import CheckedImage from '../components/checked-image';
-import { connect } from 'react-redux';
 
 const goToNewGroup = group => StackActions.reset({
   index: 1,
