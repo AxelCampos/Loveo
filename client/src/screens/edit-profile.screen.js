@@ -198,7 +198,6 @@ class EditProfile extends Component {
     const { editPhotoprofile, auth } = this.props;
 
     ImagePicker.showImagePicker(options, async (response) => {
-      console.log('Response = ', response);
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {

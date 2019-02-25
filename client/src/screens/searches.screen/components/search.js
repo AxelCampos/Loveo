@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import styles from './styles';
 
 const Search = ({ item, goToSearch, deleteThisSearch }) => {
-  // console.log('search name', item.name);
+
   return (
     <TouchableHighlight key={item.id} onPress={goToSearch}>
       <View style={styles.tendencyContainer}>

@@ -144,8 +144,6 @@ class Blacklist extends Component {
 
   selectBlacklist = (item) => {
     const { user } = this.props;
-    console.log('user', user);
-    console.log('item', item);
     return user.miscreated.filter(dato => dato.id == item.id).length !== 0;
   };
 

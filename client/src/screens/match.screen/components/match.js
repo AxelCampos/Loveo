@@ -217,8 +217,8 @@ class Match extends PureComponent {
             stackSeparation={15}
             overlayLabels={{
               left: {
-                element: <Text style={styles.text}>NO</Text>,
-                title: 'NOPE',
+                element: <Text style={styles.text}>NO LOVEO</Text>,
+                title: 'NO LOVEO',
                 style: {
                   wrapper: {
                     backgroundColor: 'red',
@@ -231,8 +231,8 @@ class Match extends PureComponent {
                 },
               },
               right: {
-                element: <Text style={styles.text}>Me gusta</Text>,
-                title: 'Me gusta',
+                element: <Text style={styles.text}>LOVEO</Text>,
+                title: 'LOVEO',
                 style: {
                   wrapper: {
                     height: 448,

@@ -34,7 +34,7 @@ class Searches extends Component {
 
     deleteThisSearch = item => () => {
         const { deleteSearch } = this.props;
-        // console.log('delete item.id', item.id);
+
         deleteSearch(item.id);
         alert('Busqueda eliminada!');
     };
@@ -49,8 +49,7 @@ class Searches extends Component {
 
     userFilter = (item) => {
         const { userId } = this.state;
-        // console.log('item id', item.userId.id);
-        // console.log('userId', userId);
+
         return item.userId.id === userId;
     };
 

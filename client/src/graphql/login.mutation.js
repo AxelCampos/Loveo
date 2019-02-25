@@ -12,6 +12,9 @@ const LOGIN_MUTATION = gql`
       miscreated {
         id
       }
+      groups{
+        id
+      }
     }
   }
 `;

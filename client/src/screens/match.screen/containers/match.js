@@ -36,10 +36,10 @@ const usersQuery = graphql(USERS_QUERY, {
 });
 
 const createConversationMutation = graphql(CREATE_CONVERSATION_MUTATION, {
-  props: ({ mutate }) => ({
+  props: ({ mutate, ownProps }) => ({
     createConversation: group => mutate({
       variables: { group },
-      refetchQueries: [{ query: USERS_QUERY }],
+      refetchQueries: [{ query: USER_QUERY, variables: { id: ownProps.auth.id } }],
     }),
   }),
 });

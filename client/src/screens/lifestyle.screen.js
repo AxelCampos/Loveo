@@ -98,7 +98,7 @@ class Lifestyle extends Component {
     const {
       userId, gender, civilStatus, children,
     } = this.state;
-    // console.log("ppppp", gender);
+    
     navigate('LifestyleResult', {
       userId,
       gender,
@@ -138,7 +138,7 @@ class Lifestyle extends Component {
 
   switchCivilStatus = () => {
     const { switchCivilStatusValue } = this.state;
-    console.log(switchCivilStatusValue);
+   
     if (switchCivilStatusValue) {
       this.setState({
         switchCivilStatusValue: false,
@@ -169,7 +169,7 @@ class Lifestyle extends Component {
     this.setState({
       bool: true,
     });
-    console.log('zurr', this.scroll);
+    
     setTimeout(this.scroll.scrollToEnd, 0);
   };
 

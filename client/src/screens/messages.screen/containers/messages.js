@@ -87,7 +87,7 @@ const createMessageMutation = graphql(CREATE_MESSAGE_MUTATION, {
             messageConnection: { first: ITEMS_PER_PAGE },
           },
         });
-          // Add our message from the mutation to the end
+        // Add our message from the mutation to the end
         groupData.group.messages.edges.unshift({
           __typename: 'MessageEdge',
           node: createMessage,
@@ -113,10 +113,10 @@ const createMessageMutation = graphql(CREATE_MESSAGE_MUTATION, {
         const updateGroup = userData.user.groups.find(({ id }) => id === message.groupId);
         if (
           !updateGroup.messages.edges.length
-            || isBefore(
-              parseISO(updateGroup.messages.edges[0].node.createdAt),
-              parseISO(createMessage.createdAt),
-            )
+          || isBefore(
+            parseISO(updateGroup.messages.edges[0].node.createdAt),
+            parseISO(createMessage.createdAt),
+          )
         ) {
           updateGroup.messages.edges[0] = {
             __typename: 'MessageEdge',

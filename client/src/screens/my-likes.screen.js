@@ -152,8 +152,7 @@ class MyLikes extends Component {
 
   selectFriends = (item) => {
     const { user } = this.props;
-    // console.log('user', user);
-    // console.log('item', item);
+
     return user.friends.filter(dato => dato.id === item.id).length !== 0;
   };
 
