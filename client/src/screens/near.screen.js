@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
     View, Text, StyleSheet, Button,
 } from 'react-native';
-/*import { graphql, compose } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import Geocoder from 'react-native-geocoder';
 import { USERS_MAP_QUERY } from '../graphql/users-map.query';
@@ -252,12 +252,12 @@ export default compose(
     usersQuery,
     withLoading,
 )(Nearer);
-*/
 
-const Nearer = () => (
+
+/*const Nearer = () => (
     <View>
         <Text>Fixed</Text>
     </View>
 );
 
-export default Nearer;
+export default Nearer;*/
